@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>E-mailhandtekening · het Park</title>
+<style>
+  /* huisstijl hetparkinrotterdam.nl: Roslindale + GT Walsheim, parkgroen #00752e */
+  @font-face { font-family: "Roslindale"; font-weight: normal; font-display: swap;
+    src: url("https://hetparkinrotterdam.nl/assets/css/fonts/RoslindaleText-Regular.ttf") format("truetype"); }
+  @font-face { font-family: "Roslindale"; font-weight: bold; font-display: swap;
+    src: url("https://hetparkinrotterdam.nl/assets/css/fonts/RoslindaleText-Bold.ttf") format("truetype"); }
+  @font-face { font-family: "Walsheim"; font-weight: 400; font-display: swap;
+    src: url("https://hetparkinrotterdam.nl/assets/css/fonts/GTWalsheim-Md.ttf") format("truetype"); }
+  body { font-family: "Roslindale", Georgia, serif; color: #1d1d1b;
+         max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; line-height: 1.6; }
+  h1 { color: #00752e; font-size: 28px; margin-bottom: 4px; }
+  h2 { color: #00752e; font-size: 19px; margin-top: 36px; }
+  a { color: #00752e; }
+  .sub { color: #777; margin-top: 0; font-family: "Walsheim", Arial, sans-serif; font-size: 14px; }
+  .kader { border: 1px solid #e3e3dc; border-radius: 10px; padding: 20px; margin: 20px 0; background: #fff; }
+  .knop { background: #00752e; color: #fff; border: 0; border-radius: 10px; padding: 12px 24px;
+          font-size: 15px; cursor: pointer; font-family: "Walsheim", Arial, sans-serif; }
+  .knop:hover { background: #1d9e51; }
+  .knop:active { transform: scale(0.98); }
+  #status { margin-left: 12px; color: #00752e; font-family: "Walsheim", Arial, sans-serif; font-size: 14px; }
+  ol li { margin-bottom: 8px; }
+  code { background: #f0f0ea; padding: 2px 6px; border-radius: 4px; font-size: 13px;
+         font-family: "Walsheim", Arial, sans-serif; }
+  .voorbeeld td { padding: 0; }
+  img.handtekening { display: block; border: 0; max-width: 100%; }
+  .klein { font-size: 13px; color: #888; font-family: "Walsheim", Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>E-mailhandtekening van het Park</h1>
+<p class="sub">Ververst zichzelf elke ochtend · laatst bijgewerkt op 11 juni 2026</p>
+
+<p>Dit blokje onder je e-mailhandtekening laat zien wat er nú bloeit in het Park
+en wat het eerstvolgende evenement is. Je stelt het één keer in; daarna wordt het
+elke dag automatisch ververst.</p>
+
+<div class="kader">
+  <p style="margin-top:0"><strong>Zo ziet het er vandaag uit:</strong></p>
+  <div id="blok">
+    <table cellpadding="0" cellspacing="0" border="0" class="voorbeeld"><tr><td>
+      <a href="https://hetparkinrotterdam.nl/agenda" target="_blank" style="text-decoration:none">
+        <img class="handtekening" id="plaatje" src="handtekening.png" width="560"
+             alt="Wat bloeit en gebeurt er nu in het Park? Kijk op hetparkinrotterdam.nl">
+      </a>
+    </td></tr></table>
+  </div>
+  <p style="margin-bottom:0">
+    <button class="knop" id="kopieer">Kopieer de handtekening</button><span id="status"></span>
+  </p>
+</div>
+
+<h2>Instellen in Outlook (webmail of nieuwe Outlook)</h2>
+<ol>
+  <li>Klik hierboven op <strong>Kopieer de handtekening</strong>.</li>
+  <li>Open Outlook en ga naar <strong>Instellingen</strong> (tandwiel) →
+      <strong>E-mail</strong> → <strong>Opstellen en beantwoorden</strong>.</li>
+  <li>Klik in het handtekeningvak, zet de cursor <em>onder</em> je naam en
+      plak (<code>Cmd/Ctrl+V</code>).</li>
+  <li>Klik op <strong>Opslaan</strong>. Klaar — het blokje ververst voortaan zichzelf.</li>
+</ol>
+
+<h2>Instellen in klassiek Outlook (Windows/Mac)</h2>
+<ol>
+  <li>Klik hierboven op <strong>Kopieer de handtekening</strong>.</li>
+  <li>Ga naar <strong>Bestand</strong> → <strong>Opties</strong> → <strong>E-mail</strong> →
+      <strong>Handtekeningen</strong> (Mac: <strong>Outlook</strong> → <strong>Instellingen</strong> →
+      <strong>Handtekeningen</strong>).</li>
+  <li>Plak het blokje onder je naam en sla op.</li>
+</ol>
+
+<h2>Goed om te weten</h2>
+<ul>
+  <li>Het blokje is een afbeelding die op een vast webadres staat — géén bijlage.
+      Elke ochtend wordt de inhoud vernieuwd.</li>
+  <li>Een klik op het blokje opent de agenda van het Park.</li>
+  <li>Blokkeert een ontvanger afbeeldingen? Dan ziet die een korte tekst met verwijzing
+      naar de website.</li>
+  <li>Tekstversie nodig? Zie <a href="handtekening.txt">handtekening.txt</a>.</li>
+</ul>
+<p class="klein">Vandaag: "Nu in bloei: honderdduizenden zomerklokjes, het bollenwonder van het Park" en "In de agenda: Vikingfest 2026 · 13 & 14 juni".<br>
+Vragen of een bloeimoment dat ontbreekt? Meld het bij de beheerder van deze pagina.</p>
+
+<script>
+document.getElementById('kopieer').addEventListener('click', async () => {
+  const status = document.getElementById('status');
+  const url = new URL('handtekening.png', location.href).href;
+  const html = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' +
+    '<a href="https://hetparkinrotterdam.nl/agenda" target="_blank" style="text-decoration:none">' +
+    '<img src="' + url + '" width="560" style="display:block;border:0;max-width:560px" ' +
+    'alt="Wat bloeit en gebeurt er nu in het Park? Kijk op hetparkinrotterdam.nl"></a>' +
+    '</td></tr></table>';
+  const tekst = 'Wat bloeit en gebeurt er nu in het Park? Kijk op hetparkinrotterdam.nl/agenda';
+  try {
+    await navigator.clipboard.write([new ClipboardItem({
+      'text/html': new Blob([html], {type: 'text/html'}),
+      'text/plain': new Blob([tekst], {type: 'text/plain'})
+    })]);
+    status.textContent = 'Gekopieerd! Plak ’m nu in je handtekening.';
+  } catch (e) {
+    const sel = window.getSelection(), range = document.createRange();
+    range.selectNodeContents(document.getElementById('blok'));
+    sel.removeAllRanges(); sel.addRange(range);
+    document.execCommand('copy'); sel.removeAllRanges();
+    status.textContent = 'Gekopieerd!';
+  }
+});
+const p = document.getElementById('plaatje');
+p.src = 'handtekening.png?' + new Date().toISOString().slice(0,10);
+</script>
+</body>
+</html>

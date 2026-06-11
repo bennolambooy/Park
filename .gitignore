@@ -1,0 +1,11 @@
+# interne werkbestanden: niet publiceren in het (openbare) repo
+data/*.txt
+data/agenda_raw.html
+data/toelichting_12_13.txt
+data/bundle.css
+dump_xls.py
+__pycache__/
+
+# gelicenseerde huisstijlfonts: worden bij het draaien van de site gehaald
+fonts/
+docs/fonts/
