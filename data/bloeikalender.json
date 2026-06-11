@@ -27,7 +27,7 @@
     { "tekst": "vogelmelk, witte sterren tussen het gras", "van": [4, 2], "tot": [5, 1], "prio": 3, "bron": "gebieden 1+7 (51.000 st.), Ornithogalum" },
     { "tekst": "Kaukasisch vergeet-mij-nietje bij het Parkpaviljoen", "van": [4, 2], "tot": [5, 2], "prio": 3, "bron": "Van der Kloet-bedden + hoofdroute" },
     { "tekst": "dotterbloemen langs de oevers", "van": [4, 1], "tot": [5, 1], "prio": 3, "bron": "gebieden 1+7, Caltha palustris" },
-    { "tekst": "honderdduizenden zomerklokjes, het bollenwonder van het Park", "van": [4, 2], "tot": [6, 1], "prio": 1, "bron": "alle lijsten (ruim 340.000 st.), Leucojum" },
+    { "tekst": "honderdduizenden zomerklokjes", "van": [4, 2], "tot": [6, 1], "prio": 1, "bron": "alle lijsten (ruim 340.000 st.), Leucojum" },
     { "tekst": "de meidoorns, wit en zoet geurend", "van": [5, 1], "tot": [6, 1], "prio": 1, "bron": "bloeitabel beplanter, Crataegus" },
     { "tekst": "lelietjes-van-dalen in de schaduwranden", "van": [5, 1], "tot": [5, 2], "prio": 2, "bron": "hoofdroute + gebied 10 (19.000 st.)" },
     { "tekst": "de seringen, paars en lichtblauw", "van": [5, 1], "tot": [6, 1], "prio": 2, "bron": "gebied 10 + vak 11, Syringa" },
