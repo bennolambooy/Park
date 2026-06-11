@@ -114,7 +114,7 @@ document.getElementById('kopieer').addEventListener('click', async () => {
   }
 });
 const p = document.getElementById('plaatje');
-p.src = 'handtekening.png?' + new Date().toISOString().slice(0,10);
+p.src = 'handtekening.png?' + Date.now();
 </script>
 </body>
 </html>
