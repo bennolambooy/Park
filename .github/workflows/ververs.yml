@@ -5,6 +5,10 @@ on:
     - cron: "30 4 * * *"   # elke ochtend 06:30 NL-zomertijd / 05:30 wintertijd
   workflow_dispatch:        # en handmatig te starten via de Actions-tab
 
+concurrency:
+  group: handtekening
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
