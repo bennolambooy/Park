@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: "30 4 * * *"   # elke ochtend 06:30 NL-zomertijd / 05:30 wintertijd
   workflow_dispatch:        # en handmatig te starten via de Actions-tab
+  push:
+    paths:                  # en automatisch zodra de kalender of het script wijzigt
+      - "data/**"
+      - "genereer.py"
+      - "sjabloon_index.html"
 
 concurrency:
   group: handtekening
