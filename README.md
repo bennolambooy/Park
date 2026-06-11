@@ -6,7 +6,10 @@ eerstvolgende evenement is** (live van de agenda op hetparkinrotterdam.nl).
 
 Zo ziet het eruit:
 
-![voorbeeld](docs/handtekening.png)
+<img src="docs/handtekening.png" width="560" alt="voorbeeld van de handtekening">
+
+Het plaatje staat op dubbele resolutie (1120px) en wordt op 560px getoond,
+zodat het op high-dpi-schermen scherp blijft.
 
 ## Hoe het werkt
 

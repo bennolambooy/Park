@@ -159,8 +159,8 @@ def kies_event(dag):
 # ---------- tekenen ----------
 
 FONT_BRON = "https://hetparkinrotterdam.nl/assets/css/fonts/"
-FONTS = ["RoslindaleText-Regular.ttf", "RoslindaleText-Bold.ttf",
-         "GTWalsheim-Md.ttf", "GTWalsheim-Bd.ttf"]
+# GT Walsheim: het lettertype dat het Park ook in e-mailhandtekeningen gebruikt
+FONTS = ["GTWalsheim-Md.ttf", "GTWalsheim-Bd.ttf"]
 
 
 def zorg_voor_fonts():
@@ -197,11 +197,11 @@ def teken_chip(d, x, ycent, label, kleur, S):
 
 
 def teken_tekst(d, x, ycent, segmenten, S, max_x):
-    """Tekent [(tekst, vet?)]-segmenten in Roslindale, verkleint tot het past."""
-    maat = 14.5
+    """Tekent [(tekst, vet?)]-segmenten in GT Walsheim, verkleint tot het past."""
+    maat = 14.0
     while maat >= 11:
-        fonts = {True: font("RoslindaleText-Bold.ttf", maat, S),
-                 False: font("RoslindaleText-Regular.ttf", maat, S)}
+        fonts = {True: font("GTWalsheim-Bd.ttf", maat, S),
+                 False: font("GTWalsheim-Md.ttf", maat, S)}
         breedte = sum(d.textlength(t, font=fonts[v]) for t, v in segmenten)
         if x + breedte <= max_x:
             break
@@ -213,12 +213,12 @@ def teken_tekst(d, x, ycent, segmenten, S, max_x):
 
 
 def maak_png(bloei, event, kleur_event, pad):
-    S = 2  # retina
-    W, H = 560, 82
+    # Retina: we tekenen op dubbele resolutie (1120px) en tonen op 560px,
+    # zodat het plaatje ook op high-dpi-schermen scherp is.
+    S = 2
+    W, H = 560, 70
     img = Image.new("RGB", (W * S, H * S), (255, 255, 255))
     d = ImageDraw.Draw(img)
-    d.rounded_rectangle([S, S, W * S - S, H * S - S], radius=10 * S,
-                        outline=KLEUREN["rand"], width=S)
 
     if " · " in event:
         titel, rest = event.split(" · ", 1)
@@ -227,17 +227,16 @@ def maak_png(bloei, event, kleur_event, pad):
         event_seg = [(event, False)]
 
     rijen = [
-        ("NU IN BLOEI", KLEUREN["groen"], [(bloei, False)], 27),
-        ("IN DE AGENDA", kleur_event, event_seg, 55),
+        ("NU IN BLOEI", KLEUREN["groen"], [(bloei, False)], 19),
+        ("IN DE AGENDA", kleur_event, event_seg, 51),
     ]
-    # chips links uitlijnen, tekstkolom erachter op één lijn
-    breedtes = [teken_chip(d, 16 * S, ym * S, label, kleur, S)
+    # pills strak links uitgelijnd, tekstkolom erachter op één lijn
+    breedtes = [teken_chip(d, S, ym * S, label, kleur, S)
                 for label, kleur, _, ym in rijen]
-    kolom_x = 16 * S + max(breedtes) + 12 * S
+    kolom_x = S + max(breedtes) + 12 * S
     for label, kleur, segmenten, ym in rijen:
-        teken_tekst(d, kolom_x, ym * S, segmenten, S, (W - 16) * S)
+        teken_tekst(d, kolom_x, ym * S, segmenten, S, (W - 4) * S)
 
-    img = img.resize((W, H), Image.LANCZOS)
     img.save(pad, optimize=True)
 
 
