@@ -96,20 +96,20 @@ handtekening vanzelf terug naar het eerstvolgende.</p>
 </table></div>
 
 <h2>In bloei</h2>
-<p class="klein" style="margin:0 0 6px">Wat er volgens de bloeikalender te zien is.
-De handtekening wisselt elke dag tussen de blikvangers en mooie regels van dat moment.</p>
+<p class="klein" style="margin:0 0 6px">Wat er volgens de bloeikalender te zien is —
+de handtekening wisselt elke dag tussen deze regels.</p>
 <p style="margin:0 0 8px">
   <input type="date" id="peildatum" onchange="toonBloei()">
   <button class="knopje" onclick="zetNu()">Nu</button>
 </p>
 <div class="scroll"><table id="bloeitabel">
-  <thead><tr><th>Wat</th><th>Van</th><th>Tot</th><th></th></tr></thead>
+  <thead><tr><th>Wat</th><th>Van</th><th>Tot</th></tr></thead>
   <tbody></tbody>
 </table></div>
 <p class="klein">Klopt er iets niet, of bloeit er iets nieuws? Hoveniers werken de kalender bij op de
 <a href="beheer.html">beheerpagina</a>.</p>
 
-<p class="klein" style="margin-top:28px">Vandaag: "Nu in bloei: honderdduizenden zomerklokjes" en "In de agenda: Vikingfest 2026 · 13 & 14 juni".
+<p class="klein" style="margin-top:28px">Vandaag: "Nu in bloei: honderdduizenden zomerklokjes" en "In de agenda: Presentatie Zomer door rapper Winne & Friends · zo 21 juni, 14:30 uur".
 · <a href="handtekening.txt">tekstversie</a></p>
 
 <script>
@@ -255,7 +255,7 @@ async function laadBloei() {
     toonBloei();
   } catch (e) {
     document.querySelector('#bloeitabel tbody').innerHTML =
-      '<tr><td colspan="4" class="klein">Bloeikalender kon niet geladen worden.</td></tr>';
+      '<tr><td colspan="3" class="klein">Bloeikalender kon niet geladen worden.</td></tr>';
   }
 }
 function toonBloei() {
@@ -263,14 +263,13 @@ function toonBloei() {
   const v = document.getElementById('peildatum').value || isoVan(new Date());
   const d = new Date(v + 'T12:00:00');
   const idx = idxVan(d.getMonth() + 1, d.getDate() <= 15 ? 1 : 2);
-  const woord = { 1: 'blikvanger', 2: 'mooi', 3: 'voor de fijnproever' };
   const rijen = bloei.entries
     .filter(e => isActief(e, idx) && !(e.pauze_tot && e.pauze_tot >= v))
     .sort((a, b) => a.prio - b.prio || (a.tekst < b.tekst ? -1 : 1))
     .map(e => '<tr><td>' + esc(e.tekst) + '</td><td>' + labelVan(idxVan(...e.van)) +
-      '</td><td>' + labelVan(idxVan(...e.tot)) + '</td><td class="klein">' + woord[e.prio] + '</td></tr>');
+      '</td><td>' + labelVan(idxVan(...e.tot)) + '</td></tr>');
   document.querySelector('#bloeitabel tbody').innerHTML =
-    rijen.join('') || '<tr><td colspan="4" class="klein">Niets actief op deze datum.</td></tr>';
+    rijen.join('') || '<tr><td colspan="3" class="klein">Niets actief op deze datum.</td></tr>';
 }
 function zetNu() { document.getElementById('peildatum').value = isoVan(new Date()); toonBloei(); }
 
