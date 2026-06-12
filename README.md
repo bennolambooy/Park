@@ -46,10 +46,10 @@ en daar staat altijd de versie van vandaag.
 **Voor hoveniers en vrijwilligers:** open `beheer.html` op de kopieerpagina-site.
 Daar staat wat er volgens de kalender nu bloeit, met grote knoppen: *Uitgebloeid*
 (verbergt de regel voor de rest van dit seizoen), *Bloeit nu al* en een
-invulveld om zelf iets toe te voegen. Opslaan vraagt eenmalig een sleutel:
-een *fine-grained personal access token* (github.com → Settings → Developer
-settings) met alléén *Contents: read and write* op alléén dit repository.
-De beheerder maakt die aan en deelt hem onderhands met de hoveniers.
+invulveld om zelf iets toe te voegen. Opslaan vraagt eenmalig een wachtwoord;
+de beheerder deelt dat onderhands. Technisch: het wachtwoord ontgrendelt een
+AES-versleutelde *fine-grained personal access token* (alléén *Contents:
+read and write*, alléén dit repository) die in `beheer.html` staat.
 
 Handmatig kan ook: pas `data/bloeikalender.json` aan (potloodje op GitHub →
 commit). Elke regel heeft een periode (`van`/`tot`, als `[maand, helft]`),

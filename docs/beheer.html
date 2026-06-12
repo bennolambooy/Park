@@ -282,7 +282,7 @@ function toonSleutel(uitleg) {
   k.scrollIntoView({ behavior: 'smooth' });
 }
 // De GitHub-sleutel staat hier AES-GCM-versleuteld; het wachtwoord ontgrendelt hem.
-const GEHEIM = null; // { zout, iv, blob } in base64 — wordt gevuld door de beheerder
+const GEHEIM = {"zout":"H3xEFevyoNgqHYs9gvv/QA==","iv":"p1AdIkV9tMHpNvqN","blob":"2gCC7/aeM90Jakq4U/owvXNORCIaqdW7SCvskTFhpZcE555UORAR/NBeMtOt1rsr3ro2SNASblPiKJY0nlk6o38vTFmT2MTtGbHrbn1ZAt7qn/0v4CoT3rS9/YCQqdi7IigjEVQ00XgoA3nb/g=="};
 async function ontgrendel(ww) {
   if (!GEHEIM) return null;
   try {
