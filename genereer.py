@@ -11,6 +11,7 @@ Draait dagelijks via GitHub Actions, maar werkt ook lokaal: python3 genereer.py
 import json
 import re
 import sys
+import time
 import urllib.request
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -96,10 +97,22 @@ def kies_bloei(dag):
 
 # ---------- agenda ----------
 
+def haal(url, pogingen=3):
+    """urlopen met retries: het netwerk van een GitHub-runner hapert soms even."""
+    fout = None
+    for poging in range(pogingen):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "park-handtekening (stichting het Park)"})
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return resp.read()
+        except Exception as e:
+            fout = e
+            time.sleep(5 * (poging + 1))
+    raise fout
+
+
 def haal_agenda():
-    req = urllib.request.Request(AGENDA_URL, headers={"User-Agent": "park-handtekening (stichting het Park)"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return resp.read().decode("utf-8", "replace")
+    return haal(AGENDA_URL).decode("utf-8", "replace")
 
 
 def parse_events(html, dag):
@@ -205,10 +218,7 @@ def zorg_voor_fonts():
     for naam in FONTS:
         doel = BASIS / "fonts" / naam
         if not doel.exists():
-            req = urllib.request.Request(FONT_BRON + naam,
-                                         headers={"User-Agent": "park-handtekening"})
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                doel.write_bytes(resp.read())
+            doel.write_bytes(haal(FONT_BRON + naam))
 
 
 def font(bestand, maat, S):

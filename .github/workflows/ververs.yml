@@ -33,6 +33,12 @@ jobs:
       - name: Installeer Pillow
         run: pip install pillow
 
+      - name: Cache huisstijlfonts
+        uses: actions/cache@v4
+        with:
+          path: fonts
+          key: gt-walsheim-v1
+
       - name: Genereer handtekening
         run: python genereer.py
 

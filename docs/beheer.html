@@ -95,9 +95,8 @@ in de <a href="./">e-mailhandtekening</a>.</p>
 <div id="preview"></div>
 
 <h2>Jaaroverzicht</h2>
-<p class="klein" style="margin:0">Tik op een rij om aan te passen. De groene kolom is nu;
-<span style="color:#00752e;font-weight:700">groene namen</span> draaien op dit moment mee in de
-handtekening. Regels voor de fijnproever komen er nooit op — die zijn er voor het overzicht.</p>
+<p class="klein" style="margin:0">Tik op een rij om aan te passen.
+<span style="color:#00752e;font-weight:700">Groene namen</span> draaien op dit moment mee in de handtekening.</p>
 <div id="alles"></div>
 <p style="margin:10px 0 0"><button class="knopje" onclick="naarToevoegen()">+ Zelf iets toevoegen</button></p>
 
@@ -105,11 +104,6 @@ handtekening. Regels voor de fijnproever komen er nooit op — die zijn er voor 
 <div class="kaart" style="flex-direction:column;align-items:stretch">
   <input id="nieuwtekst" maxlength="70" placeholder="bijv. de rododendrons bij de heuvel kleuren paars">
   <label>Bloeit ongeveer tot <select id="nieuwtot"></select></label>
-  <label>Hoe opvallend? <select id="nieuwprio">
-    <option value="1">blikvanger — niet te missen</option>
-    <option value="2" selected>mooi</option>
-    <option value="3">voor de fijnproever</option>
-  </select></label>
   <button class="knopje dicht" style="margin-top:10px" onclick="voegToe()">Toevoegen aan de kalender</button>
 </div>
 
@@ -200,7 +194,7 @@ function voegToe() {
   if (!t) { melding('Vul eerst in wat er bloeit.'); return; }
   data.entries.push({ tekst: t, van: vanIdx(huidigeIdx()),
     tot: vanIdx(+document.getElementById('nieuwtot').value),
-    prio: +document.getElementById('nieuwprio').value,
+    prio: 2,
     bron: 'gemeld via beheerpagina, ' + isoVandaag() });
   document.getElementById('nieuwtekst').value = '';
   wijzig();
@@ -239,7 +233,6 @@ function render() {
   document.getElementById('telling').textContent = dirty + ' wijziging' + (dirty === 1 ? '' : 'en');
 }
 
-const PRIOKLEUR = { 1: '#00752e', 2: '#1d9e51', 3: '#b6cdbb' };
 function bewerkPaneel(e, i) {
   const opties = n => Array.from({length: 24}, (_, k) =>
     '<option value="' + k + '"' + (k === n ? ' selected' : '') + '>' + labelVan(k) + '</option>').join('');
@@ -250,9 +243,6 @@ function bewerkPaneel(e, i) {
     '<input class="breed" value="' + esc(e.tekst) + '" maxlength="70" onchange="pasAan(' + i + ',\'tekst\',this.value)">' +
     '<label>van <select onchange="pasAan(' + i + ',\'van\',this.value)">' + opties(idxVan(...e.van)) + '</select></label>' +
     '<label>tot <select onchange="pasAan(' + i + ',\'tot\',this.value)">' + opties(idxVan(...e.tot)) + '</select></label>' +
-    '<label>opvallendheid <select onchange="pasAan(' + i + ',\'prio\',this.value)">' +
-      [1, 2, 3].map(p => '<option value="' + p + '"' + (p === e.prio ? ' selected' : '') + '>' +
-        ['blikvanger', 'mooi', 'fijnproever'][p - 1] + '</option>').join('') + '</select></label>' +
     '<span style="align-self:end;display:flex;gap:8px">' + snel +
     '<button class="knopje rood" onclick="verwijder(' + i + ')">Verwijderen</button></span>' +
     '</div>';
@@ -268,8 +258,8 @@ function kalender(idx) {
     const v = idxVan(...e.van), t = idxVan(...e.tot);
     const stukken = v <= t ? [[v, t]] : [[v, 23], [0, t]];
     const balken = stukken.map(([a, b]) =>
-      '<div class="balk" style="grid-column:' + (a + 2) + '/' + (b + 3) + ';background:' +
-      PRIOKLEUR[e.prio] + (isGepauzeerd(e) ? ';opacity:.35' : '') + '"></div>').join('');
+      '<div class="balk" style="grid-column:' + (a + 2) + '/' + (b + 3) + ';background:#00752e' +
+      (isGepauzeerd(e) ? ';opacity:.35' : '') + '"></div>').join('');
     const inpool = isActief(e, idx) && e.prio <= 2 && !isGepauzeerd(e);
     return '<div class="kalrij' + (openEdit === i ? ' open' : '') + '" onclick="zetEdit(' + i + ')">' +
       '<div class="kallabel' + (inpool ? ' inpool' : '') + '">' + esc(e.tekst) + '</div>' +
@@ -278,10 +268,9 @@ function kalender(idx) {
   }).join('');
   return '<div class="kal"><div class="kalbinnen">' + kop + rijen + '</div></div>' +
     '<div class="legenda">' +
-    '<span><span class="bol" style="background:#00752e"></span>blikvanger</span>' +
-    '<span><span class="bol" style="background:#1d9e51"></span>mooi</span>' +
-    '<span><span class="bol" style="background:#b6cdbb"></span>voor de fijnproever</span>' +
-    '<span><span class="bol" style="background:#eaf5ee"></span>nu</span></div>';
+    '<span><span class="bol" style="background:#eaf5ee"></span>de groene kolom is nu</span>' +
+    '<span><span class="bol" style="background:#00752e;opacity:.35"></span>vage balk = uitgebloeid gemeld</span>' +
+    '<span style="color:#00752e;font-weight:700">groene naam = nu in de handtekening</span></div>';
 }
 
 function melding(t, kort) {
