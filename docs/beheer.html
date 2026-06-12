@@ -12,7 +12,7 @@
     src: url("https://hetparkinrotterdam.nl/assets/css/fonts/GTWalsheim-Bd.ttf") format("truetype"); }
   * { box-sizing: border-box; }
   body { font-family: "Walsheim", Arial, sans-serif; color: #1d1d1b; background: #fff;
-         max-width: 640px; margin: 0 auto; padding: 24px 16px 110px; line-height: 1.5; }
+         max-width: 940px; margin: 0 auto; padding: 24px 16px 110px; line-height: 1.5; }
   h1 { color: #00752e; font-size: 24px; margin: 0 0 4px; }
   .sub { color: #777; font-size: 14px; margin: 0 0 8px; }
   h2 { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: #00752e;
@@ -39,13 +39,20 @@
   details.lijst > summary { cursor: pointer; color: #00752e; font-weight: 700; padding: 6px 0; }
   .kal { overflow-x: auto; border: 1px solid #e3e3dc; border-radius: 12px; margin-top: 8px; }
   .kalbinnen { min-width: 620px; }
-  .kalkop, .kalrij { display: grid; grid-template-columns: 150px repeat(24, 1fr); align-items: center; }
+  .kalkop, .kalrij { display: grid; grid-template-columns: var(--labelw, 240px) repeat(24, 1fr); align-items: center; }
+  @media (max-width: 700px) { .kalkop, .kalrij { --labelw: 150px; } }
   .kalrij > * { grid-row: 1; }
   .kalkop { border-bottom: 1px solid #e3e3dc; }
   .kalkop div { font-size: 11px; color: #777; text-align: center; padding: 6px 0; }
-  .kallabel { position: sticky; left: 0; background: #fff; font-size: 13px; padding: 9px 8px;
+  .kallabel { position: sticky; left: 0; background: #fff; font-size: 14px; padding: 9px 10px;
               white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
               border-right: 1px solid #eee; z-index: 2; }
+  .kallabel.inpool { color: #00752e; font-weight: 700; }
+  .dagregel { display: flex; gap: 12px; padding: 6px 10px; border-radius: 8px;
+              font-size: 14px; align-items: baseline; }
+  .dagregel .dag { color: #777; min-width: 88px; font-size: 13px; flex: none; }
+  .dagregel.nu { background: #eaf5ee; font-weight: 700; }
+  .dagregel.nu .dag { color: #00752e; }
   .kalkop .kallabel { text-align: left; font-weight: 700; color: #1d1d1b; }
   .kalrij { border-top: 1px solid #f4f4f0; cursor: pointer; }
   .kalrij.open, .kalrij:hover { background: #fafaf7; }
@@ -61,7 +68,7 @@
              color: #00752e; border-radius: 10px; padding: 10px 14px; margin: 0 0 12px; display: none; }
   #balk { position: fixed; left: 0; right: 0; bottom: 0; background: #fff;
           border-top: 1px solid #e3e3dc; padding: 12px 16px; display: none; }
-  #balk .binnen { max-width: 640px; margin: 0 auto; display: flex; gap: 12px; align-items: center;
+  #balk .binnen { max-width: 940px; margin: 0 auto; display: flex; gap: 12px; align-items: center;
                   justify-content: space-between; }
   #sleutelkaart { flex-direction: column; align-items: stretch; border-color: #ca7b00; }
   .klein { font-size: 13px; color: #888; }
@@ -82,15 +89,19 @@ in de <a href="./">e-mailhandtekening</a>.</p>
   <button class="knopje dicht" style="margin-top:8px" onclick="bewaarSleutel()">Bewaren en opslaan</button>
 </div>
 
-<h2>Nu in bloei volgens de kalender</h2>
-<p class="klein" style="margin:0">Klopt iets niet (meer)? Tik op <strong>Uitgebloeid</strong> —
-dan verdwijnt het voor de rest van dit seizoen en komt het volgend jaar vanzelf terug.</p>
-<div id="actief"></div>
+<h2>In de handtekening</h2>
+<p class="klein" style="margin:0 0 6px">De bloeiregel wisselt elke dag. Zo ziet de komende week eruit
+— dit past zich direct aan op je wijzigingen hieronder:</p>
+<div id="preview"></div>
 
-<h2>Binnenkort verwacht</h2>
-<div id="binnenkort"></div>
+<h2>Jaaroverzicht</h2>
+<p class="klein" style="margin:0">Tik op een rij om aan te passen. De groene kolom is nu;
+<span style="color:#00752e;font-weight:700">groene namen</span> draaien op dit moment mee in de
+handtekening. Regels voor de fijnproever komen er nooit op — die zijn er voor het overzicht.</p>
+<div id="alles"></div>
+<p style="margin:10px 0 0"><button class="knopje" onclick="naarToevoegen()">+ Zelf iets toevoegen</button></p>
 
-<h2>Zelf iets zien bloeien?</h2>
+<h2 id="kopje-toevoegen">Zelf iets zien bloeien?</h2>
 <div class="kaart" style="flex-direction:column;align-items:stretch">
   <input id="nieuwtekst" maxlength="70" placeholder="bijv. de rododendrons bij de heuvel kleuren paars">
   <label>Bloeit ongeveer tot <select id="nieuwtot"></select></label>
@@ -102,11 +113,13 @@ dan verdwijnt het voor de rest van dit seizoen en komt het volgend jaar vanzelf 
   <button class="knopje dicht" style="margin-top:10px" onclick="voegToe()">Toevoegen aan de kalender</button>
 </div>
 
-<details class="lijst" open>
-  <summary>Jaaroverzicht — de volledige kalender</summary>
-  <p class="klein" style="margin:4px 0 0">Tik op een rij om te bewerken. De groene kolom is nu.</p>
-  <div id="alles"></div>
-</details>
+<h2>Nu in bloei volgens de kalender</h2>
+<p class="klein" style="margin:0">Klopt iets niet (meer)? Tik op <strong>Uitgebloeid</strong> —
+dan verdwijnt het voor de rest van dit seizoen en komt het volgend jaar vanzelf terug.</p>
+<div id="actief"></div>
+
+<h2>Binnenkort verwacht</h2>
+<div id="binnenkort"></div>
 
 <div id="balk"><div class="binnen">
   <span id="telling"></span>
@@ -127,18 +140,39 @@ function isActief(e, idx) {
   const v = idxVan(...e.van), t = idxVan(...e.tot);
   return v <= t ? (idx >= v && idx <= t) : (idx >= v || idx <= t);
 }
-const isoVandaag = () => { const n = new Date(); return n.getFullYear() + '-' +
-  String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'); };
+const isoVan = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') +
+  '-' + String(d.getDate()).padStart(2, '0');
+const isoVandaag = () => isoVan(new Date());
 const isGepauzeerd = e => e.pauze_tot && e.pauze_tot >= isoVandaag();
 const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const periodeTekst = e => labelVan(idxVan(...e.van)) + ' t/m ' + labelVan(idxVan(...e.tot));
 
-function dagVanJaar() { const n = new Date(); return Math.floor((n - new Date(n.getFullYear(), 0, 0)) / 864e5); }
-function keuzeVandaag(actieven) {
-  const pool = actieven.filter(e => e.prio <= 2);
-  const p = (pool.length ? pool : actieven).slice()
+function dagVanJaar(d) { return Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 864e5); }
+function keuzeOpDag(d) {
+  // zelfde logica als genereer.py: actieve pool, prio 1-2, dagrotatie
+  const iso = isoVan(d), idx = idxVan(d.getMonth() + 1, d.getDate() <= 15 ? 1 : 2);
+  const act = data.entries.filter(e => isActief(e, idx) && !(e.pauze_tot && e.pauze_tot >= iso));
+  const pool = act.filter(e => e.prio <= 2);
+  const p = (pool.length ? pool : act).slice()
     .sort((a, b) => a.prio - b.prio || (a.tekst < b.tekst ? -1 : 1));
-  return p.length ? p[dagVanJaar() % p.length] : null;
+  return p.length ? p[dagVanJaar(d) % p.length] : null;
+}
+const WEEKD = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'];
+function renderPreview() {
+  let html = '';
+  for (let k = 0; k < 7; k++) {
+    const d = new Date(); d.setDate(d.getDate() + k);
+    const e = keuzeOpDag(d);
+    const label = k === 0 ? 'vandaag' : k === 1 ? 'morgen' :
+      WEEKD[d.getDay()] + ' ' + d.getDate() + ' ' + MAANDEN[d.getMonth()].slice(0, 3);
+    html += '<div class="dagregel' + (k === 0 ? ' nu' : '') + '"><span class="dag">' + label +
+      '</span><span>' + (e ? esc(e.tekst) : '—') + '</span></div>';
+  }
+  document.getElementById('preview').innerHTML = html;
+}
+function naarToevoegen() {
+  document.getElementById('kopje-toevoegen').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('nieuwtekst').focus({ preventScroll: true });
 }
 
 function eindDatum([m, h]) {
@@ -185,7 +219,8 @@ function render() {
     if (isActief(e, idx)) (isGepauzeerd(e) ? pauze : act).push(i);
     else { const afstand = (idxVan(...e.van) - idx + 24) % 24; if (afstand >= 1 && afstand <= 2) straks.push(i); }
   });
-  const vandaag = keuzeVandaag(act.map(i => data.entries[i]));
+  const vandaag = keuzeOpDag(new Date());
+  renderPreview();
   document.getElementById('actief').innerHTML =
     act.map(i => kaart(data.entries[i], i,
       '<button class="knopje rood" onclick="uitgebloeid(' + i + ')">Uitgebloeid</button>',
@@ -235,8 +270,9 @@ function kalender(idx) {
     const balken = stukken.map(([a, b]) =>
       '<div class="balk" style="grid-column:' + (a + 2) + '/' + (b + 3) + ';background:' +
       PRIOKLEUR[e.prio] + (isGepauzeerd(e) ? ';opacity:.35' : '') + '"></div>').join('');
+    const inpool = isActief(e, idx) && e.prio <= 2 && !isGepauzeerd(e);
     return '<div class="kalrij' + (openEdit === i ? ' open' : '') + '" onclick="zetEdit(' + i + ')">' +
-      '<div class="kallabel">' + esc(e.tekst) + '</div>' +
+      '<div class="kallabel' + (inpool ? ' inpool' : '') + '">' + esc(e.tekst) + '</div>' +
       '<div class="nucol" style="grid-column:' + (idx + 2) + '"></div>' + balken + '</div>' +
       (openEdit === i ? '<div class="kaledit" onclick="event.stopPropagation()">' + bewerkPaneel(e, i) + '</div>' : '');
   }).join('');
