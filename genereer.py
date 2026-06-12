@@ -73,10 +73,19 @@ def is_actief(entry, idx):
     return idx >= van or idx <= tot  # loopt over de jaarwisseling heen
 
 
+def gepauzeerd(entry, dag):
+    """Via de beheerpagina 'uitgebloeid' gemeld tot en met deze datum."""
+    try:
+        return dag <= date.fromisoformat(entry.get("pauze_tot", ""))
+    except ValueError:
+        return False
+
+
 def kies_bloei(dag):
     kalender = json.loads((BASIS / "data" / "bloeikalender.json").read_text())
     idx = periode_index(dag.month, 1 if dag.day <= 15 else 2)
-    actief = [e for e in kalender["entries"] if is_actief(e, idx)]
+    actief = [e for e in kalender["entries"]
+              if is_actief(e, idx) and not gepauzeerd(e, dag)]
     pool = [e for e in actief if e["prio"] <= 2] or actief
     if not pool:
         return "het Park, in elk seizoen de moeite waard"

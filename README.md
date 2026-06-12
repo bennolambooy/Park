@@ -43,11 +43,22 @@ en daar staat altijd de versie van vandaag.
 
 ## Bloeikalender bijwerken
 
-Klopt een bloeimoment niet, of is er iets nieuws geplant? Pas
-`data/bloeikalender.json` aan (kan gewoon op GitHub in de browser, potloodje →
+**Voor hoveniers en vrijwilligers:** open `beheer.html` op de kopieerpagina-site.
+Daar staat wat er volgens de kalender nu bloeit, met grote knoppen: *Uitgebloeid*
+(verbergt de regel voor de rest van dit seizoen), *Bloeit nu al* en een
+invulveld om zelf iets toe te voegen. Opslaan vraagt eenmalig een sleutel:
+een *fine-grained personal access token* (github.com → Settings → Developer
+settings) met alléén *Contents: read and write* op alléén dit repository.
+De beheerder maakt die aan en deelt hem onderhands met de hoveniers.
+
+Handmatig kan ook: pas `data/bloeikalender.json` aan (potloodje op GitHub →
 commit). Elke regel heeft een periode (`van`/`tot`, als `[maand, helft]`),
 een prioriteit (1 = blikvanger, 2 = mooi, 3 = voor de fijnproever) en de bron.
-De volgende ochtend rekent de workflow ermee.
+Een entry kan ook `"pauze_tot": "JJJJ-MM-DD"` hebben: tot en met die datum
+wordt hij overgeslagen (zo werkt de *Uitgebloeid*-knop).
+
+Na elke aanpassing aan de kalender draait de workflow automatisch en staat de
+nieuwe versie binnen een minuut op het plaatje.
 
 Lokaal testen kan ook:
 

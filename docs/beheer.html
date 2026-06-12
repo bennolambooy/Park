@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Bloeikalender bijwerken · het Park</title>
+<style>
+  @font-face { font-family: "Walsheim"; font-weight: 400; font-display: swap;
+    src: url("https://hetparkinrotterdam.nl/assets/css/fonts/GTWalsheim-Md.ttf") format("truetype"); }
+  @font-face { font-family: "Walsheim"; font-weight: 700; font-display: swap;
+    src: url("https://hetparkinrotterdam.nl/assets/css/fonts/GTWalsheim-Bd.ttf") format("truetype"); }
+  * { box-sizing: border-box; }
+  body { font-family: "Walsheim", Arial, sans-serif; color: #1d1d1b; background: #fff;
+         max-width: 640px; margin: 0 auto; padding: 24px 16px 110px; line-height: 1.5; }
+  h1 { color: #00752e; font-size: 24px; margin: 0 0 4px; }
+  .sub { color: #777; font-size: 14px; margin: 0 0 8px; }
+  h2 { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: #00752e;
+       border: 1.5px solid #00752e; border-radius: 999px; display: inline-block;
+       padding: 4px 14px; margin: 26px 0 8px; font-weight: 700; }
+  .kaart { border: 1px solid #e3e3dc; border-radius: 12px; padding: 12px 14px; margin: 8px 0;
+           display: flex; gap: 10px; align-items: center; }
+  .kaart .info { flex: 1; min-width: 0; }
+  .naam { font-weight: 700; overflow-wrap: anywhere; }
+  .periode { color: #777; font-size: 13px; }
+  .badge { display: inline-block; font-size: 12px; color: #ca7b00; border: 1px solid #ca7b00;
+           border-radius: 999px; padding: 1px 9px; margin-top: 4px; }
+  .vandaag { display: inline-block; font-size: 12px; color: #fff; background: #00752e;
+             border-radius: 999px; padding: 2px 9px; margin-top: 4px; }
+  .knopje { border: 1.5px solid #00752e; color: #00752e; background: #fff; border-radius: 999px;
+            padding: 9px 14px; font: inherit; font-size: 14px; cursor: pointer; white-space: nowrap; }
+  .knopje:active { transform: scale(.97); }
+  .knopje.rood { border-color: #db0014; color: #db0014; }
+  .knopje.dicht { background: #00752e; color: #fff; }
+  input, select { font: inherit; font-size: 16px; padding: 9px 10px; border: 1px solid #c9c9c0;
+                  border-radius: 8px; width: 100%; background: #fff; }
+  label { font-size: 14px; color: #555; display: block; margin-top: 8px; }
+  details.lijst { margin-top: 10px; }
+  details.lijst > summary { cursor: pointer; color: #00752e; font-weight: 700; padding: 6px 0; }
+  .rij { border-bottom: 1px solid #eee; padding: 8px 0; }
+  .rij summary { cursor: pointer; display: flex; gap: 8px; justify-content: space-between; font-size: 14px; }
+  .rij .periode { white-space: nowrap; }
+  .bewerk { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 0 4px; }
+  .bewerk .breed { grid-column: 1 / -1; }
+  #melding { position: sticky; top: 8px; z-index: 5; background: #eaf5ee; border: 1px solid #00752e;
+             color: #00752e; border-radius: 10px; padding: 10px 14px; margin: 0 0 12px; display: none; }
+  #balk { position: fixed; left: 0; right: 0; bottom: 0; background: #fff;
+          border-top: 1px solid #e3e3dc; padding: 12px 16px; display: none; }
+  #balk .binnen { max-width: 640px; margin: 0 auto; display: flex; gap: 12px; align-items: center;
+                  justify-content: space-between; }
+  #sleutelkaart { flex-direction: column; align-items: stretch; border-color: #ca7b00; }
+  .klein { font-size: 13px; color: #888; }
+  a { color: #00752e; }
+</style>
+</head>
+<body>
+<h1>Bloeikalender van het Park</h1>
+<p class="sub">Voor de hoveniers en vrijwilligers · wat je hier aanpast staat binnen een minuut
+in de <a href="./">e-mailhandtekening</a>.</p>
+<div id="melding"></div>
+
+<div class="kaart" id="sleutelkaart" hidden>
+  <div class="naam">🔑 Sleutel nodig om op te slaan</div>
+  <p class="periode" id="sleuteluitleg" style="margin:4px 0 0">Vraag de sleutel aan de beheerder en
+  plak hem hieronder. Dit hoeft maar één keer op dit apparaat.</p>
+  <input id="sleutelveld" placeholder="github_pat_…" autocomplete="off">
+  <button class="knopje dicht" style="margin-top:8px" onclick="bewaarSleutel()">Bewaren en opslaan</button>
+</div>
+
+<h2>Nu in bloei volgens de kalender</h2>
+<p class="klein" style="margin:0">Klopt iets niet (meer)? Tik op <strong>Uitgebloeid</strong> —
+dan verdwijnt het voor de rest van dit seizoen en komt het volgend jaar vanzelf terug.</p>
+<div id="actief"></div>
+
+<h2>Binnenkort verwacht</h2>
+<div id="binnenkort"></div>
+
+<h2>Zelf iets zien bloeien?</h2>
+<div class="kaart" style="flex-direction:column;align-items:stretch">
+  <input id="nieuwtekst" maxlength="70" placeholder="bijv. de rododendrons bij de heuvel kleuren paars">
+  <label>Bloeit ongeveer tot <select id="nieuwtot"></select></label>
+  <label>Hoe opvallend? <select id="nieuwprio">
+    <option value="1">blikvanger — niet te missen</option>
+    <option value="2" selected>mooi</option>
+    <option value="3">voor de fijnproever</option>
+  </select></label>
+  <button class="knopje dicht" style="margin-top:10px" onclick="voegToe()">Toevoegen aan de kalender</button>
+</div>
+
+<details class="lijst">
+  <summary>Volledige kalender (alles bekijken en bewerken)</summary>
+  <div id="alles"></div>
+</details>
+
+<div id="balk"><div class="binnen">
+  <span id="telling"></span>
+  <button class="knopje dicht" onclick="opslaan()">Wijzigingen opslaan</button>
+</div></div>
+
+<script>
+const REPO = 'bennolambooy/Park', PAD = 'data/bloeikalender.json';
+const MAANDEN = ['januari','februari','maart','april','mei','juni','juli',
+                 'augustus','september','oktober','november','december'];
+let data = null, sha = null, dirty = 0;
+
+const idxVan = (m, h) => (m - 1) * 2 + (h - 1);
+const vanIdx = i => [Math.floor(i / 2) + 1, i % 2 + 1];
+const labelVan = i => (i % 2 ? 'eind ' : 'begin ') + MAANDEN[Math.floor(i / 2)];
+function huidigeIdx() { const n = new Date(); return idxVan(n.getMonth() + 1, n.getDate() <= 15 ? 1 : 2); }
+function isActief(e, idx) {
+  const v = idxVan(...e.van), t = idxVan(...e.tot);
+  return v <= t ? (idx >= v && idx <= t) : (idx >= v || idx <= t);
+}
+const isoVandaag = () => { const n = new Date(); return n.getFullYear() + '-' +
+  String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'); };
+const isGepauzeerd = e => e.pauze_tot && e.pauze_tot >= isoVandaag();
+const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const periodeTekst = e => labelVan(idxVan(...e.van)) + ' t/m ' + labelVan(idxVan(...e.tot));
+
+function dagVanJaar() { const n = new Date(); return Math.floor((n - new Date(n.getFullYear(), 0, 0)) / 864e5); }
+function keuzeVandaag(actieven) {
+  const pool = actieven.filter(e => e.prio <= 2);
+  const p = (pool.length ? pool : actieven).slice()
+    .sort((a, b) => a.prio - b.prio || (a.tekst < b.tekst ? -1 : 1));
+  return p.length ? p[dagVanJaar() % p.length] : null;
+}
+
+function eindDatum([m, h]) {
+  const nu = new Date(); let jaar = nu.getFullYear();
+  if (idxVan(m, h) < huidigeIdx()) jaar++;
+  const dag = h === 1 ? 15 : new Date(jaar, m, 0).getDate();
+  return jaar + '-' + String(m).padStart(2, '0') + '-' + String(dag).padStart(2, '0');
+}
+
+// ---- acties ----
+function uitgebloeid(i) { data.entries[i].pauze_tot = eindDatum(data.entries[i].tot); wijzig(); }
+function tochBloei(i)   { delete data.entries[i].pauze_tot; wijzig(); }
+function bloeitAl(i)    { data.entries[i].van = vanIdx(huidigeIdx()); delete data.entries[i].pauze_tot; wijzig(); }
+function verwijder(i)   { if (confirm('Deze regel definitief uit de kalender halen?')) { data.entries.splice(i, 1); wijzig(); } }
+function pasAan(i, veld, w) {
+  const e = data.entries[i];
+  if (veld === 'tekst') { if (!w.trim()) return; e.tekst = w.trim(); }
+  else if (veld === 'prio') e.prio = +w;
+  else e[veld] = vanIdx(+w);
+  wijzig();
+}
+function voegToe() {
+  const t = document.getElementById('nieuwtekst').value.trim();
+  if (!t) { melding('Vul eerst in wat er bloeit.'); return; }
+  data.entries.push({ tekst: t, van: vanIdx(huidigeIdx()),
+    tot: vanIdx(+document.getElementById('nieuwtot').value),
+    prio: +document.getElementById('nieuwprio').value,
+    bron: 'gemeld via beheerpagina, ' + isoVandaag() });
+  document.getElementById('nieuwtekst').value = '';
+  wijzig();
+}
+function wijzig() { dirty++; render(); }
+
+// ---- weergave ----
+function kaart(e, i, knoppen, extra) {
+  return '<div class="kaart"><div class="info"><div class="naam">' + esc(e.tekst) + '</div>' +
+    '<div class="periode">' + periodeTekst(e) + '</div>' + (extra || '') + '</div>' + knoppen + '</div>';
+}
+function render() {
+  const idx = huidigeIdx();
+  const act = [], pauze = [], straks = [];
+  data.entries.forEach((e, i) => {
+    if (isActief(e, idx)) (isGepauzeerd(e) ? pauze : act).push(i);
+    else { const afstand = (idxVan(...e.van) - idx + 24) % 24; if (afstand >= 1 && afstand <= 2) straks.push(i); }
+  });
+  const vandaag = keuzeVandaag(act.map(i => data.entries[i]));
+  document.getElementById('actief').innerHTML =
+    act.map(i => kaart(data.entries[i], i,
+      '<button class="knopje rood" onclick="uitgebloeid(' + i + ')">Uitgebloeid</button>',
+      data.entries[i] === vandaag ? '<span class="vandaag">vandaag op de handtekening</span>' : ''
+    )).join('') +
+    pauze.map(i => kaart(data.entries[i], i,
+      '<button class="knopje" onclick="tochBloei(' + i + ')">Bloeit toch</button>',
+      '<span class="badge">uitgebloeid gemeld t/m ' + data.entries[i].pauze_tot + '</span>'
+    )).join('') || '<p class="klein">Niets actief in deze periode.</p>';
+  document.getElementById('binnenkort').innerHTML =
+    straks.map(i => kaart(data.entries[i], i,
+      '<button class="knopje" onclick="bloeitAl(' + i + ')">Bloeit nu al</button>'
+    )).join('') || '<p class="klein">Niets gepland voor de komende maand.</p>';
+  const opties = n => Array.from({length: 24}, (_, k) =>
+    '<option value="' + k + '"' + (k === n ? ' selected' : '') + '>' + labelVan(k) + '</option>').join('');
+  document.getElementById('alles').innerHTML = data.entries.map((e, i) =>
+    '<details class="rij"><summary><span>' + esc(e.tekst) + '</span>' +
+    '<span class="periode">' + periodeTekst(e) + '</span></summary><div class="bewerk">' +
+    '<input class="breed" value="' + esc(e.tekst) + '" maxlength="70" onchange="pasAan(' + i + ',\'tekst\',this.value)">' +
+    '<label>van <select onchange="pasAan(' + i + ',\'van\',this.value)">' + opties(idxVan(...e.van)) + '</select></label>' +
+    '<label>tot <select onchange="pasAan(' + i + ',\'tot\',this.value)">' + opties(idxVan(...e.tot)) + '</select></label>' +
+    '<label>opvallendheid <select onchange="pasAan(' + i + ',\'prio\',this.value)">' +
+      [1, 2, 3].map(p => '<option value="' + p + '"' + (p === e.prio ? ' selected' : '') + '>' +
+        ['blikvanger', 'mooi', 'fijnproever'][p - 1] + '</option>').join('') + '</select></label>' +
+    '<button class="knopje rood" style="align-self:end" onclick="verwijder(' + i + ')">Verwijderen</button>' +
+    '</div></details>').join('');
+  document.getElementById('balk').style.display = dirty ? 'block' : 'none';
+  document.getElementById('telling').textContent = dirty + ' wijziging' + (dirty === 1 ? '' : 'en');
+}
+function melding(t, kort) {
+  const m = document.getElementById('melding');
+  m.textContent = t; m.style.display = 'block';
+  if (kort) setTimeout(() => m.style.display = 'none', 6000);
+}
+
+// ---- GitHub ----
+const hdrs = () => { const t = localStorage.getItem('parksleutel');
+  const h = { Accept: 'application/vnd.github+json' };
+  if (t) h.Authorization = 'Bearer ' + t; return h; };
+const b64NaarUtf8 = b => new TextDecoder().decode(Uint8Array.from(atob(b.replace(/\n/g, '')), c => c.charCodeAt(0)));
+function utf8NaarB64(s) { const b = new TextEncoder().encode(s);
+  let r = ''; b.forEach(x => r += String.fromCharCode(x)); return btoa(r); }
+function serialiseer(d) {
+  const kop = d._uitleg ? '  "_uitleg": ' + JSON.stringify(d._uitleg) + ',\n' : '';
+  return '{\n' + kop + '  "entries": [\n' +
+    d.entries.map(e => '    ' + JSON.stringify(e)).join(',\n') + '\n  ]\n}\n';
+}
+async function laad() {
+  try {
+    const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + PAD + '?ref=main',
+      { headers: hdrs(), cache: 'no-store' });
+    if (!r.ok) throw new Error(r.status);
+    const j = await r.json();
+    sha = j.sha; data = JSON.parse(b64NaarUtf8(j.content)); dirty = 0;
+    render();
+  } catch (e) { melding('Kalender laden mislukte (' + e.message + '). Ververs de pagina.'); }
+}
+function toonSleutel(uitleg) {
+  const k = document.getElementById('sleutelkaart'); k.hidden = false;
+  if (uitleg) document.getElementById('sleuteluitleg').textContent = uitleg;
+  k.scrollIntoView({ behavior: 'smooth' });
+}
+function bewaarSleutel() {
+  const t = document.getElementById('sleutelveld').value.trim();
+  if (!t) return;
+  localStorage.setItem('parksleutel', t);
+  document.getElementById('sleutelkaart').hidden = true;
+  opslaan();
+}
+async function opslaan() {
+  if (!localStorage.getItem('parksleutel')) { toonSleutel(); return; }
+  data.entries.forEach(e => { if (e.pauze_tot && e.pauze_tot < isoVandaag()) delete e.pauze_tot; });
+  const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + PAD, {
+    method: 'PUT', headers: { ...hdrs(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Bloeikalender bijgewerkt via beheerpagina',
+      content: utf8NaarB64(serialiseer(data)), sha })
+  });
+  if (r.status === 401 || r.status === 403) {
+    localStorage.removeItem('parksleutel');
+    toonSleutel('Deze sleutel werkt niet (meer). Vraag een nieuwe aan de beheerder.'); return;
+  }
+  if (r.status === 409) { melding('Iemand anders sloeg net iets op. De pagina laadt de nieuwste versie — doe je wijziging daarna opnieuw.'); await laad(); return; }
+  if (!r.ok) { melding('Opslaan mislukte (' + r.status + '). Probeer het over een minuutje nog eens.'); return; }
+  sha = (await r.json()).content.sha; dirty = 0; render();
+  melding('Opgeslagen! Binnen een minuut staat dit in de handtekening. 🌿', true);
+}
+
+// dropdown "bloeit tot": komende 12 halfmaanden, standaard ± een maand vooruit
+document.getElementById('nieuwtot').innerHTML = Array.from({length: 12}, (_, k) => {
+  const i = (huidigeIdx() + k) % 24;
+  return '<option value="' + i + '"' + (k === 2 ? ' selected' : '') + '>' + labelVan(i) + '</option>';
+}).join('');
+laad();
+</script>
+</body>
+</html>
