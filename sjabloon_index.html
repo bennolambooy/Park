@@ -6,90 +6,126 @@
 <meta name="robots" content="noindex">
 <title>E-mailhandtekening · het Park</title>
 <style>
-  /* huisstijl hetparkinrotterdam.nl: Roslindale + GT Walsheim, parkgroen #00752e */
-  @font-face { font-family: "Roslindale"; font-weight: normal; font-display: swap;
-    src: url("https://hetparkinrotterdam.nl/assets/css/fonts/RoslindaleText-Regular.ttf") format("truetype"); }
-  @font-face { font-family: "Roslindale"; font-weight: bold; font-display: swap;
-    src: url("https://hetparkinrotterdam.nl/assets/css/fonts/RoslindaleText-Bold.ttf") format("truetype"); }
   @font-face { font-family: "Walsheim"; font-weight: 400; font-display: swap;
     src: url("https://hetparkinrotterdam.nl/assets/css/fonts/GTWalsheim-Md.ttf") format("truetype"); }
-  body { font-family: "Roslindale", Georgia, serif; color: #1d1d1b;
-         max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; line-height: 1.6; }
-  h1 { color: #00752e; font-size: 28px; margin-bottom: 4px; }
-  h2 { color: #00752e; font-size: 19px; margin-top: 36px; }
-  a { color: #00752e; }
-  .sub { color: #777; margin-top: 0; font-family: "Walsheim", Arial, sans-serif; font-size: 14px; }
-  .kader { border: 1px solid #e3e3dc; border-radius: 10px; padding: 20px; margin: 20px 0; background: #fff; }
-  .knop { background: #00752e; color: #fff; border: 0; border-radius: 10px; padding: 12px 24px;
-          font-size: 15px; cursor: pointer; font-family: "Walsheim", Arial, sans-serif; }
+  @font-face { font-family: "Walsheim"; font-weight: 700; font-display: swap;
+    src: url("https://hetparkinrotterdam.nl/assets/css/fonts/GTWalsheim-Bd.ttf") format("truetype"); }
+  * { box-sizing: border-box; }
+  body { font-family: "Walsheim", Arial, sans-serif; color: #1d1d1b; background: #fff;
+         max-width: 760px; margin: 0 auto; padding: 28px 18px 64px; line-height: 1.55; }
+  h1 { color: #00752e; font-size: 26px; margin: 0 0 4px; }
+  .sub { color: #777; font-size: 14px; margin: 0 0 18px; }
+  h2 { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: #00752e;
+       border: 1.5px solid #00752e; border-radius: 999px; display: inline-block;
+       padding: 4px 14px; margin: 30px 0 8px; font-weight: 700; }
+  .kader { border: 1px solid #e3e3dc; border-radius: 12px; padding: 18px; background: #fff; }
+  .knop { background: #00752e; color: #fff; border: 0; border-radius: 10px; padding: 12px 22px;
+          font: inherit; font-size: 15px; cursor: pointer; }
   .knop:hover { background: #1d9e51; }
-  .knop:active { transform: scale(0.98); }
-  #status { margin-left: 12px; color: #00752e; font-family: "Walsheim", Arial, sans-serif; font-size: 14px; }
-  ol li { margin-bottom: 8px; }
-  code { background: #f0f0ea; padding: 2px 6px; border-radius: 4px; font-size: 13px;
-         font-family: "Walsheim", Arial, sans-serif; }
-  .voorbeeld td { padding: 0; }
+  .knopje { border: 1.5px solid #00752e; color: #00752e; background: #fff; border-radius: 999px;
+            padding: 6px 13px; font: inherit; font-size: 13px; cursor: pointer; white-space: nowrap; }
+  .knopje:active, .knop:active { transform: scale(.97); }
+  #status { margin-left: 10px; color: #00752e; font-size: 14px; }
+  .chip { display: inline-block; font-size: 12px; color: #fff; background: #00752e;
+          border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th { text-align: left; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+       color: #00752e; padding: 8px 10px; border-bottom: 1.5px solid #00752e; }
+  td { padding: 9px 10px; border-bottom: 1px solid #eee; vertical-align: middle; }
+  tr.actief td { background: #eaf5ee; }
+  .scroll { overflow-x: auto; }
+  .klein { font-size: 13px; color: #888; }
+  a { color: #00752e; }
+  input[type=date] { font: inherit; font-size: 14px; padding: 7px 9px;
+                     border: 1px solid #c9c9c0; border-radius: 8px; background: #fff; }
+  input[type=text], input:not([type]) { font: inherit; font-size: 16px; padding: 9px 10px;
+                     border: 1px solid #c9c9c0; border-radius: 8px; width: 100%; background: #fff; }
+  details { margin-top: 12px; }
+  details summary { cursor: pointer; color: #00752e; font-size: 14px; }
+  ol li { margin-bottom: 6px; font-size: 14px; }
+  #melding { background: #eaf5ee; border: 1px solid #00752e; color: #00752e;
+             border-radius: 10px; padding: 10px 14px; margin: 0 0 14px; display: none; }
+  #sleutelkaart { border-color: #ca7b00; margin-bottom: 14px; }
   img.handtekening { display: block; border: 0; max-width: 100%; }
-  .klein { font-size: 13px; color: #888; font-family: "Walsheim", Arial, sans-serif; }
 </style>
 </head>
 <body>
 <h1>E-mailhandtekening van het Park</h1>
 <p class="sub">Ververst zichzelf elke ochtend · laatst bijgewerkt op {{DATUM}}</p>
+<div id="melding"></div>
 
-<p>Dit blokje onder je e-mailhandtekening laat zien wat er nú bloeit in het Park
-en wat het eerstvolgende evenement is. Je stelt het één keer in; daarna wordt het
-elke dag automatisch ververst.</p>
-
-<div class="kader">
-  <p style="margin-top:0"><strong>Zo ziet het er vandaag uit:</strong></p>
-  <div id="blok">
-    <table cellpadding="0" cellspacing="0" border="0" class="voorbeeld"><tr><td>
-      <a href="https://hetparkinrotterdam.nl/agenda" target="_blank" style="text-decoration:none">
-        <img class="handtekening" id="plaatje" src="handtekening.png" width="560"
-             alt="Wat bloeit en gebeurt er nu in het Park? Kijk op hetparkinrotterdam.nl">
-      </a>
-    </td></tr></table>
-  </div>
-  <p style="margin-bottom:0">
-    <button class="knop" id="kopieer">Kopieer de handtekening</button><span id="status"></span>
-    <a class="knop" href="https://github.com/bennolambooy/Park/actions/workflows/ververs.yml"
-       target="_blank" style="display:inline-block;margin-left:10px;text-decoration:none;font-size:13px;padding:12px 16px;background:#eee;color:#333;border-radius:10px">Ververs nu ↗</a>
-  </p>
+<div class="kader" id="sleutelkaart" hidden>
+  <strong>🔑 Wachtwoord nodig</strong>
+  <p class="klein" id="sleuteluitleg" style="margin:4px 0 8px">Vraag het wachtwoord aan de beheerder
+  en typ het hieronder. Dit hoeft maar één keer op dit apparaat.</p>
+  <input id="sleutelveld" placeholder="wachtwoord" autocomplete="off">
+  <p style="margin:10px 0 0"><button class="knop" onclick="bewaarSleutel()">Bewaren</button></p>
 </div>
 
-<h2>Instellen in Outlook (webmail of nieuwe Outlook)</h2>
-<ol>
-  <li>Klik hierboven op <strong>Kopieer de handtekening</strong>.</li>
-  <li>Open Outlook en ga naar <strong>Instellingen</strong> (tandwiel) →
-      <strong>E-mail</strong> → <strong>Opstellen en beantwoorden</strong>.</li>
-  <li>Klik in het handtekeningvak, zet de cursor <em>onder</em> je naam en
-      plak (<code>Cmd/Ctrl+V</code>).</li>
-  <li>Klik op <strong>Opslaan</strong>. Klaar — het blokje ververst voortaan zichzelf.</li>
-</ol>
+<div class="kader">
+  <table cellpadding="0" cellspacing="0" border="0"><tr><td>
+    <a href="https://hetparkinrotterdam.nl/agenda" target="_blank" style="text-decoration:none">
+      <img class="handtekening" id="plaatje" src="handtekening.png" width="560"
+           alt="Wat bloeit en gebeurt er nu in het Park? Kijk op hetparkinrotterdam.nl">
+    </a>
+  </td></tr></table>
+  <p style="margin:14px 0 0">
+    <button class="knop" id="kopieer">Kopieer de handtekening</button><span id="status"></span>
+  </p>
+  <details>
+    <summary>Zo zet je hem in je e-mail (Outlook)</summary>
+    <ol>
+      <li>Klik op <strong>Kopieer de handtekening</strong>.</li>
+      <li>Outlook → <strong>Instellingen</strong> (tandwiel) → <strong>E-mail</strong> →
+          <strong>Opstellen en beantwoorden</strong> (klassiek Outlook: Bestand → Opties →
+          E-mail → Handtekeningen).</li>
+      <li>Zet de cursor <em>onder</em> je naam, plak, en sla op.</li>
+    </ol>
+    <p class="klein">Het blokje is een afbeelding op een vast webadres — geen bijlage. Het ververst
+    voortaan zichzelf; je hoeft nooit meer iets te doen. Een klik erop opent de agenda van het Park.</p>
+  </details>
+</div>
 
-<h2>Instellen in klassiek Outlook (Windows/Mac)</h2>
-<ol>
-  <li>Klik hierboven op <strong>Kopieer de handtekening</strong>.</li>
-  <li>Ga naar <strong>Bestand</strong> → <strong>Opties</strong> → <strong>E-mail</strong> →
-      <strong>Handtekeningen</strong> (Mac: <strong>Outlook</strong> → <strong>Instellingen</strong> →
-      <strong>Handtekeningen</strong>).</li>
-  <li>Plak het blokje onder je naam en sla op.</li>
-</ol>
+<h2>In de agenda</h2>
+<p class="klein" style="margin:0 0 6px">De handtekening laat vanzelf het eerstvolgende evenement zien.
+Is een ander evenement belangrijker? <strong>Zet het vast</strong> — zodra het geweest is, springt de
+handtekening vanzelf terug naar het eerstvolgende.</p>
+<div class="scroll"><table id="agendatabel">
+  <thead><tr><th>Evenement</th><th>Wanneer</th><th></th></tr></thead>
+  <tbody></tbody>
+</table></div>
 
-<h2>Goed om te weten</h2>
-<ul>
-  <li>Het blokje is een afbeelding die op een vast webadres staat — géén bijlage.
-      Elke ochtend wordt de inhoud vernieuwd.</li>
-  <li>Een klik op het blokje opent de agenda van het Park.</li>
-  <li>Blokkeert een ontvanger afbeeldingen? Dan ziet die een korte tekst met verwijzing
-      naar de website.</li>
-  <li>Tekstversie nodig? Zie <a href="handtekening.txt">handtekening.txt</a>.</li>
-</ul>
-<p class="klein">Vandaag: "Nu in bloei: {{BLOEI}}" en "In de agenda: {{EVENT}}".<br>
-Hovenier of vrijwilliger? <a href="beheer.html">Werk hier de bloeikalender bij</a>.</p>
+<h2>In bloei</h2>
+<p class="klein" style="margin:0 0 6px">Wat er volgens de bloeikalender te zien is.
+De handtekening wisselt elke dag tussen de blikvangers en mooie regels van dat moment.</p>
+<p style="margin:0 0 8px">
+  <input type="date" id="peildatum" onchange="toonBloei()">
+  <button class="knopje" onclick="zetNu()">Nu</button>
+</p>
+<div class="scroll"><table id="bloeitabel">
+  <thead><tr><th>Wat</th><th>Van</th><th>Tot</th><th></th></tr></thead>
+  <tbody></tbody>
+</table></div>
+<p class="klein">Klopt er iets niet, of bloeit er iets nieuws? Hoveniers werken de kalender bij op de
+<a href="beheer.html">beheerpagina</a>.</p>
+
+<p class="klein" style="margin-top:28px">Vandaag: "Nu in bloei: {{BLOEI}}" en "In de agenda: {{EVENT}}".
+· <a href="handtekening.txt">tekstversie</a></p>
 
 <script>
+const REPO = 'bennolambooy/Park';
+const MAANDEN = ['januari','februari','maart','april','mei','juni','juli',
+                 'augustus','september','oktober','november','december'];
+const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isoVan = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') +
+  '-' + String(d.getDate()).padStart(2, '0');
+function melding(t) {
+  const m = document.getElementById('melding');
+  m.textContent = t; m.style.display = 'block';
+  setTimeout(() => m.style.display = 'none', 7000);
+}
+
+// ---- handtekening kopiëren ----
 document.getElementById('kopieer').addEventListener('click', async () => {
   const status = document.getElementById('status');
   const url = new URL('handtekening.png', location.href).href;
@@ -105,16 +141,141 @@ document.getElementById('kopieer').addEventListener('click', async () => {
       'text/plain': new Blob([tekst], {type: 'text/plain'})
     })]);
     status.textContent = 'Gekopieerd! Plak ’m nu in je handtekening.';
-  } catch (e) {
-    const sel = window.getSelection(), range = document.createRange();
-    range.selectNodeContents(document.getElementById('blok'));
-    sel.removeAllRanges(); sel.addRange(range);
-    document.execCommand('copy'); sel.removeAllRanges();
-    status.textContent = 'Gekopieerd!';
-  }
+  } catch (e) { status.textContent = 'Kopiëren lukte niet — selecteer het plaatje en kopieer handmatig.'; }
 });
-const p = document.getElementById('plaatje');
-p.src = 'handtekening.png?' + Date.now();
+document.getElementById('plaatje').src = 'handtekening.png?' + Date.now();
+
+// ---- wachtwoord / sleutel (zelfde mechanisme als de beheerpagina) ----
+const GEHEIM = {"zout":"H3xEFevyoNgqHYs9gvv/QA==","iv":"p1AdIkV9tMHpNvqN","blob":"2gCC7/aeM90Jakq4U/owvXNORCIaqdW7SCvskTFhpZcE555UORAR/NBeMtOt1rsr3ro2SNASblPiKJY0nlk6o38vTFmT2MTtGbHrbn1ZAt7qn/0v4CoT3rS9/YCQqdi7IigjEVQ00XgoA3nb/g=="};
+async function ontgrendel(ww) {
+  try {
+    const b = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+    const basis = await crypto.subtle.importKey('raw', new TextEncoder().encode(ww),
+      'PBKDF2', false, ['deriveKey']);
+    const sleutel = await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt: b(GEHEIM.zout), iterations: 300000, hash: 'SHA-256' },
+      basis, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    return new TextDecoder().decode(
+      await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b(GEHEIM.iv) }, sleutel, b(GEHEIM.blob)));
+  } catch (e) { return null; }
+}
+let naOntgrendelen = null;
+function toonSleutel(uitleg) {
+  const k = document.getElementById('sleutelkaart'); k.hidden = false;
+  if (uitleg) document.getElementById('sleuteluitleg').textContent = uitleg;
+  k.scrollIntoView({ behavior: 'smooth' });
+}
+async function bewaarSleutel() {
+  const w = document.getElementById('sleutelveld').value.trim();
+  if (!w) return;
+  const t = (w.startsWith('github_pat_') || w.startsWith('ghp_')) ? w : await ontgrendel(w);
+  if (!t) {
+    document.getElementById('sleuteluitleg').textContent =
+      'Dat wachtwoord klopt niet — let op de hoofdletter en probeer het nog eens.';
+    return;
+  }
+  localStorage.setItem('parksleutel', t);
+  document.getElementById('sleutelkaart').hidden = true;
+  if (naOntgrendelen) { const f = naOntgrendelen; naOntgrendelen = null; f(); }
+}
+const hdrs = () => { const t = localStorage.getItem('parksleutel');
+  const h = { Accept: 'application/vnd.github+json' };
+  if (t) h.Authorization = 'Bearer ' + t; return h; };
+
+// ---- agenda met vastzetten ----
+let agenda = null;
+async function laadAgenda() {
+  try {
+    const r = await fetch('agenda.json?' + Date.now());
+    if (!r.ok) throw new Error(r.status);
+    agenda = await r.json();
+    toonAgenda();
+  } catch (e) {
+    document.querySelector('#agendatabel tbody').innerHTML =
+      '<tr><td colspan="3" class="klein">Agenda kon niet geladen worden — kijk op ' +
+      '<a href="https://hetparkinrotterdam.nl/agenda">de website</a>.</td></tr>';
+  }
+}
+function toonAgenda() {
+  const vast = agenda.vastgezet_titel || '';
+  const heeftVast = vast && agenda.events.some(ev => ev.titel === vast);
+  document.querySelector('#agendatabel tbody').innerHTML = agenda.events.map((ev, k) => {
+    const inHandtekening = heeftVast ? ev.titel === vast : k === 0;
+    const wanneer = ev.tekst.includes(' · ') ? ev.tekst.split(' · ').slice(1).join(' · ') : ev.tekst;
+    let actie;
+    if (inHandtekening && heeftVast)
+      actie = '<span class="chip">vastgezet</span> <button class="knopje" onclick="zetVast(\'\')">laat los</button>';
+    else if (inHandtekening)
+      actie = '<span class="chip">nu in de handtekening</span>';
+    else
+      actie = '<button class="knopje" onclick="zetVast(' + JSON.stringify(ev.titel).replace(/"/g, '&quot;') + ')">Zet vast</button>';
+    return '<tr' + (inHandtekening ? ' class="actief"' : '') + '><td><strong>' + esc(ev.titel) +
+      '</strong></td><td>' + esc(wanneer) + '</td><td style="text-align:right">' + actie + '</td></tr>';
+  }).join('') || '<tr><td colspan="3" class="klein">Geen evenementen gevonden.</td></tr>';
+}
+async function zetVast(titel) {
+  if (!localStorage.getItem('parksleutel')) { naOntgrendelen = () => zetVast(titel); toonSleutel(); return; }
+  try {
+    const url = 'https://api.github.com/repos/' + REPO + '/contents/data/instellingen.json';
+    const g = await fetch(url + '?ref=main', { headers: hdrs(), cache: 'no-store' });
+    if (!g.ok) throw new Error(g.status);
+    const sha = (await g.json()).sha;
+    const inhoud = JSON.stringify({ vastgezet_titel: titel }) + '\n';
+    const r = await fetch(url, { method: 'PUT',
+      headers: { ...hdrs(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: titel ? 'Agenda: "' + titel + '" vastgezet' : 'Agenda: vastzetten losgelaten',
+        content: btoa(unescape(encodeURIComponent(inhoud))), sha }) });
+    if (r.status === 401 || r.status === 403) {
+      localStorage.removeItem('parksleutel');
+      naOntgrendelen = () => zetVast(titel);
+      toonSleutel('Het opgeslagen wachtwoord werkt niet meer. Typ het opnieuw.');
+      return;
+    }
+    if (!r.ok) throw new Error(r.status);
+    agenda.vastgezet_titel = titel;
+    toonAgenda();
+    melding(titel ? 'Vastgezet! Binnen een minuut staat het in de handtekening. 🌿'
+                  : 'Losgelaten — de handtekening laat weer het eerstvolgende evenement zien.');
+  } catch (e) { melding('Opslaan lukte niet (' + e.message + '). Probeer het zo nog eens.'); }
+}
+
+// ---- bloeitabel ----
+const idxVan = (m, h) => (m - 1) * 2 + (h - 1);
+const labelVan = i => (i % 2 ? 'eind ' : 'begin ') + MAANDEN[Math.floor(i / 2)];
+function isActief(e, idx) {
+  const v = idxVan(...e.van), t = idxVan(...e.tot);
+  return v <= t ? (idx >= v && idx <= t) : (idx >= v || idx <= t);
+}
+let bloei = null;
+async function laadBloei() {
+  try {
+    const r = await fetch('bloei.json?' + Date.now());
+    if (!r.ok) throw new Error(r.status);
+    bloei = await r.json();
+    toonBloei();
+  } catch (e) {
+    document.querySelector('#bloeitabel tbody').innerHTML =
+      '<tr><td colspan="4" class="klein">Bloeikalender kon niet geladen worden.</td></tr>';
+  }
+}
+function toonBloei() {
+  if (!bloei) return;
+  const v = document.getElementById('peildatum').value || isoVan(new Date());
+  const d = new Date(v + 'T12:00:00');
+  const idx = idxVan(d.getMonth() + 1, d.getDate() <= 15 ? 1 : 2);
+  const woord = { 1: 'blikvanger', 2: 'mooi', 3: 'voor de fijnproever' };
+  const rijen = bloei.entries
+    .filter(e => isActief(e, idx) && !(e.pauze_tot && e.pauze_tot >= v))
+    .sort((a, b) => a.prio - b.prio || (a.tekst < b.tekst ? -1 : 1))
+    .map(e => '<tr><td>' + esc(e.tekst) + '</td><td>' + labelVan(idxVan(...e.van)) +
+      '</td><td>' + labelVan(idxVan(...e.tot)) + '</td><td class="klein">' + woord[e.prio] + '</td></tr>');
+  document.querySelector('#bloeitabel tbody').innerHTML =
+    rijen.join('') || '<tr><td colspan="4" class="klein">Niets actief op deze datum.</td></tr>';
+}
+function zetNu() { document.getElementById('peildatum').value = isoVan(new Date()); toonBloei(); }
+
+document.getElementById('peildatum').value = isoVan(new Date());
+laadAgenda(); laadBloei();
 </script>
 </body>
 </html>

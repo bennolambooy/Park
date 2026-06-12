@@ -153,13 +153,39 @@ def formatteer_event(ev):
     return f"{ev['titel']} · {wanneer}"
 
 
-def kies_event(dag):
-    """Geeft (tekst, datum) terug; de datum bepaalt de seizoenskleur van de regel."""
+def lees_instellingen():
+    """data/instellingen.json: { "vastgezet_titel": "..." } — gezet via de kopieerpagina."""
     try:
-        events = parse_events(haal_agenda(), dag)
-        for ev in events:
-            if ev["eind"] >= dag:
-                return formatteer_event(ev), ev["start"]
+        return json.loads((BASIS / "data" / "instellingen.json").read_text())
+    except Exception:
+        return {}
+
+
+def schrijf_agenda(events, dag):
+    """docs/agenda.json: de geparste agenda, zodat de kopieerpagina hem kan tonen."""
+    DOCS.mkdir(exist_ok=True)
+    data = {"bijgewerkt": dag.isoformat(),
+            "vastgezet_titel": lees_instellingen().get("vastgezet_titel", ""),
+            "events": [{"titel": ev["titel"], "start": ev["start"].isoformat(),
+                        "eind": ev["eind"].isoformat(), "tekst": formatteer_event(ev)}
+                       for ev in events]}
+    (DOCS / "agenda.json").write_text(json.dumps(data, ensure_ascii=False, indent=1))
+
+
+def kies_event(dag):
+    """Geeft (tekst, datum) terug; de datum bepaalt de seizoenskleur van de regel.
+
+    Normaal het eerstvolgende evenement; is er via de kopieerpagina een evenement
+    vastgezet, dan dat — tot de einddatum voorbij is (of het van de site verdwijnt),
+    daarna vanzelf weer het eerstvolgende."""
+    try:
+        events = [ev for ev in parse_events(haal_agenda(), dag) if ev["eind"] >= dag]
+        schrijf_agenda(events, dag)
+        vast = lees_instellingen().get("vastgezet_titel")
+        gekozen = next((ev for ev in events if ev["titel"] == vast), None) \
+            or (events[0] if events else None)
+        if gekozen:
+            return formatteer_event(gekozen), gekozen["start"]
     except Exception as e:
         print(f"agenda ophalen mislukt ({e}), gebruik vaste tekst", file=sys.stderr)
     return "elke woensdagmiddag werken de vrijwilligers in het Park", dag
@@ -271,6 +297,8 @@ def main():
     maak_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / "handtekening.png")
     (DOCS / "handtekening.txt").write_text(
         f"Nu in bloei: {bloei}\nIn de agenda: {event}\n")
+    # kopie van de bloeikalender voor de tabel op de kopieerpagina
+    (DOCS / "bloei.json").write_text((BASIS / "data" / "bloeikalender.json").read_text())
     maak_index(bloei, event, dag)
     print(f"Geschreven naar {DOCS}/")
 
