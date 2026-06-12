@@ -37,9 +37,24 @@
   label { font-size: 14px; color: #555; display: block; margin-top: 8px; }
   details.lijst { margin-top: 10px; }
   details.lijst > summary { cursor: pointer; color: #00752e; font-weight: 700; padding: 6px 0; }
-  .rij { border-bottom: 1px solid #eee; padding: 8px 0; }
-  .rij summary { cursor: pointer; display: flex; gap: 8px; justify-content: space-between; font-size: 14px; }
-  .rij .periode { white-space: nowrap; }
+  .kal { overflow-x: auto; border: 1px solid #e3e3dc; border-radius: 12px; margin-top: 8px; }
+  .kalbinnen { min-width: 620px; }
+  .kalkop, .kalrij { display: grid; grid-template-columns: 150px repeat(24, 1fr); align-items: center; }
+  .kalrij > * { grid-row: 1; }
+  .kalkop { border-bottom: 1px solid #e3e3dc; }
+  .kalkop div { font-size: 11px; color: #777; text-align: center; padding: 6px 0; }
+  .kallabel { position: sticky; left: 0; background: #fff; font-size: 13px; padding: 9px 8px;
+              white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+              border-right: 1px solid #eee; z-index: 2; }
+  .kalkop .kallabel { text-align: left; font-weight: 700; color: #1d1d1b; }
+  .kalrij { border-top: 1px solid #f4f4f0; cursor: pointer; }
+  .kalrij.open, .kalrij:hover { background: #fafaf7; }
+  .balk { height: 10px; border-radius: 5px; margin: 0 1px; }
+  .nucol { background: #eaf5ee; height: 100%; }
+  .kaledit { padding: 4px 12px 12px; background: #fafaf7; border-top: 1px dashed #e3e3dc; }
+  .legenda { font-size: 12px; color: #777; padding: 8px 2px 0; display: flex; gap: 14px; flex-wrap: wrap; }
+  .bol { display: inline-block; width: 10px; height: 10px; border-radius: 5px;
+         vertical-align: -1px; margin-right: 4px; }
   .bewerk { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 0 4px; }
   .bewerk .breed { grid-column: 1 / -1; }
   #melding { position: sticky; top: 8px; z-index: 5; background: #eaf5ee; border: 1px solid #00752e;
@@ -87,8 +102,9 @@ dan verdwijnt het voor de rest van dit seizoen en komt het volgend jaar vanzelf 
   <button class="knopje dicht" style="margin-top:10px" onclick="voegToe()">Toevoegen aan de kalender</button>
 </div>
 
-<details class="lijst">
-  <summary>Volledige kalender (alles bekijken en bewerken)</summary>
+<details class="lijst" open>
+  <summary>Jaaroverzicht — de volledige kalender</summary>
+  <p class="klein" style="margin:4px 0 0">Tik op een rij om te bewerken. De groene kolom is nu.</p>
   <div id="alles"></div>
 </details>
 
@@ -101,7 +117,7 @@ dan verdwijnt het voor de rest van dit seizoen en komt het volgend jaar vanzelf 
 const REPO = 'bennolambooy/Park', PAD = 'data/bloeikalender.json';
 const MAANDEN = ['januari','februari','maart','april','mei','juni','juli',
                  'augustus','september','oktober','november','december'];
-let data = null, sha = null, dirty = 0;
+let data = null, sha = null, dirty = 0, openEdit = null;
 
 const idxVan = (m, h) => (m - 1) * 2 + (h - 1);
 const vanIdx = i => [Math.floor(i / 2) + 1, i % 2 + 1];
@@ -136,7 +152,8 @@ function eindDatum([m, h]) {
 function uitgebloeid(i) { data.entries[i].pauze_tot = eindDatum(data.entries[i].tot); wijzig(); }
 function tochBloei(i)   { delete data.entries[i].pauze_tot; wijzig(); }
 function bloeitAl(i)    { data.entries[i].van = vanIdx(huidigeIdx()); delete data.entries[i].pauze_tot; wijzig(); }
-function verwijder(i)   { if (confirm('Deze regel definitief uit de kalender halen?')) { data.entries.splice(i, 1); wijzig(); } }
+function verwijder(i)   { if (confirm('Deze regel definitief uit de kalender halen?')) { data.entries.splice(i, 1); openEdit = null; wijzig(); } }
+function zetEdit(i)     { openEdit = (openEdit === i ? null : i); render(); }
 function pasAan(i, veld, w) {
   const e = data.entries[i];
   if (veld === 'tekst') { if (!w.trim()) return; e.tekst = w.trim(); }
@@ -182,22 +199,55 @@ function render() {
     straks.map(i => kaart(data.entries[i], i,
       '<button class="knopje" onclick="bloeitAl(' + i + ')">Bloeit nu al</button>'
     )).join('') || '<p class="klein">Niets gepland voor de komende maand.</p>';
+  document.getElementById('alles').innerHTML = kalender(idx);
+  document.getElementById('balk').style.display = dirty ? 'block' : 'none';
+  document.getElementById('telling').textContent = dirty + ' wijziging' + (dirty === 1 ? '' : 'en');
+}
+
+const PRIOKLEUR = { 1: '#00752e', 2: '#1d9e51', 3: '#b6cdbb' };
+function bewerkPaneel(e, i) {
   const opties = n => Array.from({length: 24}, (_, k) =>
     '<option value="' + k + '"' + (k === n ? ' selected' : '') + '>' + labelVan(k) + '</option>').join('');
-  document.getElementById('alles').innerHTML = data.entries.map((e, i) =>
-    '<details class="rij"><summary><span>' + esc(e.tekst) + '</span>' +
-    '<span class="periode">' + periodeTekst(e) + '</span></summary><div class="bewerk">' +
+  let snel = '';
+  if (isGepauzeerd(e)) snel = '<button class="knopje" onclick="tochBloei(' + i + ')">Bloeit toch</button>';
+  else if (isActief(e, huidigeIdx())) snel = '<button class="knopje rood" onclick="uitgebloeid(' + i + ')">Uitgebloeid</button>';
+  return '<div class="bewerk">' +
     '<input class="breed" value="' + esc(e.tekst) + '" maxlength="70" onchange="pasAan(' + i + ',\'tekst\',this.value)">' +
     '<label>van <select onchange="pasAan(' + i + ',\'van\',this.value)">' + opties(idxVan(...e.van)) + '</select></label>' +
     '<label>tot <select onchange="pasAan(' + i + ',\'tot\',this.value)">' + opties(idxVan(...e.tot)) + '</select></label>' +
     '<label>opvallendheid <select onchange="pasAan(' + i + ',\'prio\',this.value)">' +
       [1, 2, 3].map(p => '<option value="' + p + '"' + (p === e.prio ? ' selected' : '') + '>' +
         ['blikvanger', 'mooi', 'fijnproever'][p - 1] + '</option>').join('') + '</select></label>' +
-    '<button class="knopje rood" style="align-self:end" onclick="verwijder(' + i + ')">Verwijderen</button>' +
-    '</div></details>').join('');
-  document.getElementById('balk').style.display = dirty ? 'block' : 'none';
-  document.getElementById('telling').textContent = dirty + ' wijziging' + (dirty === 1 ? '' : 'en');
+    '<span style="align-self:end;display:flex;gap:8px">' + snel +
+    '<button class="knopje rood" onclick="verwijder(' + i + ')">Verwijderen</button></span>' +
+    '</div>';
 }
+function kalender(idx) {
+  const orde = data.entries.map((_, i) => i).sort((a, b) =>
+    idxVan(...data.entries[a].van) - idxVan(...data.entries[b].van) ||
+    (data.entries[a].tekst < data.entries[b].tekst ? -1 : 1));
+  const kop = '<div class="kalkop"><div class="kallabel">2026 →</div>' +
+    MAANDEN.map(m => '<div style="grid-column:span 2">' + m[0].toUpperCase() + '</div>').join('') + '</div>';
+  const rijen = orde.map(i => {
+    const e = data.entries[i];
+    const v = idxVan(...e.van), t = idxVan(...e.tot);
+    const stukken = v <= t ? [[v, t]] : [[v, 23], [0, t]];
+    const balken = stukken.map(([a, b]) =>
+      '<div class="balk" style="grid-column:' + (a + 2) + '/' + (b + 3) + ';background:' +
+      PRIOKLEUR[e.prio] + (isGepauzeerd(e) ? ';opacity:.35' : '') + '"></div>').join('');
+    return '<div class="kalrij' + (openEdit === i ? ' open' : '') + '" onclick="zetEdit(' + i + ')">' +
+      '<div class="kallabel">' + esc(e.tekst) + '</div>' +
+      '<div class="nucol" style="grid-column:' + (idx + 2) + '"></div>' + balken + '</div>' +
+      (openEdit === i ? '<div class="kaledit" onclick="event.stopPropagation()">' + bewerkPaneel(e, i) + '</div>' : '');
+  }).join('');
+  return '<div class="kal"><div class="kalbinnen">' + kop + rijen + '</div></div>' +
+    '<div class="legenda">' +
+    '<span><span class="bol" style="background:#00752e"></span>blikvanger</span>' +
+    '<span><span class="bol" style="background:#1d9e51"></span>mooi</span>' +
+    '<span><span class="bol" style="background:#b6cdbb"></span>voor de fijnproever</span>' +
+    '<span><span class="bol" style="background:#eaf5ee"></span>nu</span></div>';
+}
+
 function melding(t, kort) {
   const m = document.getElementById('melding');
   m.textContent = t; m.style.display = 'block';
