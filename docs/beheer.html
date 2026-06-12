@@ -75,10 +75,10 @@ in de <a href="./">e-mailhandtekening</a>.</p>
 <div id="melding"></div>
 
 <div class="kaart" id="sleutelkaart" hidden>
-  <div class="naam">🔑 Sleutel nodig om op te slaan</div>
-  <p class="periode" id="sleuteluitleg" style="margin:4px 0 0">Vraag de sleutel aan de beheerder en
-  plak hem hieronder. Dit hoeft maar één keer op dit apparaat.</p>
-  <input id="sleutelveld" placeholder="github_pat_…" autocomplete="off">
+  <div class="naam">🔑 Wachtwoord nodig om op te slaan</div>
+  <p class="periode" id="sleuteluitleg" style="margin:4px 0 0">Vraag het wachtwoord aan de beheerder
+  en typ het hieronder. Dit hoeft maar één keer op dit apparaat.</p>
+  <input id="sleutelveld" placeholder="wachtwoord" autocomplete="off">
   <button class="knopje dicht" style="margin-top:8px" onclick="bewaarSleutel()">Bewaren en opslaan</button>
 </div>
 
@@ -281,9 +281,31 @@ function toonSleutel(uitleg) {
   if (uitleg) document.getElementById('sleuteluitleg').textContent = uitleg;
   k.scrollIntoView({ behavior: 'smooth' });
 }
-function bewaarSleutel() {
-  const t = document.getElementById('sleutelveld').value.trim();
-  if (!t) return;
+// De GitHub-sleutel staat hier AES-GCM-versleuteld; het wachtwoord ontgrendelt hem.
+const GEHEIM = null; // { zout, iv, blob } in base64 — wordt gevuld door de beheerder
+async function ontgrendel(ww) {
+  if (!GEHEIM) return null;
+  try {
+    const b = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+    const basis = await crypto.subtle.importKey('raw', new TextEncoder().encode(ww),
+      'PBKDF2', false, ['deriveKey']);
+    const sleutel = await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt: b(GEHEIM.zout), iterations: 300000, hash: 'SHA-256' },
+      basis, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    const klaar = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b(GEHEIM.iv) },
+      sleutel, b(GEHEIM.blob));
+    return new TextDecoder().decode(klaar);
+  } catch (e) { return null; }
+}
+async function bewaarSleutel() {
+  const w = document.getElementById('sleutelveld').value.trim();
+  if (!w) return;
+  const t = (w.startsWith('github_pat_') || w.startsWith('ghp_')) ? w : await ontgrendel(w);
+  if (!t) {
+    document.getElementById('sleuteluitleg').textContent =
+      'Dat wachtwoord klopt niet — let op de hoofdletter en probeer het nog eens.';
+    return;
+  }
   localStorage.setItem('parksleutel', t);
   document.getElementById('sleutelkaart').hidden = true;
   opslaan();
@@ -298,7 +320,7 @@ async function opslaan() {
   });
   if (r.status === 401 || r.status === 403) {
     localStorage.removeItem('parksleutel');
-    toonSleutel('Deze sleutel werkt niet (meer). Vraag een nieuwe aan de beheerder.'); return;
+    toonSleutel('Opslaan lukte niet met het opgeslagen wachtwoord. Typ het opnieuw — of vraag de beheerder of het nog klopt.'); return;
   }
   if (r.status === 409) { melding('Iemand anders sloeg net iets op. De pagina laadt de nieuwste versie — doe je wijziging daarna opnieuw.'); await laad(); return; }
   if (!r.ok) { melding('Opslaan mislukte (' + r.status + '). Probeer het over een minuutje nog eens.'); return; }
