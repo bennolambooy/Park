@@ -16,7 +16,7 @@
     {"tekst":"holwortel op het Schiereiland","van":[3,1],"tot":[4,1],"prio":2,"bron":"gebieden 1+7 (45.250 st.), Corydalis cava"},
     {"tekst":"forsythia en de eerste krentenboompjes","van":[3,2],"tot":[4,1],"prio":2,"bron":"bloeitabel beplanter"},
     {"tekst":"sleedoorn langs de paden, nog voor het blad","van":[3,2],"tot":[4,1],"prio":3,"bron":"bloeitabel beplanter, Prunus spinosa"},
-    {"tekst":"de bloembedden van Jacqueline van der Kloet bij het Parkpaviljoen","van":[3,2],"tot":[11,1],"prio":3,"bron":"nieuwsartikel dec 2024, bloei mrt-nov"},
+    {"tekst":"de bloembedden van Jacqueline van der Kloet bij het Parkpaviljoen","van":[3,2],"tot":[11,1],"prio":1,"bron":"nieuwsartikel dec 2024, bloei mrt-nov"},
     {"tekst":"magnolia’s bij de Parkbrug","van":[4,1],"tot":[4,2],"prio":2,"bron":"toelichting gebied 13"},
     {"tekst":"Japanse sierkersen bij Chalet Suisse","van":[4,1],"tot":[5,1],"prio":1,"bron":"toelichting gebied 12, Prunus x yedoensis"},
     {"tekst":"tienduizenden kievitsbloemen op het Schiereiland","van":[4,1],"tot":[4,2],"prio":1,"bron":"gebieden 1+7 (80.000 st.)"},
