@@ -1,19 +1,7 @@
 {
- "bijgewerkt": "2026-06-14",
+ "bijgewerkt": "2026-06-15",
  "vastgezet_titel": "Presentatie Zomer door rapper Winne & Friends",
  "events": [
-  {
-   "titel": "Vikingfest 2026",
-   "start": "2026-06-13",
-   "eind": "2026-06-14",
-   "tekst": "Vikingfest 2026 · 13 & 14 juni"
-  },
-  {
-   "titel": "Pyra Quartet",
-   "start": "2026-06-14",
-   "eind": "2026-06-14",
-   "tekst": "Pyra Quartet · zo 14 juni, 11:30 uur"
-  },
   {
    "titel": "Lenteschoonmaak in het Park",
    "start": "2026-06-17",
@@ -53,8 +41,8 @@
   {
    "titel": "Parkbaden",
    "start": "2026-07-18",
-   "eind": "2027-05-31",
-   "tekst": "Parkbaden · 18 juli t/m 31 mei"
+   "eind": "2027-06-03",
+   "tekst": "Parkbaden · 18 juli t/m 3 juni"
   }
  ]
 }
