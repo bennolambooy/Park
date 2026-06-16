@@ -1,5 +1,5 @@
 {
- "bijgewerkt": "2026-06-15",
+ "bijgewerkt": "2026-06-16",
  "vastgezet_titel": "Presentatie Zomer door rapper Winne & Friends",
  "events": [
   {
@@ -41,8 +41,62 @@
   {
    "titel": "Parkbaden",
    "start": "2026-07-18",
+   "eind": "2026-07-18",
+   "tekst": "Parkbaden · za 18 juli, 10:00 uur"
+  },
+  {
+   "titel": "Parkzondag Kids - Knutselen met Klieder en Klodder en Timmeren met Buurman",
+   "start": "2026-07-19",
+   "eind": "2026-07-19",
+   "tekst": "Parkzondag Kids - Knutselen met Klieder en Klodder en Timmeren met Buurman · zo 19 juli, 14:00 uur"
+  },
+  {
+   "titel": "Parkzondagconcert - Chorodam",
+   "start": "2026-07-19",
+   "eind": "2026-07-19",
+   "tekst": "Parkzondagconcert - Chorodam · zo 19 juli, 11:30 uur"
+  },
+  {
+   "titel": "Parkzondag Kids - Knutselen met Klieder en Klodder en muziek met Jutter Thijs",
+   "start": "2026-07-26",
+   "eind": "2026-07-26",
+   "tekst": "Parkzondag Kids - Knutselen met Klieder en Klodder en muziek met Jutter Thijs · zo 26 juli, 14:00 uur"
+  },
+  {
+   "titel": "Parkzondagconcert - Trio Cimarrón",
+   "start": "2026-07-26",
+   "eind": "2026-07-26",
+   "tekst": "Parkzondagconcert - Trio Cimarrón · zo 26 juli, 11:30 uur"
+  },
+  {
+   "titel": "Parkzondag Kids - Knutselen met Klieder en Klodder",
+   "start": "2026-08-02",
+   "eind": "2026-08-02",
+   "tekst": "Parkzondag Kids - Knutselen met Klieder en Klodder · zo 2 augustus, 14:00 uur"
+  },
+  {
+   "titel": "Parkzondagconcert - Riciotti Ensemble & Roza Herwig",
+   "start": "2026-08-02",
+   "eind": "2026-08-02",
+   "tekst": "Parkzondagconcert - Riciotti Ensemble & Roza Herwig · zo 2 augustus, 13:00 uur"
+  },
+  {
+   "titel": "Parkzondag Kids - Knutselen met Klieder en Klodder en Theater Lejo",
+   "start": "2026-08-09",
+   "eind": "2026-08-09",
+   "tekst": "Parkzondag Kids - Knutselen met Klieder en Klodder en Theater Lejo · zo 9 augustus, 14:00 uur"
+  },
+  {
+   "titel": "Parkzondagconcert - Flamenco al Aire",
+   "start": "2026-08-09",
+   "eind": "2026-08-09",
+   "tekst": "Parkzondagconcert - Flamenco al Aire · zo 9 augustus, 11:30 uur"
+  },
+  {
+   "titel": "Parkzondagconcert - Fabian Garcia",
+   "start": "2026-08-16",
    "eind": "2027-06-03",
-   "tekst": "Parkbaden · 18 juli t/m 3 juni"
+   "tekst": "Parkzondagconcert - Fabian Garcia · 16 augustus t/m 3 juni"
   }
  ]
 }
