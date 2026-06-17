@@ -1,5 +1,5 @@
 {
- "bijgewerkt": "2026-06-16",
+ "bijgewerkt": "2026-06-17",
  "vastgezet_titel": "Presentatie Zomer door rapper Winne & Friends",
  "events": [
   {
@@ -15,6 +15,12 @@
    "tekst": "Presentatie Zomer door rapper Winne & Friends · zo 21 juni, 14:30 uur"
   },
   {
+   "titel": "Vrijwilligers in het Park",
+   "start": "2026-06-24",
+   "eind": "2026-06-24",
+   "tekst": "Vrijwilligers in het Park · wo 24 juni, 13:00 uur"
+  },
+  {
    "titel": "Buitenleesdag bij het Parkpaviljoen",
    "start": "2026-06-28",
    "eind": "2026-06-28",
@@ -27,16 +33,34 @@
    "tekst": "Duo Panman & Donoso · zo 28 juni, 11:30 uur"
   },
   {
+   "titel": "Vrijwilligers in het Park",
+   "start": "2026-07-01",
+   "eind": "2026-07-01",
+   "tekst": "Vrijwilligers in het Park · wo 1 juli, 13:00 uur"
+  },
+  {
    "titel": "Tjilp",
    "start": "2026-07-05",
    "eind": "2026-07-05",
    "tekst": "Tjilp · zo 5 juli, 11:30 uur"
   },
   {
+   "titel": "Vrijwilligers in het Park",
+   "start": "2026-07-08",
+   "eind": "2026-07-08",
+   "tekst": "Vrijwilligers in het Park · wo 8 juli, 13:00 uur"
+  },
+  {
    "titel": "Tapiokka Quartet",
    "start": "2026-07-12",
    "eind": "2026-07-12",
    "tekst": "Tapiokka Quartet · zo 12 juli, 11:30 uur"
+  },
+  {
+   "titel": "Vrijwilligers in het Park",
+   "start": "2026-07-15",
+   "eind": "2026-07-15",
+   "tekst": "Vrijwilligers in het Park · wo 15 juli, 13:00 uur"
   },
   {
    "titel": "Parkbaden",
@@ -57,6 +81,12 @@
    "tekst": "Parkzondagconcert - Chorodam · zo 19 juli, 11:30 uur"
   },
   {
+   "titel": "Vrijwilligers in het Park",
+   "start": "2026-07-22",
+   "eind": "2026-07-22",
+   "tekst": "Vrijwilligers in het Park · wo 22 juli, 13:00 uur"
+  },
+  {
    "titel": "Parkzondag Kids - Knutselen met Klieder en Klodder en muziek met Jutter Thijs",
    "start": "2026-07-26",
    "eind": "2026-07-26",
@@ -67,6 +97,12 @@
    "start": "2026-07-26",
    "eind": "2026-07-26",
    "tekst": "Parkzondagconcert - Trio Cimarrón · zo 26 juli, 11:30 uur"
+  },
+  {
+   "titel": "Vrijwilligers in het Park",
+   "start": "2026-07-29",
+   "eind": "2026-07-29",
+   "tekst": "Vrijwilligers in het Park · wo 29 juli, 13:00 uur"
   },
   {
    "titel": "Parkzondag Kids - Knutselen met Klieder en Klodder",
@@ -81,6 +117,12 @@
    "tekst": "Parkzondagconcert - Riciotti Ensemble & Roza Herwig · zo 2 augustus, 13:00 uur"
   },
   {
+   "titel": "Vrijwilligers in het Park",
+   "start": "2026-08-05",
+   "eind": "2026-08-05",
+   "tekst": "Vrijwilligers in het Park · wo 5 augustus, 13:00 uur"
+  },
+  {
    "titel": "Parkzondag Kids - Knutselen met Klieder en Klodder en Theater Lejo",
    "start": "2026-08-09",
    "eind": "2026-08-09",
@@ -93,10 +135,28 @@
    "tekst": "Parkzondagconcert - Flamenco al Aire · zo 9 augustus, 11:30 uur"
   },
   {
+   "titel": "Vrijwilligers in het Park",
+   "start": "2026-08-12",
+   "eind": "2026-08-12",
+   "tekst": "Vrijwilligers in het Park · wo 12 augustus, 13:00 uur"
+  },
+  {
    "titel": "Parkzondagconcert - Fabian Garcia",
    "start": "2026-08-16",
+   "eind": "2026-08-16",
+   "tekst": "Parkzondagconcert - Fabian Garcia · zo 16 augustus, 11:30 uur"
+  },
+  {
+   "titel": "Vrijwilligers in het Park",
+   "start": "2026-08-19",
+   "eind": "2026-08-19",
+   "tekst": "Vrijwilligers in het Park · wo 19 augustus, 13:00 uur"
+  },
+  {
+   "titel": "Vrijwilligers in het Park",
+   "start": "2026-08-26",
    "eind": "2027-06-03",
-   "tekst": "Parkzondagconcert - Fabian Garcia · 16 augustus t/m 3 juni"
+   "tekst": "Vrijwilligers in het Park · 26 augustus t/m 3 juni"
   }
  ]
 }
