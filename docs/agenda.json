@@ -1,5 +1,5 @@
 {
- "bijgewerkt": "2026-07-09",
+ "bijgewerkt": "2026-07-10",
  "vastgezet_titel": "Presentatie Zomer door rapper Winne & Friends",
  "events": [
   {
@@ -39,10 +39,10 @@
    "tekst": "Vrijwilligers in het Park · wo 22 juli, 13:00 uur"
   },
   {
-   "titel": "Vogelexcursie voor vroege vogels",
+   "titel": "Vogelexcursie voor vroege vogels - uitverkocht",
    "start": "2026-07-24",
    "eind": "2026-07-24",
-   "tekst": "Vogelexcursie voor vroege vogels · vr 24 juli"
+   "tekst": "Vogelexcursie voor vroege vogels - uitverkocht · vr 24 juli, 8:15 uur"
   },
   {
    "titel": "Parkzondag Kids - Knutselen met Klieder en Klodder en muziek met Jutter Thijs",
@@ -119,8 +119,14 @@
   {
    "titel": "Klassiek in het Park",
    "start": "2026-08-29",
+   "eind": "2026-08-30",
+   "tekst": "Klassiek in het Park · 29 & 30 augustus"
+  },
+  {
+   "titel": "Vogelexcursie voor Vroege Vogels",
+   "start": "2026-09-04",
    "eind": "2027-06-28",
-   "tekst": "Klassiek in het Park · 29 augustus t/m 28 juni"
+   "tekst": "Vogelexcursie voor Vroege Vogels · 4 september t/m 28 juni"
   }
  ]
 }
