@@ -1,13 +1,7 @@
 {
- "bijgewerkt": "2026-07-22",
+ "bijgewerkt": "2026-07-23",
  "vastgezet_titel": "Presentatie Zomer door rapper Winne & Friends",
  "events": [
-  {
-   "titel": "Vrijwilligers in het Park",
-   "start": "2026-07-22",
-   "eind": "2026-07-22",
-   "tekst": "Vrijwilligers in het Park · wo 22 juli, 13:00 uur"
-  },
   {
    "titel": "Vogelexcursie voor vroege vogels - uitverkocht",
    "start": "2026-07-24",
@@ -87,10 +81,10 @@
    "tekst": "Vrijwilligers in het Park · wo 19 augustus, 13:00 uur"
   },
   {
-   "titel": "Parkbaden Zomer",
+   "titel": "Parkbaden in de Zomer",
    "start": "2026-08-22",
    "eind": "2026-08-22",
-   "tekst": "Parkbaden Zomer · za 22 augustus, 10:00 uur"
+   "tekst": "Parkbaden in de Zomer · za 22 augustus, 10:00 uur"
   },
   {
    "titel": "Vrijwilligers in het Park",
@@ -107,8 +101,8 @@
   {
    "titel": "Vogelexcursie voor Vroege Vogels",
    "start": "2026-09-04",
-   "eind": "2027-07-12",
-   "tekst": "Vogelexcursie voor Vroege Vogels · 4 september t/m 12 juli"
+   "eind": "2027-07-15",
+   "tekst": "Vogelexcursie voor Vroege Vogels · 4 september t/m 15 juli"
   }
  ]
 }
