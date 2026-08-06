@@ -1,12 +1,12 @@
 {
- "bijgewerkt": "2026-08-05",
+ "bijgewerkt": "2026-08-06",
  "vastgezet_titel": "Presentatie Zomer door rapper Winne & Friends",
  "events": [
   {
-   "titel": "Vrijwilligers in het Park",
-   "start": "2026-08-05",
-   "eind": "2026-08-05",
-   "tekst": "Vrijwilligers in het Park · wo 5 augustus, 13:00 uur"
+   "titel": "Expositie Carmen José",
+   "start": "2026-08-09",
+   "eind": "2026-08-30",
+   "tekst": "Expositie Carmen José · 9 & 30 augustus"
   },
   {
    "titel": "Parkzondag Kids - Knutselen met Klieder en Klodder en Theater Lejo",
@@ -19,12 +19,6 @@
    "start": "2026-08-09",
    "eind": "2026-08-09",
    "tekst": "Parkzondagconcert - Flamenco al Aire · zo 9 augustus, 11:30 uur"
-  },
-  {
-   "titel": "Expositie Carmen José",
-   "start": "2026-08-10",
-   "eind": "2026-08-23",
-   "tekst": "Expositie Carmen José · 10 & 23 augustus"
   },
   {
    "titel": "Vrijwilligers in het Park",
@@ -45,10 +39,28 @@
    "tekst": "Parkzondagconcert - Fabian Garcia · zo 16 augustus, 11:30 uur"
   },
   {
+   "titel": "Kinderen (6-12 jaar) Workshop Natuurdagboek Maken",
+   "start": "2026-08-18",
+   "eind": "2026-08-18",
+   "tekst": "Kinderen (6-12 jaar) Workshop Natuurdagboek Maken · di 18 augustus, 14:00 uur"
+  },
+  {
    "titel": "Vrijwilligers in het Park",
    "start": "2026-08-19",
    "eind": "2026-08-19",
    "tekst": "Vrijwilligers in het Park · wo 19 augustus, 13:00 uur"
+  },
+  {
+   "titel": "Jongeren (12-18 jaar) Workshop Natuurdagboek Maken",
+   "start": "2026-08-20",
+   "eind": "2026-08-20",
+   "tekst": "Jongeren (12-18 jaar) Workshop Natuurdagboek Maken · do 20 augustus, 14:00 uur"
+  },
+  {
+   "titel": "Workshop Natuurdagboek - Nature Journaling",
+   "start": "2026-08-21",
+   "eind": "2026-08-21",
+   "tekst": "Workshop Natuurdagboek - Nature Journaling · vr 21 augustus, 10:30 uur"
   },
   {
    "titel": "Parkbaden in de Zomer",
