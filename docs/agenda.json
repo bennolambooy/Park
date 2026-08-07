@@ -1,5 +1,5 @@
 {
- "bijgewerkt": "2026-08-06",
+ "bijgewerkt": "2026-08-07",
  "vastgezet_titel": "Presentatie Zomer door rapper Winne & Friends",
  "events": [
   {
@@ -21,10 +21,10 @@
    "tekst": "Parkzondagconcert - Flamenco al Aire · zo 9 augustus, 11:30 uur"
   },
   {
-   "titel": "Vrijwilligers in het Park",
+   "titel": "Parkwoensdag",
    "start": "2026-08-12",
    "eind": "2026-08-12",
-   "tekst": "Vrijwilligers in het Park · wo 12 augustus, 13:00 uur"
+   "tekst": "Parkwoensdag · wo 12 augustus, 13:00 uur"
   },
   {
    "titel": "Parkzondag Kids - Knutselen met Klieder & Klodder en Mechatroppolis, een interactieve mega-knikker race",
@@ -45,16 +45,16 @@
    "tekst": "Kinderen (6-12 jaar) Workshop Natuurdagboek Maken · di 18 augustus, 14:00 uur"
   },
   {
-   "titel": "Vrijwilligers in het Park",
+   "titel": "Parkwoensdag",
    "start": "2026-08-19",
    "eind": "2026-08-19",
-   "tekst": "Vrijwilligers in het Park · wo 19 augustus, 13:00 uur"
+   "tekst": "Parkwoensdag · wo 19 augustus, 13:00 uur"
   },
   {
-   "titel": "Jongeren (12-18 jaar) Workshop Natuurdagboek Maken",
+   "titel": "Jongeren (12-15 jaar) Workshop Natuurdagboek Maken",
    "start": "2026-08-20",
    "eind": "2026-08-20",
-   "tekst": "Jongeren (12-18 jaar) Workshop Natuurdagboek Maken · do 20 augustus, 14:00 uur"
+   "tekst": "Jongeren (12-15 jaar) Workshop Natuurdagboek Maken · do 20 augustus, 14:00 uur"
   },
   {
    "titel": "Workshop Natuurdagboek - Nature Journaling",
@@ -81,10 +81,10 @@
    "tekst": "Parkzondagconcert - Let's Be Gypsies · zo 23 augustus, 11:30 uur"
   },
   {
-   "titel": "Vrijwilligers in het Park",
+   "titel": "Parkwoensdag",
    "start": "2026-08-26",
    "eind": "2026-08-26",
-   "tekst": "Vrijwilligers in het Park · wo 26 augustus, 13:00 uur"
+   "tekst": "Parkwoensdag · wo 26 augustus, 13:00 uur"
   },
   {
    "titel": "Klassiek in het Park",
@@ -93,10 +93,40 @@
    "tekst": "Klassiek in het Park · 29 & 30 augustus"
   },
   {
+   "titel": "Parkwoensdag",
+   "start": "2026-09-02",
+   "eind": "2026-09-02",
+   "tekst": "Parkwoensdag · wo 2 september, 13:00 uur"
+  },
+  {
    "titel": "Vogelexcursie voor Vroege Vogels",
    "start": "2026-09-04",
+   "eind": "2026-09-04",
+   "tekst": "Vogelexcursie voor Vroege Vogels · vr 4 september, 8:15 uur"
+  },
+  {
+   "titel": "Parkwoensdag",
+   "start": "2026-09-09",
+   "eind": "2026-09-09",
+   "tekst": "Parkwoensdag · wo 9 september, 13:00 uur"
+  },
+  {
+   "titel": "Parkwoensdag",
+   "start": "2026-09-16",
+   "eind": "2026-09-16",
+   "tekst": "Parkwoensdag · wo 16 september, 13:00 uur"
+  },
+  {
+   "titel": "Parkwoensdag",
+   "start": "2026-09-23",
+   "eind": "2026-09-23",
+   "tekst": "Parkwoensdag · wo 23 september, 13:00 uur"
+  },
+  {
+   "titel": "Parkwoensdag",
+   "start": "2026-09-30",
    "eind": "2027-07-26",
-   "tekst": "Vogelexcursie voor Vroege Vogels · 4 september t/m 26 juli"
+   "tekst": "Parkwoensdag · 30 september t/m 26 juli"
   }
  ]
 }
