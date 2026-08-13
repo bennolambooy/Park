@@ -1,5 +1,5 @@
 {
- "bijgewerkt": "2026-08-12",
+ "bijgewerkt": "2026-08-13",
  "vastgezet_titel": "Presentatie Zomer door rapper Winne & Friends",
  "events": [
   {
@@ -9,16 +9,10 @@
    "tekst": "Expositie Carmen José · 9 & 30 augustus"
   },
   {
-   "titel": "Parkwoensdag",
-   "start": "2026-08-12",
-   "eind": "2026-08-12",
-   "tekst": "Parkwoensdag · wo 12 augustus, 13:00 uur"
-  },
-  {
-   "titel": "Parkzondag Kids - Knutselen met Klieder & Klodder en Mechatroppolis, een interactieve mega-knikker race",
+   "titel": "Parkzondag Kids - Knutselen met Klieder & Klodder en Mechatropolis, een interactieve mega-knikker race",
    "start": "2026-08-16",
    "eind": "2026-08-16",
-   "tekst": "Parkzondag Kids - Knutselen met Klieder & Klodder en Mechatroppolis, een interactieve mega-knikker race · zo 16 augustus, 14:00 uur"
+   "tekst": "Parkzondag Kids - Knutselen met Klieder & Klodder en Mechatropolis, een interactieve mega-knikker race · zo 16 augustus, 14:00 uur"
   },
   {
    "titel": "Parkzondagconcert - Fabian Garcia",
@@ -105,6 +99,12 @@
    "tekst": "Parkwoensdag · wo 9 september, 13:00 uur"
   },
   {
+   "titel": "Parkbaden in het grootste groene rijksmonument van Rotterdam",
+   "start": "2026-09-13",
+   "eind": "2026-09-13",
+   "tekst": "Parkbaden in het grootste groene rijksmonument van Rotterdam · zo 13 september, 10:00 uur"
+  },
+  {
    "titel": "Trio del Puerto",
    "start": "2026-09-13",
    "eind": "2026-09-13",
@@ -125,8 +125,8 @@
   {
    "titel": "Parkwoensdag",
    "start": "2026-09-30",
-   "eind": "2027-08-02",
-   "tekst": "Parkwoensdag · 30 september t/m 2 augustus"
+   "eind": "2027-08-05",
+   "tekst": "Parkwoensdag · 30 september t/m 5 augustus"
   }
  ]
 }
