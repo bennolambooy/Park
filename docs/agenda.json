@@ -1,5 +1,5 @@
 {
- "bijgewerkt": "2026-08-18",
+ "bijgewerkt": "2026-08-19",
  "vastgezet_titel": "Presentatie Zomer door rapper Winne & Friends",
  "events": [
   {
@@ -7,12 +7,6 @@
    "start": "2026-08-09",
    "eind": "2026-08-30",
    "tekst": "Expositie Carmen José · 9 & 30 augustus"
-  },
-  {
-   "titel": "Workshop Natuurdagboek Maken - 6-15 jaar",
-   "start": "2026-08-18",
-   "eind": "2026-08-18",
-   "tekst": "Workshop Natuurdagboek Maken - 6-15 jaar · di 18 augustus, 14:00 uur"
   },
   {
    "titel": "Parkwoensdag",
@@ -69,22 +63,16 @@
    "tekst": "Klassiek in het Park - Klassiek op reis met jutter Thijs · zo 30 augustus, 16:00 uur"
   },
   {
-   "titel": "Klassiek in het Park - Noises Quartet",
+   "titel": "Klassiek in het Park - Noies Quartet",
    "start": "2026-08-30",
    "eind": "2026-08-30",
-   "tekst": "Klassiek in het Park - Noises Quartet · zo 30 augustus, 14:00 uur"
+   "tekst": "Klassiek in het Park - Noies Quartet · zo 30 augustus, 14:00 uur"
   },
   {
    "titel": "Klassiek in het Park - Schminken",
    "start": "2026-08-30",
    "eind": "2026-08-30",
    "tekst": "Klassiek in het Park - Schminken · zo 30 augustus, 15:00 uur"
-  },
-  {
-   "titel": "Klassiek in het Park - The Ramblers",
-   "start": "2026-08-30",
-   "eind": "2026-08-30",
-   "tekst": "Klassiek in het Park - The Ramblers · zo 30 augustus, 16:00 uur"
   },
   {
    "titel": "Parkwoensdag",
@@ -143,8 +131,8 @@
   {
    "titel": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter",
    "start": "2026-10-11",
-   "eind": "2027-08-09",
-   "tekst": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter · 11 oktober t/m 9 augustus"
+   "eind": "2027-08-30",
+   "tekst": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter · 11 oktober t/m 30 augustus"
   }
  ]
 }
