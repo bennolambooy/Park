@@ -1,5 +1,5 @@
 {
- "bijgewerkt": "2026-08-19",
+ "bijgewerkt": "2026-08-20",
  "vastgezet_titel": "Presentatie Zomer door rapper Winne & Friends",
  "events": [
   {
@@ -7,12 +7,6 @@
    "start": "2026-08-09",
    "eind": "2026-08-30",
    "tekst": "Expositie Carmen José · 9 & 30 augustus"
-  },
-  {
-   "titel": "Parkwoensdag",
-   "start": "2026-08-19",
-   "eind": "2026-08-19",
-   "tekst": "Parkwoensdag · wo 19 augustus, 13:00 uur"
   },
   {
    "titel": "Workshop Natuurdagboek Maken - 12-15 jaar",
@@ -57,10 +51,10 @@
    "tekst": "Klassiek in het Park · 29 & 30 augustus"
   },
   {
-   "titel": "Klassiek in het Park - Klassiek op reis met jutter Thijs",
+   "titel": "Klassiek in het Park - Klassiek op reis met Jutter Thijs",
    "start": "2026-08-30",
    "eind": "2026-08-30",
-   "tekst": "Klassiek in het Park - Klassiek op reis met jutter Thijs · zo 30 augustus, 16:00 uur"
+   "tekst": "Klassiek in het Park - Klassiek op reis met Jutter Thijs · zo 30 augustus, 16:00 uur"
   },
   {
    "titel": "Klassiek in het Park - Noies Quartet",
@@ -117,10 +111,22 @@
    "tekst": "Parkwoensdag · wo 16 september, 13:00 uur"
   },
   {
+   "titel": "Baby Bosbaden",
+   "start": "2026-09-17",
+   "eind": "2026-09-17",
+   "tekst": "Baby Bosbaden · do 17 september, 10:15 uur"
+  },
+  {
    "titel": "Parkwoensdag",
    "start": "2026-09-23",
    "eind": "2026-09-23",
    "tekst": "Parkwoensdag · wo 23 september, 13:00 uur"
+  },
+  {
+   "titel": "Bosbaden voor aanstaande ouders",
+   "start": "2026-09-24",
+   "eind": "2026-09-24",
+   "tekst": "Bosbaden voor aanstaande ouders · do 24 september, 10:15 uur"
   },
   {
    "titel": "Parkwoensdag",
@@ -131,8 +137,8 @@
   {
    "titel": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter",
    "start": "2026-10-11",
-   "eind": "2027-08-30",
-   "tekst": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter · 11 oktober t/m 30 augustus"
+   "eind": "2027-08-12",
+   "tekst": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter · 11 oktober t/m 12 augustus"
   }
  ]
 }
