@@ -1,12 +1,12 @@
 {
  "bijgewerkt": "2026-09-01",
- "vastgezet_titel": "Presentatie Zomer door rapper Winne & Friends",
+ "vastgezet_titel": "Vogelexcursie voor Vroege Vogels",
  "events": [
   {
-   "titel": "Parkwoensdag",
+   "titel": "Parkwoensdag - geanulleerd",
    "start": "2026-09-02",
    "eind": "2026-09-02",
-   "tekst": "Parkwoensdag · wo 2 september, 13:00 uur"
+   "tekst": "Parkwoensdag - geanulleerd · wo 2 september, 13:00 uur"
   },
   {
    "titel": "Vogelexcursie voor Vroege Vogels",
@@ -51,6 +51,12 @@
    "tekst": "Baby Bosbaden · do 17 september, 10:15 uur"
   },
   {
+   "titel": "Anne-Roos",
+   "start": "2026-09-20",
+   "eind": "2026-09-20",
+   "tekst": "Anne-Roos · zo 20 september, 11:30 uur"
+  },
+  {
    "titel": "Parkwoensdag",
    "start": "2026-09-23",
    "eind": "2026-09-23",
@@ -73,6 +79,12 @@
    "start": "2026-09-30",
    "eind": "2026-09-30",
    "tekst": "Parkwoensdag · wo 30 september, 13:00 uur"
+  },
+  {
+   "titel": "Dark Fire",
+   "start": "2026-10-04",
+   "eind": "2026-10-04",
+   "tekst": "Dark Fire · zo 4 oktober, 11:30 uur"
   },
   {
    "titel": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter",
