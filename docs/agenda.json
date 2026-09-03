@@ -1,13 +1,7 @@
 {
- "bijgewerkt": "2026-09-02",
+ "bijgewerkt": "2026-09-03",
  "vastgezet_titel": "Vogelexcursie voor Vroege Vogels",
  "events": [
-  {
-   "titel": "Parkwoensdag - geanulleerd",
-   "start": "2026-09-02",
-   "eind": "2026-09-02",
-   "tekst": "Parkwoensdag - geanulleerd · wo 2 september, 13:00 uur"
-  },
   {
    "titel": "Vogelexcursie voor Vroege Vogels",
    "start": "2026-09-04",
@@ -89,8 +83,8 @@
   {
    "titel": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter",
    "start": "2026-10-11",
-   "eind": "2027-08-26",
-   "tekst": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter · 11 oktober t/m 26 augustus"
+   "eind": "2027-08-30",
+   "tekst": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter · 11 oktober t/m 30 augustus"
   }
  ]
 }
