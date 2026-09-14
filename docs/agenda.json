@@ -1,19 +1,7 @@
 {
- "bijgewerkt": "2026-09-13",
+ "bijgewerkt": "2026-09-14",
  "vastgezet_titel": "Vogelexcursie voor Vroege Vogels",
  "events": [
-  {
-   "titel": "Parkbaden - Geannuleerd",
-   "start": "2026-09-13",
-   "eind": "2026-09-13",
-   "tekst": "Parkbaden - Geannuleerd · zo 13 september, 10:00 uur"
-  },
-  {
-   "titel": "Trio del Puerto",
-   "start": "2026-09-13",
-   "eind": "2026-09-13",
-   "tekst": "Trio del Puerto · zo 13 september, 11:30 uur"
-  },
   {
    "titel": "Parkwoensdag",
    "start": "2026-09-16",
@@ -71,8 +59,8 @@
   {
    "titel": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter",
    "start": "2026-10-11",
-   "eind": "2027-08-30",
-   "tekst": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter · 11 oktober t/m 30 augustus"
+   "eind": "2027-09-04",
+   "tekst": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter · 11 oktober t/m 4 september"
   }
  ]
 }
