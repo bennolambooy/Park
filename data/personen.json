@@ -1,3 +1,10 @@
 {
-  "personen": []
+  "personen": [
+    {
+      "id": "0dcc9791-cd31-4130-b516-e8cb163b7efb",
+      "naam": "Benno Lambooy",
+      "functie": "Projectleider",
+      "telefoon": "06 29524296"
+    }
+  ]
 }
