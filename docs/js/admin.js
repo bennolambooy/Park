@@ -1,12 +1,13 @@
-import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js';
-import {handtekening, persoonlijkeLink, valideerPersoon, kiesLogovariant} from './signature.js';
-import {esc, leesPubliek, wachtOpPublicatie} from './shared.js';
+import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-2';
+import {handtekening, persoonlijkeLink, valideerPersoon, kiesLogovariant} from './signature.js?v=20260916-2';
+import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260916-2';
 
 const $ = id => document.getElementById(id);
 const basis = new URL('./', location.href).href;
 let personen = [], personenSha, instellingen = {}, instellingenSha, agenda;
 let bewerkId = null, dirty = false, personenBezig = false, instellingenBezig = false;
 let previewLogo = kiesLogovariant();
+let personenPublicatie = 0, instellingenPublicatie = 0;
 function melding(tekst) { $('melding').textContent = tekst; $('melding').hidden = !tekst; }
 function sessie() {
   $('login').hidden = isIngelogd();
@@ -30,6 +31,14 @@ function previewPersoon() {
       basis, versie: agenda?.versie || '', logovariant: previewLogo,
     }).html;
   } catch { $('persoon-preview').textContent = 'Controleer het telefoonnummer voor een voorbeeld.'; }
+}
+function gekozenStijl() {
+  return document.querySelector('input[name="logostijl"]:checked')?.value || 'random';
+}
+function updateKleurvoorbeeld() {
+  previewLogo = kiesLogovariant(gekozenStijl());
+  $('preview-wissel').hidden = gekozenStijl() !== 'random';
+  previewPersoon();
 }
 function renderPersonen() {
   $('personenlijst').innerHTML = personen.length ? personen.map(p =>
@@ -65,7 +74,7 @@ async function laad() {
   instellingen = settings.data; instellingenSha = settings.sha; agenda = a;
   const stijl = ['random', 'seizoen', 'groen'].includes(instellingen.logostijl) ? instellingen.logostijl : 'random';
   document.querySelector('input[name="logostijl"][value="' + stijl + '"]').checked = true;
-  previewLogo = kiesLogovariant(stijl);
+  updateKleurvoorbeeld();
   renderPersonen(); renderAgenda(); previewPersoon();
   $('banner').src = 'handtekening.png?v=' + encodeURIComponent(agenda.versie || Date.now());
   const pending = sessionStorage.getItem('park-publicatie');
@@ -101,6 +110,7 @@ $('herlaad').addEventListener('click', async () => {
 });
 
 async function bewaarPersonen(volgende, message, controle) {
+  const versie = ++personenPublicatie;
   personenBezig = true; $('opslaan').disabled = true; renderPersonen();
   for (const veld of $('persoon-form').querySelectorAll('input,button')) veld.disabled = true;
   $('nieuw').disabled = true;
@@ -108,11 +118,8 @@ async function bewaarPersonen(volgende, message, controle) {
   try {
     const sha = await schrijfBestand('data/personen.json', {personen: volgende}, personenSha, message);
     personen = volgende; personenSha = sha; dirty = false; renderPersonen();
-    $('persoon-status').textContent = 'Opgeslagen. De persoonlijke links worden bijgewerkt…';
-    const gepubliceerd = await wachtOpPublicatie('personen.json', controle);
-    $('persoon-status').textContent = gepubliceerd ?
-      'Gepubliceerd. De persoonlijke link is klaar om te delen.' :
-      'Opgeslagen, maar de website is nog niet bijgewerkt. Wacht even en open daarna de persoonlijke link.';
+    $('persoon-status').textContent = 'Opgeslagen. Je kunt verder; de persoonlijke link wordt op de achtergrond bijgewerkt.';
+    void volgPersonenPublicatie(controle, versie);
     return true;
   } catch (e) { $('persoon-status').textContent = e.message; return false; }
   finally {
@@ -120,6 +127,14 @@ async function bewaarPersonen(volgende, message, controle) {
     for (const veld of $('persoon-form').querySelectorAll('input,button')) veld.disabled = false;
     $('nieuw').disabled = false; renderPersonen();
   }
+}
+async function volgPersonenPublicatie(controle, versie) {
+  const isActueel = () => versie === personenPublicatie && isIngelogd();
+  const gepubliceerd = await wachtOpPublicatie('personen.json', controle, {isActueel});
+  if (!isActueel()) return;
+  $('persoon-status').textContent = gepubliceerd ?
+    'Gepubliceerd. De persoonlijke link is klaar om te delen.' :
+    'Je gegevens zijn opgeslagen. Publicatie duurt wat langer; je kunt gewoon verder. Controleer later de persoonlijke link.';
 }
 $('persoon-form').addEventListener('submit', async event => {
   event.preventDefault();
@@ -159,6 +174,7 @@ $('personenlijst').addEventListener('click', async event => {
 
 async function bewaarInstellingen(wijzigingen, statusId) {
   if (instellingenBezig) return;
+  const versie = ++instellingenPublicatie;
   instellingenBezig = true; $('logo-opslaan').disabled = true; renderAgenda();
   for (const veld of $('logo-form').querySelectorAll('input')) veld.disabled = true;
   $(statusId).textContent = 'Bezig met opslaan…';
@@ -169,26 +185,30 @@ async function bewaarInstellingen(wijzigingen, statusId) {
     instellingen = volgende;
     sessionStorage.setItem('park-publicatie', aanvraag);
     renderAgenda();
-    $(statusId).textContent = 'Opgeslagen. Wachten tot de nieuwe handtekening gepubliceerd is…';
-    const gepubliceerd = await wachtOpPublicatie('agenda.json', data => data.aanvraag_id === aanvraag);
-    if (gepubliceerd) {
-      agenda = gepubliceerd;
-      const image = new Image();
-      image.src = 'handtekening.png?v=' + encodeURIComponent(agenda.versie);
-      await image.decode();
-      $('banner').src = image.src;
-      previewLogo = kiesLogovariant(agenda.logostijl); previewPersoon(); renderAgenda();
-      sessionStorage.removeItem('park-publicatie');
-      $(statusId).textContent = 'Gepubliceerd. Het voorbeeld hieronder is bijgewerkt.';
-    } else {
-      $(statusId).textContent = 'Opgeslagen, maar nog niet gepubliceerd. De vorige versie blijft zichtbaar. Gebruik ‘Lijst herladen’ om de publicatie te controleren.';
-    }
+    $(statusId).textContent = 'Opgeslagen. Je kunt verder; de handtekening wordt op de achtergrond bijgewerkt.';
+    void volgInstellingenPublicatie(aanvraag, statusId, versie);
   } catch (e) { $(statusId).textContent = e.message; }
   finally {
     instellingenBezig = false; $('logo-opslaan').disabled = false;
     for (const veld of $('logo-form').querySelectorAll('input')) veld.disabled = false;
     renderAgenda();
   }
+}
+async function volgInstellingenPublicatie(aanvraag, statusId, versie) {
+  const isActueel = () => versie === instellingenPublicatie && isIngelogd();
+  const gepubliceerd = await wachtOpPublicatie('agenda.json', data => data.aanvraag_id === aanvraag, {isActueel});
+  if (!isActueel()) return;
+  if (!gepubliceerd) {
+    $(statusId).textContent = 'Je wijziging is opgeslagen. Publicatie duurt wat langer; je kunt gewoon verder. Gebruik ‘Lijst herladen’ om opnieuw te controleren.';
+    return;
+  }
+  agenda = gepubliceerd;
+  $('banner').src = 'handtekening.png?v=' + encodeURIComponent(agenda.versie);
+  updateKleurvoorbeeld(); renderAgenda();
+  sessionStorage.removeItem('park-publicatie');
+  $(statusId).textContent = statusId === 'logo-status'
+    ? 'Gepubliceerd. De kleurkeuze is actief voor alle nieuwe handtekeningen.'
+    : 'Gepubliceerd. Het agendavoorbeeld is bijgewerkt.';
 }
 $('agenda').addEventListener('click', event => {
   const button = event.target.closest('[data-pin]');
@@ -200,6 +220,15 @@ $('agenda').addEventListener('click', event => {
 $('logo-form').addEventListener('submit', event => {
   event.preventDefault();
   bewaarInstellingen({logostijl: new FormData(event.currentTarget).get('logostijl')}, 'logo-status');
+});
+$('logo-form').addEventListener('change', () => {
+  updateKleurvoorbeeld();
+  $('logo-status').textContent = gekozenStijl() === (instellingen.logostijl || 'random')
+    ? '' : 'Het voorbeeld is aangepast. Sla op om deze kleurkeuze voor iedereen te gebruiken.';
+});
+$('preview-wissel').addEventListener('click', () => {
+  previewLogo = previewLogo === 'groen' ? 'seizoen' : 'groen';
+  previewPersoon();
 });
 window.addEventListener('beforeunload', event => {
   if (dirty || personenBezig || instellingenBezig) { event.preventDefault(); event.returnValue = ''; }

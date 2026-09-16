@@ -6,7 +6,7 @@ import {webcrypto} from 'node:crypto';
 import {chromium} from 'playwright';
 
 const docs = resolve('docs');
-const mime = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.json':'application/json', '.png':'image/png'};
+const mime = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.json':'application/json', '.png':'image/png', '.ttf':'font/ttf', '.woff2':'font/woff2'};
 const server = createServer(async (req, res) => {
   const path = resolve(docs, '.' + new URL(req.url, 'http://localhost').pathname.replace(/\/$/, '/index.html'));
   if (!path.startsWith(docs + '/')) { res.writeHead(403); res.end(); return; }
@@ -24,7 +24,7 @@ const baseAgenda = JSON.parse(await readFile('docs/agenda.json', 'utf8'));
 let agenda = structuredClone(baseAgenda);
 const people = {personen:[]};
 let publicPeople = {personen:[]};
-let peoplePending = null, settingsPending = null, peopleReads = 0, settingsReads = 0, writes = 0, conflict = false;
+let peoplePending = null, settingsPending = null, peopleReads = 0, settingsReads = 0, writes = 0, conflict = false, offline = false;
 const files = {
   'data/personen.json': {data: people, sha:'people-0'},
   'data/instellingen.json': {data:{vastgezet_titel:baseAgenda.vastgezet_titel, logostijl:'random'}, sha:'settings-0'},
@@ -37,7 +37,7 @@ const keyMaterial = await webcrypto.subtle.importKey('raw', new TextEncoder().en
 const key = await webcrypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:300000,hash:'SHA-256'},keyMaterial,{name:'AES-GCM',length:256},false,['encrypt']);
 const cipher = await webcrypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode('test-only-credential'));
 const envelope = {zout:Buffer.from(salt).toString('base64'), iv:Buffer.from(iv).toString('base64'), blob:Buffer.from(cipher).toString('base64')};
-await context.route('**/js/config.js', async route => {
+await context.route('**/js/config.js*', async route => {
   const source = await readFile('docs/js/config.js','utf8');
   await route.fulfill({contentType:'text/javascript',body:source.replace(/export const GEHEIM = .*?;/, 'export const GEHEIM = ' + JSON.stringify(envelope) + ';')});
 });
@@ -51,6 +51,7 @@ await context.route('https://api.github.com/**', async route => {
   if (request.method() === 'GET') {
     await route.fulfill({json:{sha:file.sha,content:Buffer.from(JSON.stringify(file.data)).toString('base64')}});
   } else {
+    if (offline) { offline = false; await route.abort('connectionfailed'); return; }
     const body = request.postDataJSON();
     if (conflict || body.sha !== file.sha) { conflict = false; await route.fulfill({status:409,json:{message:'Conflict'}}); return; }
     assert.equal(body.branch, 'main');
@@ -76,6 +77,10 @@ await context.route(base + 'agenda.json?*', async route => {
 try {
   const page = await context.newPage();
   await page.goto(base + 'admin.html');
+  await page.evaluate(() => document.fonts.ready);
+  assert.equal(await page.evaluate(() => document.fonts.check('16px Walsheim') && document.fonts.check('16px Roslindale')), true, 'real house fonts load from the site origin');
+  assert.equal(await page.locator('.brand img').count(), 1, 'header uses the real PNG wordmark');
+  assert.match(await page.locator('.brand img').getAttribute('src'), /woordbeeld-groen.png/);
   assert.equal(await page.locator('#beheer').isVisible(), false);
   await page.locator('#wachtwoord').fill('verkeerd');
   await page.locator('#login-form button').click();
@@ -91,6 +96,8 @@ try {
   await page.locator('#telefoon').fill('010 123 45 67');
   await page.locator('#opslaan').click();
   await page.waitForFunction(() => document.querySelector('#persoon-status').textContent.startsWith('Opgeslagen.'));
+  assert.equal(await page.locator('#opslaan').isEnabled(), true, 'editing unlocks before publication');
+  assert.equal(await page.locator('#naam').isEnabled(), true);
   assert.equal(publicPeople.personen.length, 0, 'do not claim publication before public data changes');
   await page.waitForFunction(() => document.querySelector('#persoon-status').textContent.startsWith('Gepubliceerd.'));
   assert.equal(publicPeople.personen.length, 1);
@@ -107,6 +114,12 @@ try {
   await page.waitForFunction(() => document.querySelector('#persoon-status').textContent.includes('ondertussen gewijzigd'));
   assert.equal(await page.locator('#functie').inputValue(), 'Nog niet opgeslagen');
   assert.equal(publicPeople.personen[0].functie, 'Coördinator vrijwilligers');
+  offline = true;
+  await page.locator('#opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#persoon-status').textContent.includes('Geen bevestiging ontvangen'));
+  assert.equal(await page.locator('#opslaan').isEnabled(), true, 'failed request always releases save button');
+  assert.equal(await page.locator('#functie').inputValue(), 'Nog niet opgeslagen');
+  assert.equal(publicPeople.personen[0].functie, 'Coördinator vrijwilligers');
   page.once('dialog', dialog => dialog.accept());
   await page.locator('#annuleren').click();
 
@@ -114,6 +127,7 @@ try {
   const pin = agenda.events.find(ev => ev.id !== agenda.gekozen_id);
   await page.locator('[data-pin="' + pin.id + '"]').click();
   await page.waitForFunction(() => document.querySelector('#agenda-status').textContent.startsWith('Opgeslagen.'));
+  assert.equal(await page.locator('#logo-opslaan').isEnabled(), true, 'publication cannot freeze other controls');
   assert.ok(!(await page.locator('#banner').getAttribute('src')).includes('test-version'));
   await page.waitForFunction(() => document.querySelector('#agenda-status').textContent.startsWith('Gepubliceerd.'));
   assert.equal(agenda.gekozen_id, pin.id);
@@ -123,6 +137,7 @@ try {
   assert.equal(agenda.gekozen_id, agenda.events[0].id);
 
   await page.locator('input[value="groen"]').check();
+  assert.match(await page.locator('#persoon-preview img').first().getAttribute('src'), /woordbeeld-groen/);
   await page.locator('#logo-opslaan').click();
   await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
   assert.equal(agenda.logostijl, 'groen');
@@ -151,6 +166,7 @@ try {
   assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
 
   await page.locator('input[value="seizoen"]').check();
+  assert.match(await page.locator('#persoon-preview img').first().getAttribute('src'), /woordbeeld-seizoen/);
   await page.locator('#logo-opslaan').click();
   await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
   await copy.reload(); await copy.locator('#kopieer:not([disabled])').waitFor();
@@ -164,17 +180,23 @@ try {
   const before = await copy.locator('#handtekening img').first().getAttribute('src');
   await copy.locator('#andere-kleur').click();
   assert.notEqual(await copy.locator('#handtekening img').first().getAttribute('src'), before);
+  const visibleLogo = new URL(await copy.locator('#handtekening img').first().getAttribute('src')).pathname;
+  await copy.locator('#kopieer').click();
+  await copy.waitForFunction(() => document.querySelector('#status').textContent.startsWith('Gekopieerd.'));
+  assert.equal(new URL(await copy.locator('#handtekening img').first().getAttribute('src')).pathname, visibleLogo, 'copy keeps the displayed logo colour');
 
   // The same session opens the calendar, including its shared auth and DST-safe preview.
   await page.goto(base + 'beheer.html');
   await page.locator('#kalender-inhoud').waitFor({state:'visible'});
+  assert.equal(await page.locator('.brand img').count(), 1);
+  await page.screenshot({path:'test-results/bloeikalender-desktop.png',fullPage:true});
   assert.match(await page.locator('.kallabel').first().innerText(), /^\d{4} →$/);
   await page.goto(base + 'admin.html');
   await page.locator('#beheer').waitFor({state:'visible'});
   page.once('dialog', dialog => dialog.accept());
   await page.locator('[data-verwijder="' + id + '"]').click();
   await page.waitForFunction(() => document.querySelector('#personenlijst').textContent.includes('nog geen personen'));
-  await page.waitForFunction(() => !document.querySelector('#opslaan').disabled);
+  await page.waitForFunction(() => document.querySelector('#persoon-status').textContent.startsWith('Gepubliceerd.'));
   await copy.reload();
   await copy.waitForFunction(() => document.querySelector('#melding').textContent.includes('bestaat niet meer'));
   assert.equal(await copy.locator('#kopieer').isDisabled(), true);

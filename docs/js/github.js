@@ -1,4 +1,5 @@
-import {REPO, BRANCH, GEHEIM} from './config.js';
+import {REPO, BRANCH, GEHEIM} from './config.js?v=20260916-2';
+import {verzoek} from './shared.js?v=20260916-2';
 
 const KEY = 'park-beheer-sessie';
 export class GitHubFout extends Error {
@@ -33,7 +34,7 @@ export async function inloggen(wachtwoord) {
   try { token = await ontgrendel(wachtwoord); }
   catch { throw new Error('Het wachtwoord klopt niet. Controleer de hoofdletters en probeer opnieuw.'); }
   // Validate the credential against GitHub before enabling administrator actions.
-  const response = await fetch('https://api.github.com/repos/' + REPO, {
+  const {response} = await verzoek('https://api.github.com/repos/' + REPO, {
     headers: {Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + token},
     cache: 'no-store',
   });
@@ -58,17 +59,16 @@ function encode(s) {
 }
 
 export async function leesBestand(pad) {
-  const response = await fetch(urlVoor(pad) + '?ref=' + encodeURIComponent(BRANCH), {headers: headers(), cache: 'no-store'});
+  const {response, data:bestand} = await verzoek(urlVoor(pad) + '?ref=' + encodeURIComponent(BRANCH), {headers: headers(), cache: 'no-store'});
   if (!response.ok) throw new GitHubFout(response.status);
-  const bestand = await response.json();
   return {data: JSON.parse(decode(bestand.content)), sha: bestand.sha};
 }
 
 export async function schrijfBestand(pad, data, sha, message) {
-  const response = await fetch(urlVoor(pad), {
+  const {response, data:resultaat} = await verzoek(urlVoor(pad), {
     method: 'PUT', headers: headers(),
     body: JSON.stringify({message, branch: BRANCH, sha, content: encode(JSON.stringify(data, null, 2) + '\n')}),
   });
   if (!response.ok) throw new GitHubFout(response.status);
-  return (await response.json()).content.sha;
+  return resultaat.content.sha;
 }

@@ -1,5 +1,5 @@
-import {handtekening, kiesLogovariant} from './signature.js';
-import {leesPubliek, kopieer} from './shared.js';
+import {handtekening, kiesLogovariant} from './signature.js?v=20260916-2';
+import {leesPubliek, kopieer} from './shared.js?v=20260916-2';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -50,8 +50,7 @@ async function start() {
 
 $('kopieer').addEventListener('click', async () => {
   if (!klaar) return;
-  logo = kiesLogovariant(agenda.logostijl);
-  teken();
+  // Copy exactly the visible choice, including an explicitly selected colour.
   const signature = handtekening(persoon, {basis, logovariant: logo});
   // Manual selection fallback also needs stable URLs, not preview cache-busters.
   $('handtekening').innerHTML = signature.html;

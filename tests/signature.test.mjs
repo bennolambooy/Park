@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {handtekening, valideerPersoon, persoonlijkeLink, kiesLogovariant} from '../docs/js/signature.js';
-import {dagVanJaar, wachtOpPublicatie} from '../docs/js/shared.js';
+import {dagVanJaar, wachtOpPublicatie, verzoek} from '../docs/js/shared.js';
 
 const p = {id:'persoon-123', naam:'Zoë <script>alert(1)</script>', functie:'Hovenier & beheer', telefoon:'+31 (0)10 123 45 67'};
 test('signature escapes profile fields and includes an optional phone link', () => {
@@ -55,4 +55,13 @@ test('publication wait never accepts the old pin or reports false success', asyn
     globalThis.fetch = async () => ({ok:true,json:async()=>({aanvraag_id:'oud'})});
     assert.equal(await wachtOpPublicatie('agenda.json', d => d.aanvraag_id === 'nieuw', {pogingen:2,pauze:0}), null);
   } finally { globalThis.fetch = oldFetch; delete globalThis.location; }
+});
+test('a stalled save times out without claiming that data was not saved', async () => {
+  const previous = globalThis.fetch;
+  globalThis.fetch = (url, options) => new Promise((resolve, reject) => {
+    options.signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+  });
+  try {
+    await assert.rejects(verzoek('https://example.invalid', {method:'PUT'}, 10), /Herlaad de lijst om te controleren/);
+  } finally { globalThis.fetch = previous; }
 });

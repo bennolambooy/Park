@@ -25,6 +25,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: python -m unittest discover -s tests -v
       - run: npm test
+      - name: Maak huisstijlfonts beschikbaar voor de browsercontrole
+        run: python -c "from genereer import zorg_voor_fonts; zorg_voor_fonts()"
       - run: npm run test:browser
       - uses: actions/upload-artifact@v4
         if: always()

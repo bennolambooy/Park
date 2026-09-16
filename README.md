@@ -20,7 +20,8 @@ al verstuurde mails of eerder geplakte handtekeningen verdwijnen daarmee niet.
 
 **Logokleur** is één algemene instelling:
 
-- **Random** kiest bij openen of kopiëren tussen standaardgroen en de huidige seizoenskleur.
+- **Random** kiest bij openen tussen standaardgroen en de huidige seizoenskleur.
+  ‘Andere logokleur’ wisselt de keuze; kopiëren neemt precies het zichtbare voorbeeld over.
 - **Seizoenskleur** gebruikt paars (lente), rood (zomer), oker (herfst) of blauw (winter).
 - **Groen** gebruikt altijd het standaard Park-groen.
 
@@ -35,8 +36,9 @@ Vastzetten gebruikt de unieke evenement-URL, niet alleen de titel. Terugkerende 
 met dezelfde naam zijn daardoor afzonderlijk selecteerbaar. Na de einddatum wordt automatisch
 het eerstvolgende evenement gekozen.
 
-Opslaan start een nieuwe publicatie. De beheerpagina wacht op de bijbehorende aanvraag-id
-in de gepubliceerde agenda en laadt pas daarna de nieuwe afbeelding. Bij vertraging blijft
+Opslaan start een nieuwe publicatie. Het formulier is direct weer beschikbaar zodra GitHub
+de opslag bevestigt. Op de achtergrond controleert de beheerpagina de bijbehorende aanvraag-id
+in de gepubliceerde agenda en laadt daarna de nieuwe afbeelding. Bij vertraging blijft
 er “opgeslagen, nog niet gepubliceerd” staan; **Lijst herladen** controleert opnieuw.
 De kopieerpagina controleert elke minuut op een nieuwe versie.
 
@@ -83,7 +85,9 @@ python3 -m venv .venv
 ```
 
 De huisstijlfonts worden bij de eerste generatie van de eigen Park-website opgehaald en
-blijven buiten de repository. Open http://localhost:8765/?voorbeeld voor fictieve gegevens.
+blijven buiten de repository. De publicatie bevat een kopie onder `docs/fonts/`, zodat browsers
+de echte fonts vanaf hetzelfde domein laden, zonder CORS-blokkade.
+Open http://localhost:8765/?voorbeeld voor fictieve gegevens.
 Beheerpagina’s schrijven met een geldige login naar het echte Park-repository; gebruik voor
 testen de browsercontrole hieronder, die alle schrijftoegang vervangt door testgegevens.
 
@@ -121,3 +125,7 @@ De bestaande site-URL blijft gelijk. De productiejob draait uitsluitend op `main
 - Lange evenementtitels konden van de afbeelding vallen; ze worden nu afgebroken.
 - De kalenderpreview telde dagen op basis van verstreken uren, met een afwijking rond
   zomertijd; hij gebruikt nu kalenderdagen.
+- Het formulier bleef tijdens publicatie geblokkeerd. Opslag en publicatie lopen nu los;
+  netwerkverzoeken hebben een tijdslimiet en fouten laten de invoer intact.
+- De beheerkop gebruikte getypte tekst en het huisstijlfont werd geblokkeerd door CORS.
+  Alle schermen gebruiken nu het bestaande PNG-woordbeeld en de echte Park-lettertypes.

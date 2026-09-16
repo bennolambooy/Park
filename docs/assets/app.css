@@ -1,17 +1,20 @@
-@font-face{font-family:Walsheim;src:url("https://hetparkinrotterdam.nl/assets/css/fonts/GTWalsheim-Md.ttf") format("truetype");font-display:swap}
+@font-face{font-family:Walsheim;src:url("../fonts/GTWalsheim-Md.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:Walsheim;src:url("../fonts/GTWalsheim-Bd.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:Roslindale;src:url("../fonts/RoslindaleText-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
 *{box-sizing:border-box} [hidden]{display:none!important}
 :root{color:#193728;background:#f5f5ef;font-family:Walsheim,Arial,sans-serif;font-size:16px;line-height:1.55}
 body{margin:0} a{color:#00752e;text-underline-offset:3px} button,input{font:inherit}
 .shell{max-width:1100px;margin:auto;padding:32px 28px 64px}
 .topbar{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #d8ded4;padding-bottom:24px;margin-bottom:44px;gap:16px}
-.brand{font-family:Georgia,serif;font-size:29px;font-weight:bold;color:#00752e;text-decoration:none}
+.brand{display:inline-flex;flex:none;align-items:center;text-decoration:none}
+.brand img{display:block;width:152px;height:auto}
 nav{display:flex;gap:18px;align-items:center;font-size:14px}nav a[aria-current]{font-weight:bold}
 .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.6px;color:#50705a;margin:0 0 10px}
-h1{font-family:Georgia,serif;font-weight:normal;line-height:1.1;letter-spacing:-1px;font-size:clamp(34px,5vw,50px);margin:0 0 16px}
+h1{font-family:Roslindale,Georgia,serif;font-weight:normal;line-height:1.13;letter-spacing:-.6px;font-size:clamp(32px,5vw,46px);margin:0 0 16px}
 h2{font-size:21px;line-height:1.3;margin:0 0 15px}h3{font-size:16px;margin:0 0 6px}
 p{margin:0 0 16px}.intro{max-width:670px;color:#587060;margin-bottom:30px}
 .columns{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:26px;align-items:start}
-.panel{border:1px solid #dce2d7;border-radius:16px;padding:26px;background:#fff}
+.panel{min-width:0;border:1px solid #dce2d7;border-radius:16px;padding:26px;background:#fff}
 .panel+.panel{margin-top:22px}.caption{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:#6e8072;margin-bottom:20px}
 .signature-wrap{overflow-x:auto;padding:7px 0 20px}.signature-wrap:focus{outline:2px solid #00752e}
 .actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
@@ -39,5 +42,24 @@ details{margin-top:22px}summary{cursor:pointer;font-size:14px;color:#00752e}
 .login{max-width:440px}.person-link{word-break:break-all}
 .kleurkeuze{border:1px solid #dce2d7;border-radius:8px;padding:10px 12px;margin:4px 0 10px;display:flex;gap:16px;flex-wrap:wrap;font-size:14px}
 .kleurkeuze legend{padding:0 5px}.kleurkeuze label{display:flex;align-items:center;gap:5px}.kleurkeuze input{accent-color:#00752e}
+.kleurkeuze{padding:0;border:0;gap:12px;margin:0 0 16px}
+.kleurkeuze legend{padding:0;margin-bottom:10px}
+.kleur-optie{flex:1;min-width:170px;position:relative;display:flex;flex-direction:column;align-items:flex-start!important;gap:14px!important;padding:16px;border:1px solid #dce2d7;border-radius:10px;cursor:pointer;background:#fff}
+.kleur-optie:has(input:checked){border-color:#00752e;box-shadow:0 0 0 1px #00752e;background:#f6faf4}
+.kleur-optie:has(input:focus-visible){outline:3px solid #ca7b00;outline-offset:3px}
+.kleur-optie input{position:absolute;right:13px;top:14px}
+.kleur-optie img{width:112px;height:auto;display:block}
+.kleur-optie .logo-paar{display:flex;gap:8px;align-items:center;height:32px}
+.kleur-optie .logo-paar img{width:75px}
+.kleur-optie small{color:#627368;font-size:12px}
+.voorbeeld-kop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:22px 0 10px}
+.voorbeeld-kop .caption{margin:0}
+.preview-scroll{overflow-x:auto;background:#fff;border:1px solid #e1e6dd;border-radius:8px;padding:18px}
+.preview-scroll>table{width:560px!important;min-width:560px;max-width:none!important}
+.mobile-hint{display:none}.status:empty{min-height:0;margin:0}
+.admin-columns .mobile-hint{display:block}
+.form-hint{margin-top:12px}
+@media(max-width:1100px){.mobile-hint{display:block}}
+@media(max-width:600px){.topbar{align-items:flex-start;flex-wrap:wrap;gap:20px}.brand img{width:135px}nav{flex-wrap:wrap;font-size:13px}.kleur-optie{min-width:130px}.kleur-optie .logo-paar img{width:56px}}
 @media(max-width:800px){.columns,.admin-columns{grid-template-columns:1fr}.shell{padding:22px 18px 42px}.topbar{margin-bottom:30px}.panel{padding:21px}.agenda-item{align-items:start;flex-direction:column}nav{gap:12px}}
 @media(prefers-reduced-motion:no-preference){button,.button{transition:background .15s,filter .15s}}

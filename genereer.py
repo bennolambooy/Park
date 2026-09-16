@@ -11,6 +11,7 @@ Draait dagelijks via GitHub Actions, maar werkt ook lokaal: python3 genereer.py
 import json
 import re
 import hashlib
+import shutil
 from html import escape
 import sys
 import time
@@ -172,17 +173,21 @@ def kies_event(dag):
 
 FONT_BRON = "https://hetparkinrotterdam.nl/assets/css/fonts/"
 # GT Walsheim: het lettertype dat het Park ook in e-mailhandtekeningen gebruikt
-FONTS = ["GTWalsheim-Md.ttf", "GTWalsheim-Bd.ttf"]
+FONTS = ["GTWalsheim-Md.ttf", "GTWalsheim-Bd.ttf", "RoslindaleText-Regular.woff2"]
 
 
 def zorg_voor_fonts():
     """De huisstijlfonts zijn gelicenseerd; we bewaren ze niet in het repo maar
     halen ze bij het draaien van de eigen website van het Park."""
     (BASIS / "fonts").mkdir(exist_ok=True)
+    (DOCS / "fonts").mkdir(parents=True, exist_ok=True)
     for naam in FONTS:
         doel = BASIS / "fonts" / naam
         if not doel.exists():
             doel.write_bytes(haal(FONT_BRON + naam))
+        # Serve from the Pages origin: the Park font server disallows cross-origin
+        # browser requests. Fonts stay out of Git, but belong in the Pages artifact.
+        shutil.copyfile(doel, DOCS / "fonts" / naam)
 
 
 def font(bestand, maat, S):
