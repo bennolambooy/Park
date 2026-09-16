@@ -18,8 +18,19 @@ test('no phone means no empty phone line', () => {
 });
 test('copy assets stay absolute and use stable addresses', () => {
   const {html} = handtekening(p);
-  assert.match(html, /https:\/\/bennolambooy.github.io\/Park\/handtekening.png/);
+  assert.match(html, /https:\/\/bennolambooy.github.io\/Park\/handtekening-compact.png/);
   assert.ok(!html.includes('?v='));
+});
+test('compact signature follows the approved order and mobile dimensions', () => {
+  const {html, tekst} = handtekening(p, {logovariant:'groen'});
+  const parts = ['Met vriendelijke groet', 'tel:', 'woordbeeld-groen', 'Het Parkpaviljoen', 'Baden Powelllaan', 'Elke dag open van 10 tot 18 uur.', 'www.hetparkinrotterdam.nl', 'handtekening-compact.png', 'Volg ons via'];
+  for (let i = 1; i < parts.length; i++) assert.ok(html.indexOf(parts[i]) > html.indexOf(parts[i-1]));
+  assert.match(html, /width="300"/);
+  assert.match(html, /width="120"/);
+  assert.match(html, /font-size:14px/);
+  assert.ok(!html.includes('width:560px'));
+  assert.match(html, /uur\.<br><a[^>]+>www\.hetparkinrotterdam\.nl<\/a>/);
+  assert.ok(tekst.includes(p.functie + '\n\n' + p.telefoon));
 });
 test('random can select either green or the current season on each call', () => {
   assert.equal(kiesLogovariant('random', () => 0.1), 'groen');

@@ -1,5 +1,5 @@
-import {SITE, WEBSITE} from './config.js?v=20260916-3';
-import {esc} from './shared.js?v=20260916-3';
+import {SITE, WEBSITE} from './config.js?v=20260916-4';
+import {esc} from './shared.js?v=20260916-4';
 
 export function valideerPersoon(p) {
   if (!p || !/^[a-zA-Z0-9_-]{8,80}$/.test(p.id)) throw new Error('Ongeldig persoonsprofiel.');
@@ -32,28 +32,30 @@ export function handtekening(persoon, {basis = SITE, versie = '', logovariant} =
     if (versie) url.searchParams.set('v', versie);
     return esc(url.href);
   };
-  const telefoon = p?.telefoon ? '<br><a href="tel:' + esc(p.telefoon.replace(/[^+0-9]/g, '')) +
+  const telefoon = p?.telefoon ? '<br><br><a href="tel:' + esc(p.telefoon.replace(/[^+0-9]/g, '')) +
     '" style="color:#1d1d1b;text-decoration:none">' + esc(p.telefoon) + '</a>' : '';
-  const gegevens = p ? '<tr><td style="padding:0 0 18px;font-family:Arial,sans-serif;font-size:14px;line-height:21px;color:#1d1d1b">' +
+  const tekststijl = 'font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1d1d1b';
+  const gegevens = p ? '<tr><td style="padding:0 0 16px;' + tekststijl + '">' +
     'Met vriendelijke groet,<br><br><strong>' + esc(p.naam) + '</strong><br>' + esc(p.functie) + telefoon + '</td></tr>' : '';
-  const html = '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;max-width:560px"><tbody>' +
-    gegevens + '<tr><td style="padding:0 0 18px"><a href="' + WEBSITE + '" style="text-decoration:none">' +
-    '<img src="' + asset('woordbeeld-' + variant + '.png') + '" width="144" height="34" alt="het Park" style="display:block;border:0;width:144px;height:34px"></a></td></tr>' +
-    '<tr><td style="padding:0 0 16px;font-family:Arial,sans-serif;font-size:14px;line-height:21px;color:#1d1d1b">' +
-    '<a href="' + WEBSITE + '/" style="color:#00752e;text-decoration:underline">hetparkinrotterdam.nl</a><br>' +
-    'Baden Powelllaan 2<br>3016 GJ Rotterdam<br><br>Volg ons via ' +
+  const html = '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;max-width:360px;table-layout:fixed"><tbody>' +
+    gegevens + '<tr><td style="padding:0 0 14px"><a href="' + WEBSITE + '" style="text-decoration:none">' +
+    '<img src="' + asset('woordbeeld-' + variant + '.png') + '" width="120" height="28" alt="het Park" style="display:block;border:0;width:120px;height:28px"></a></td></tr>' +
+    '<tr><td style="padding:0 0 10px;' + tekststijl + '">' +
+    '<a href="' + WEBSITE + '/parkpaviljoen" style="color:#1d1d1b;text-decoration:none">Het Parkpaviljoen</a><br>' +
+    'Baden Powelllaan 2<br>3016 GJ Rotterdam<br>Elke dag open van 10 tot 18 uur.<br>' +
+    '<a href="' + WEBSITE + '/" style="color:#00752e;text-decoration:underline">www.hetparkinrotterdam.nl</a></td></tr>' +
+    '<tr><td style="padding:0 0 12px"><a href="' + WEBSITE + '/agenda" style="text-decoration:none">' +
+    '<img src="' + asset('handtekening-compact.png') + '" width="300" alt="Nu in bloei en in de agenda van het Park — bekijk de actuele agenda" ' +
+    'style="display:block;border:0;width:300px;max-width:100%;height:auto"></a></td></tr>' +
+    '<tr><td style="padding:0;' + tekststijl + '">Volg ons via ' +
     '<a href="https://hetparkinrotterdam.us2.list-manage.com/subscribe?u=fe120296f8b3715025a0f4f7f&amp;id=bdc33ac363" style="color:#00752e;text-decoration:underline">nieuwsbrief</a>, ' +
     '<a href="https://www.facebook.com/hetparkinrotterdam" style="color:#00752e;text-decoration:underline">Facebook</a>, ' +
     '<a href="https://www.instagram.com/hetparkinrotterdam/" style="color:#00752e;text-decoration:underline">Instagram</a> en ' +
-    '<a href="https://www.linkedin.com/company/het-park-in-rotterdam/" style="color:#00752e;text-decoration:underline">LinkedIn</a><br><br>' +
-    'Het <a href="' + WEBSITE + '/parkpaviljoen" style="color:#00752e;text-decoration:underline">Parkpaviljoen</a> is elke dag geopend van 10.00 - 18.00 uur.</td></tr>' +
-    '<tr><td style="padding:0"><a href="' + WEBSITE + '/agenda" style="text-decoration:none">' +
-    '<img src="' + asset('handtekening.png') + '" width="560" alt="Wat bloeit en gebeurt er nu in het Park? Bekijk de agenda op hetparkinrotterdam.nl" ' +
-    'style="display:block;border:0;width:560px;max-width:100%;height:auto"></a></td></tr></tbody></table>';
-  const tekst = [p ? ['Met vriendelijke groet,', '', p.naam, p.functie, p.telefoon].filter((s, i) => s || i === 1).join('\n') : '',
-    'het Park', WEBSITE + '/\nBaden Powelllaan 2\n3016 GJ Rotterdam',
-    'Volg ons via nieuwsbrief, Facebook, Instagram en LinkedIn',
-    'Het Parkpaviljoen is elke dag geopend van 10.00 - 18.00 uur.',
-    'Wat bloeit en gebeurt er nu in het Park? ' + WEBSITE + '/agenda'].filter(Boolean).join('\n\n');
+    '<a href="https://www.linkedin.com/company/het-park-in-rotterdam/" style="color:#00752e;text-decoration:underline">LinkedIn</a></td></tr></tbody></table>';
+  const tekst = [p ? 'Met vriendelijke groet,\n\n' + p.naam + '\n' + p.functie + (p.telefoon ? '\n\n' + p.telefoon : '') : '',
+    'het Park',
+    'Het Parkpaviljoen\nBaden Powelllaan 2\n3016 GJ Rotterdam\nElke dag open van 10 tot 18 uur.\nwww.hetparkinrotterdam.nl',
+    'Nu in bloei en in de agenda: ' + WEBSITE + '/agenda',
+    'Volg ons via nieuwsbrief, Facebook, Instagram en LinkedIn'].filter(Boolean).join('\n\n');
   return {html, tekst};
 }

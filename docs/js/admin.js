@@ -1,7 +1,7 @@
-import {toegang} from './gate.js?v=20260916-3';
-import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-3';
-import {handtekening, persoonlijkeLink, valideerPersoon, kiesLogovariant} from './signature.js?v=20260916-3';
-import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260916-3';
+import {toegang} from './gate.js?v=20260916-4';
+import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-4';
+import {handtekening, persoonlijkeLink, valideerPersoon, kiesLogovariant} from './signature.js?v=20260916-4';
+import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260916-4';
 
 await toegang();
 
@@ -79,7 +79,7 @@ async function laad() {
   document.querySelector('input[name="logostijl"][value="' + stijl + '"]').checked = true;
   updateKleurvoorbeeld();
   renderPersonen(); renderAgenda(); previewPersoon();
-  $('banner').src = 'handtekening.png?v=' + encodeURIComponent(agenda.versie || Date.now());
+  $('banner').src = 'handtekening-compact.png?v=' + encodeURIComponent(agenda.versie || Date.now());
   const pending = sessionStorage.getItem('park-publicatie');
   if (pending) {
     $('agenda-status').textContent = pending === agenda.aanvraag_id ?
@@ -206,7 +206,7 @@ async function volgInstellingenPublicatie(aanvraag, statusId, versie) {
     return;
   }
   agenda = gepubliceerd;
-  $('banner').src = 'handtekening.png?v=' + encodeURIComponent(agenda.versie);
+  $('banner').src = 'handtekening-compact.png?v=' + encodeURIComponent(agenda.versie);
   updateKleurvoorbeeld(); renderAgenda();
   sessionStorage.removeItem('park-publicatie');
   $(statusId).textContent = statusId === 'logo-status'

@@ -10,6 +10,15 @@ het originele Park-woordbeeld, adres, website, nieuwsbrief, sociale links, openi
 en het dagelijks bijgewerkte bloei- en agendablok. Het overzicht toont direct alle personen
 in Park-groen en de actuele seizoenskleur. Elke variant kan worden gekopieerd of als HTML gedownload.
 
+De compacte indeling gebruikt Arial 14px, een logo van 120px, de gegevens van het
+Parkpaviljoen en onderaan de sociale links. De website staat direct onder de
+openingstijden en zit ook achter het logo.
+Bloei en agenda behouden de omlijnde labels, met tekst in Arial (op Linux de
+metrisch compatibele Liberation Sans). De dynamische afbeelding is 300px breed
+op het scherm, op dubbele resolutie voor scherpe tekst. Lange titels lopen door
+op een nieuwe regel. De oude brede afbeelding blijft beschikbaar voor bestaande mails.
+Op Linux is voor generatie het pakket `fonts-liberation` nodig.
+
 ## Gebruik
 
 1. Open **Beheer** en log in met het bestaande beheerwachtwoord.

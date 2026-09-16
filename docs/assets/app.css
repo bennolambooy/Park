@@ -63,7 +63,7 @@ details{margin-top:22px}summary{cursor:pointer;font-size:14px;color:#00752e}
 .voorbeeld-kop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:22px 0 10px}
 .voorbeeld-kop .caption{margin:0}
 .preview-scroll{overflow-x:auto;background:#fff;border:1px solid #e1e6dd;border-radius:8px;padding:18px}
-.preview-scroll>table{width:560px!important;min-width:560px;max-width:none!important}
+.preview-scroll>table{width:100%;max-width:360px}
 .mobile-hint{display:none}.status:empty{min-height:0;margin:0}
 .admin-columns .mobile-hint{display:block}
 .form-hint{margin-top:12px}

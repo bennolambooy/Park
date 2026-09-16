@@ -91,6 +91,18 @@ class PersonTests(unittest.TestCase):
 
 
 class LayoutTests(unittest.TestCase):
+    def test_compact_banner_uses_mobile_width_and_grows_for_long_titles(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            short, long = Path(tmp) / 'short.png', Path(tmp) / 'long.png'
+            genereer.maak_png('Rozen', 'Parkwoensdag', '#00752e', short, compact=True)
+            genereer.maak_png('Lampenpoetsersgras bij het Parkpaviljoen',
+                             'Parkbaden in Japanse herfstsfeer en seizoensafsluiter · zondag 30 september, 13:00 uur',
+                             '#00752e', long, compact=True)
+            with Image.open(short) as a, Image.open(long) as b:
+                self.assertEqual(a.width, 600)
+                self.assertEqual(b.width, 600)
+                self.assertGreater(b.height, a.height)
+
     def test_long_titles_wrap_without_losing_content(self):
         drawing = ImageDraw.Draw(Image.new("RGB", (1000, 200)))
         fonts = {True: ImageFont.load_default(), False: ImageFont.load_default()}

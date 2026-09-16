@@ -1,6 +1,6 @@
-import {handtekening, kiesLogovariant} from './signature.js?v=20260916-3';
-import {leesPubliek, kopieer, esc, downloadHandtekening} from './shared.js?v=20260916-3';
-import {toegang} from './gate.js?v=20260916-3';
+import {handtekening, kiesLogovariant} from './signature.js?v=20260916-4';
+import {leesPubliek, kopieer, esc, downloadHandtekening} from './shared.js?v=20260916-4';
+import {toegang} from './gate.js?v=20260916-4';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);

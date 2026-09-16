@@ -194,9 +194,22 @@ def font(bestand, maat, S):
     return ImageFont.truetype(str(BASIS / "fonts" / bestand), int(maat * S))
 
 
-def teken_chip(d, x, ycent, label, kleur, S):
+def mailfont(maat, S, vet=False):
+    """Arial on macOS; its metric-compatible Liberation Sans on Linux."""
+    naam = 'Arial Bold.ttf' if vet else 'Arial.ttf'
+    linux = 'LiberationSans-Bold.ttf' if vet else 'LiberationSans-Regular.ttf'
+    kandidaten = [Path('/System/Library/Fonts/Supplemental') / naam,
+                  Path('/usr/share/fonts/truetype/liberation2') / linux,
+                  Path('/usr/share/fonts/truetype/liberation') / linux]
+    for pad in kandidaten:
+        if pad.exists():
+            return ImageFont.truetype(str(pad), int(maat * S))
+    raise RuntimeError('Installeer Arial of fonts-liberation voor de compacte handtekening.')
+
+
+def teken_chip(d, x, ycent, label, kleur, S, compact=False):
     """Outlined pill-chip, zoals de tags op de website."""
-    f = font("GTWalsheim-Bd.ttf", 8.5, S)
+    f = mailfont(8.5, S, True) if compact else font("GTWalsheim-Bd.ttf", 8.5, S)
     # lichte letterspatiëring, zoals caps op de site
     tw = sum(d.textlength(c, font=f) + 0.7 * S for c in label) - 0.7 * S
     padx, h = 9 * S, 19 * S
@@ -235,31 +248,35 @@ def tekstregels(d, segmenten, fonts, breedte):
     return regels or [[("", False)]]
 
 
-def maak_png(bloei, event, kleur_event, pad):
-    S, W = 2, 560
+def maak_png(bloei, event, kleur_event, pad, compact=False):
+    S, W = 2, 300 if compact else 560
     proef = ImageDraw.Draw(Image.new("RGB", (W * S, 100)))
-    fonts = {True: font("GTWalsheim-Bd.ttf", 13, S),
-             False: font("GTWalsheim-Md.ttf", 13, S)}
-    if " · " in event:
+    if compact:
+        fonts = {True: mailfont(14, S), False: mailfont(14, S)}
+    else:
+        fonts = {True: font("GTWalsheim-Bd.ttf", 13, S),
+                 False: font("GTWalsheim-Md.ttf", 13, S)}
+    if " · " in event and not compact:
         titel, rest = event.split(" · ", 1)
         event_seg = [(titel, True), ("  ·  " + rest, False)]
     else:
         event_seg = [(event, False)]
     rijen = [("NU IN BLOEI", KLEUREN["groen"], [(bloei, False)]),
              ("IN DE AGENDA", kleur_event, event_seg)]
-    breedtes = [teken_chip(proef, S, 20 * S, label, kleur, S) for label, kleur, _ in rijen]
+    breedtes = [teken_chip(proef, S, 20 * S, label, kleur, S, compact) for label, kleur, _ in rijen]
     x = S + max(breedtes) + 12 * S
     layouts = [tekstregels(proef, seg, fonts, (W - 4) * S - x) for _, _, seg in rijen]
-    hoogtes = [max(32, len(regels) * 18 + 12) for regels in layouts]
+    regelhoogte = 20 if compact else 18
+    hoogtes = [max(32, len(regels) * regelhoogte + 12) for regels in layouts]
     img = Image.new("RGB", (W * S, (sum(hoogtes) + 6) * S), (255, 255, 255))
     d = ImageDraw.Draw(img)
     y = 19 * S
     for (label, kleur, _), regels, hoogte in zip(rijen, layouts, hoogtes):
-        teken_chip(d, S, y, label, kleur, S)
+        teken_chip(d, S, y, label, kleur, S, compact)
         for k, regel in enumerate(regels):
             cx = x
             for char, vet in regel:
-                d.text((cx, y + k * 18 * S), char, font=fonts[vet], fill=KLEUREN["tekst"], anchor="lm")
+                d.text((cx, y + k * regelhoogte * S), char, font=fonts[vet], fill=KLEUREN["tekst"], anchor="lm")
                 cx += d.textlength(char, font=fonts[vet])
         y += hoogte * S
     img.save(pad, optimize=True)
@@ -295,6 +312,7 @@ def main():
     print(f"Nu in bloei:  {bloei}")
     print(f"In de agenda: {event}  [{seizoen(event_datum)}]")
     maak_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / "handtekening.png")
+    maak_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / "handtekening-compact.png", compact=True)
     (DOCS / "handtekening.txt").write_text(
         f"Nu in bloei: {bloei}\nIn de agenda: {event}\n")
     # kopie van de bloeikalender voor de tabel op de kopieerpagina

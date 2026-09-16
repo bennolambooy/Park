@@ -175,13 +175,17 @@ try {
   assert.match(copied, /facebook.com/);
   assert.match(copied, /instagram.com/);
   assert.match(copied, /linkedin.com/);
-  assert.match(copied, /width="144"/);
-  assert.match(copied, /10.00 - 18.00/);
+  assert.match(copied, /width="120"/);
+  assert.match(copied, /Elke dag open van 10 tot 18 uur/);
+  assert.ok(copied.indexOf('handtekening-compact.png') < copied.indexOf('Volg ons via'));
+  assert.ok(copied.indexOf('Het Parkpaviljoen') < copied.indexOf('Baden Powelllaan'));
   assert.ok(!copied.includes('?v='), 'email images must keep stable URLs');
   await copy.screenshot({path:'test-results/handtekening-desktop.png',fullPage:true});
   await copy.setViewportSize({width:390,height:844});
   await copy.screenshot({path:'test-results/handtekening-mobiel.png',fullPage:true});
   assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+  assert.ok(await copy.locator('#handtekening img').last().evaluate(img => img.getBoundingClientRect().width >= 295), 'mobile banner keeps its intended readable size');
+  assert.ok(await copy.locator('#handtekening img').last().evaluate(img => img.complete && img.naturalWidth === 600));
 
   await page.locator('input[value="seizoen"]').check();
   assert.match(await page.locator('#persoon-preview img').first().getAttribute('src'), /woordbeeld-seizoen/);
