@@ -1,5 +1,5 @@
-import {SITE, WEBSITE} from './config.js?v=20260916-5';
-import {esc} from './shared.js?v=20260916-5';
+import {SITE, WEBSITE} from './config.js?v=20260916-6';
+import {esc} from './shared.js?v=20260916-6';
 
 export function valideerPersoon(p) {
   if (!p || !/^[a-zA-Z0-9_-]{8,80}$/.test(p.id)) throw new Error('Ongeldig persoonsprofiel.');
@@ -34,10 +34,11 @@ export function handtekening(persoon, {basis = SITE, versie = '', logovariant, t
   };
   const telefoon = p?.telefoon ? '<br><a href="tel:' + esc(p.telefoon.replace(/[^+0-9]/g, '')) +
     '" style="color:#1d1d1b;text-decoration:none">' + esc(p.telefoon) + '</a>' : '';
-  const tekststijl = 'font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:17px;color:#000;white-space:nowrap';
+  const tekststijl = 'font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:normal;color:#000;white-space:normal;word-wrap:break-word;overflow-wrap:break-word';
   const gegevens = p ? '<tr><td style="padding:0 0 16px;' + tekststijl + '">' +
     'Met vriendelijke groet,<br><br><strong>' + esc(p.naam) + '</strong><br>' + esc(p.functie) + telefoon + '</td></tr>' : '';
-  const html = '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:auto"><tbody>' +
+  // WebKit can ignore max-width on a fixed-width table; constrain a block instead.
+  const html = '<div style="width:420px;max-width:100%"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;table-layout:fixed;width:100%;' + tekststijl + '"><tbody>' +
     gegevens + '<tr><td style="padding:0 0 14px"><a href="' + WEBSITE + '" style="text-decoration:none">' +
     '<img src="' + asset('woordbeeld-' + variant + '.png') + '" width="132" height="31" alt="het Park" style="display:block;border:0;width:132px;height:31px"></a></td></tr>' +
     '<tr><td style="padding:0 0 10px;' + tekststijl + '">' +
@@ -49,8 +50,8 @@ export function handtekening(persoon, {basis = SITE, versie = '', logovariant, t
     '<a href="https://www.instagram.com/hetparkinrotterdam/" style="color:#00752e;text-decoration:underline">Instagram</a> en ' +
     '<a href="https://www.linkedin.com/company/het-park-in-rotterdam/" style="color:#00752e;text-decoration:underline">LinkedIn</a>.</td></tr>' +
     '<tr><td style="padding:0"><a href="' + WEBSITE + '/agenda" style="text-decoration:none">' +
-    '<img src="' + asset('handtekening-regels.png') + '" height="56" alt="Nu in bloei en in de agenda van het Park — bekijk de actuele agenda" ' +
-    'style="display:block;border:0;height:56px;width:auto;max-width:none"></a></td></tr></tbody></table>';
+    '<img src="' + asset('handtekening-mobiel.png') + '" width="300" alt="Nu in bloei en in de agenda van het Park — bekijk de actuele agenda" ' +
+    'style="display:block;border:0;width:300px;max-width:100%;height:auto"></a></td></tr></tbody></table></div>';
   const tekst = [p ? 'Met vriendelijke groet,\n\n' + p.naam + '\n' + p.functie + (p.telefoon ? '\n' + p.telefoon : '') : '',
     'het Park',
     'www.hetparkinrotterdam.nl\n' + (toonAdres ? 'Baden Powelllaan 2\n3016 GJ Rotterdam\n\n' : '') +

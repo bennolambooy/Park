@@ -1,6 +1,6 @@
-import {handtekening, kiesLogovariant} from './signature.js?v=20260916-5';
-import {leesPubliek, kopieer, esc, downloadHandtekening} from './shared.js?v=20260916-5';
-import {toegang} from './gate.js?v=20260916-5';
+import {handtekening, kiesLogovariant} from './signature.js?v=20260916-6';
+import {leesPubliek, kopieer, esc, downloadHandtekening} from './shared.js?v=20260916-6';
+import {toegang} from './gate.js?v=20260916-6';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -63,7 +63,7 @@ function renderOverzicht() {
     return '<section class="panel"><h2>' + esc(kaart.persoon?.naam || 'Algemene handtekening') +
       '</h2><p class="variant-label">' + (kaart.variant === 'groen' ? 'Park-groen' : 'Actuele seizoenskleur') +
       '</p><div class="signature-wrap" id="kaart-' + i + '" tabindex="0">' + sig.html +
-      '</div><p class="fine mobile-hint">Regels blijven ononderbroken. Schuif het voorbeeld zo nodig opzij.</p><div class="actions"><button data-copy="' + i + '">Kopieer handtekening</button>' +
+      '</div><div class="actions"><button data-copy="' + i + '">Kopieer handtekening</button>' +
       '<button class="secondary small" data-download="' + i + '">Download HTML</button></div>' +
       '<p class="status" id="kaart-status-' + i + '" role="status"></p></section>';
   }).join('');

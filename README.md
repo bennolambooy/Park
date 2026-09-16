@@ -10,16 +10,23 @@ het originele Park-woordbeeld, adres, website, nieuwsbrief, sociale links, openi
 en het dagelijks bijgewerkte bloei- en agendablok. Het overzicht toont direct alle personen
 in Park-groen en de actuele seizoenskleur. Elke variant kan worden gekopieerd of als HTML gedownload.
 
-De actuele indeling gebruikt Helvetica 12px (Arial als terugval), een logo van 132px,
+De actuele indeling gebruikt Helvetica 12px (9pt, Arial als terugval), **normale regelafstand**, een logo van 132px,
 de website, openingstijden en sociale links, gevolgd door bloei en agenda.
 **Adres tonen** is een toolbrede optie die standaard uitstaat; aanzetten voegt straat
 en postcode toe onder de website. Na een wijziging moet de handtekening opnieuw worden gekopieerd.
 Bloei en agenda behouden de omlijnde labels met Helvetica 12px (op Linux de
-Helvetica-compatibele Nimbus Sans). De dynamische afbeelding `handtekening-regels.png`
-heeft een vaste schermhoogte van 56px en dubbele pixelresolutie; de breedte groeit
-mee met de inhoud. Geen regels worden afgebroken of kleiner gemaakt. Op een smal
-scherm kan het voorbeeld daarom horizontaal scrollen; mailapps kunnen zelf schalen.
-De oude afbeeldingen blijven beschikbaar voor bestaande mails.
+Helvetica-compatibele Nimbus Sans). De nieuwe dynamische afbeelding `handtekening-mobiel.png`
+is 300px breed bij normale weergave, met dubbele pixelresolutie. Labels staan boven
+de bijbehorende tekst; lange teksten breken op woorden af en de hoogte groeit mee.
+De afbeelding heeft bewust geen vaste HTML-hoogte: ook toekomstige langere teksten passen.
+Gewone handtekeningtekst loopt op smalle schermen door; het geheel is maximaal 420px breed.
+De eerdere drie afbeeldingen blijven ongewijzigd in opbouw voor bestaande mails.
+Gebruikers kopiëren de nieuwe handtekening eenmalig opnieuw op ieder apparaat.
+De tool stelt de berichttekst erboven niet in en kan een identieke weergave bij elke
+ontvanger of het verversen van externe afbeeldingscaches niet afdwingen.
+Installatiehulp voor Outlook, Apple Mail op Mac en iPhone staat ook op het overzicht.
+Apple documenteert de iPhone-handtekening als alleen tekst; behouden van geplakte
+afbeeldingen en opmaak moet op het echte apparaat worden gecontroleerd.
 Op Linux zijn voor generatie `fonts-liberation` en `fonts-urw-base35` nodig.
 
 ## Gebruik
@@ -113,13 +120,17 @@ testen de browsercontrole hieronder, die alle schrijftoegang vervangt door testg
 .venv/bin/python -m unittest discover -s tests -v
 npm ci
 npm test
-npx playwright install chromium
+npx playwright install chromium webkit
 npm run test:browser
+npm run test:layout
 ```
 
 Browsertests controleren inloggen, personen aanmaken/bewerken/verwijderen, conflicten,
 vastzetten en loslaten met vertraagde publicatie, alle logomodi, HTML-kopiëren, mobiele
 weergave, kalender en uitloggen. Screenshots komen in `test-results/`.
+De afzonderlijke layoutcontrole gebruikt Chromium en WebKit voor 320/375/390/900px,
+lange persoonsgegevens, normale regelafstand, groeiende afbeeldingshoogte en
+geblokkeerde afbeeldingen. Dit vervangt geen echte verzendtest in een mailprogramma.
 
 ## Publicatie
 

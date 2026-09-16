@@ -1,4 +1,4 @@
-import {controleerToegang, isIngelogd, uitloggen} from './github.js?v=20260916-5';
+import {controleerToegang, isIngelogd, uitloggen} from './github.js?v=20260916-6';
 
 export async function toegang() {
   if (sessionStorage.getItem('park-toegang') !== 'open' && !isIngelogd()) {

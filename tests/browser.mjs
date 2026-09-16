@@ -177,7 +177,7 @@ try {
   assert.match(copied, /linkedin.com/);
   assert.match(copied, /width="132"/);
   assert.match(copied, /Het Parkpaviljoen is elke dag open van 10 tot 18 uur\./);
-  assert.ok(copied.indexOf('handtekening-regels.png') > copied.indexOf('Volg onze'));
+  assert.ok(copied.indexOf('handtekening-mobiel.png') > copied.indexOf('Volg onze'));
   assert.ok(copied.indexOf('www.hetparkinrotterdam.nl') < copied.indexOf('Het Parkpaviljoen'));
   assert.ok(!copied.includes('?v='), 'email images must keep stable URLs');
   await copy.screenshot({path:'test-results/handtekening-desktop.png',fullPage:true});
@@ -185,11 +185,13 @@ try {
   await copy.screenshot({path:'test-results/handtekening-mobiel.png',fullPage:true});
   assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
   await copy.locator('#handtekening img').last().evaluate(img => img.decode());
-  assert.equal(await copy.locator('#handtekening img').last().evaluate(img => img.getBoundingClientRect().height), 56);
-  assert.ok(await copy.locator('#handtekening img').last().evaluate(img => Math.abs(img.getBoundingClientRect().width - img.naturalWidth / 2) < 1), 'mobile banner keeps 12px type without downscaling');
+  assert.equal(await copy.locator('#handtekening img').last().evaluate(img => img.naturalWidth), 600);
+  assert.ok(await copy.locator('#handtekening img').last().evaluate(img => Math.abs(img.getBoundingClientRect().width / img.getBoundingClientRect().height - img.naturalWidth / img.naturalHeight) < 0.02), 'banner keeps its proportions at any content height');
+  assert.ok(await copy.locator('#handtekening').evaluate(el => el.scrollWidth <= el.clientWidth + 1), 'signature itself does not scroll sideways');
   const pavilion = copy.locator('#handtekening td').nth(2);
   assert.equal(await pavilion.evaluate(el => getComputedStyle(el).fontSize), '12px');
-  assert.equal(await pavilion.evaluate(el => getComputedStyle(el).whiteSpace), 'nowrap');
+  assert.equal(await pavilion.evaluate(el => getComputedStyle(el).whiteSpace), 'normal');
+  assert.equal(await pavilion.evaluate(el => getComputedStyle(el).lineHeight), 'normal');
 
   // Global address switch previews, persists, survives reload and reaches copied HTML.
   assert.equal(await page.locator('#toon-adres').isChecked(), false);
@@ -242,8 +244,24 @@ try {
   assert.match(galleryHtml, /Zoë van het Park/);
   const downloadPromise = copy.waitForEvent('download');
   await copy.locator('[data-download="2"]').click();
-  assert.match((await downloadPromise).suggestedFilename(), /\.html$/);
-  assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'only the preview scrolls horizontally, not the whole page');
+  const download = await downloadPromise;
+  assert.match(download.suggestedFilename(), /\.html$/);
+  const downloadedHtml = await readFile(await download.path(), 'utf8');
+  assert.match(downloadedHtml, /name="viewport"/);
+  assert.match(downloadedHtml, /handtekening-mobiel.png/);
+  assert.ok(!downloadedHtml.includes('?v='));
+  assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'the page does not scroll horizontally');
+  assert.ok(await copy.locator('.signature-wrap:visible').evaluateAll(els => els.every(el => el.scrollWidth <= el.clientWidth + 1)), 'none of the previews scroll horizontally');
+  assert.equal(await copy.locator('#installeren').isVisible(), true, 'installation help is also available on the overview');
+  for (const width of [320, 375, 390]) {
+    await copy.setViewportSize({width,height:844});
+    assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `overview fits ${width}px`);
+    assert.ok(await copy.locator('.signature-wrap:visible').evaluateAll(els => els.every(el => el.scrollWidth <= el.clientWidth + 1)), `all variants fit ${width}px`);
+    await page.setViewportSize({width,height:844});
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `admin fits ${width}px`);
+    assert.ok(await page.locator('#persoon-preview').evaluate(el => el.scrollWidth <= el.clientWidth + 1), `admin signature fits ${width}px`);
+  }
+  await page.setViewportSize({width:1280,height:1000});
   await copy.screenshot({path:'test-results/overzicht-mobiel.png',fullPage:true});
 
   // The same session opens the calendar, including its shared auth and DST-safe preview.

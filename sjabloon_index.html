@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="same-origin">
-  <title>E-mailhandtekening · het Park</title><link rel="stylesheet" href="assets/app.css?v=20260916-5">
-  <script type="module" src="js/public.js?v=20260916-5"></script>
+  <title>E-mailhandtekening · het Park</title><link rel="stylesheet" href="assets/app.css?v=20260916-6">
+  <script type="module" src="js/public.js?v=20260916-6"></script>
 </head>
 <body><div class="shell">
   <header class="topbar"><a class="brand" href="./" aria-label="het Park – handtekeningen"><img src="woordbeeld-groen.png" width="152" height="36" alt="het Park"></a><nav aria-label="Hoofdnavigatie"><a href="admin.html">Beheer</a><a href="https://hetparkinrotterdam.nl">Naar het Park ↗</a></nav></header>
@@ -18,24 +18,37 @@
       <section class="panel" aria-label="Voorbeeld van je handtekening">
         <p class="caption">Zo komt hij onder je e-mail</p>
         <div class="signature-wrap" id="handtekening" tabindex="0">Even laden…</div>
-        <p class="fine mobile-hint">Regels blijven ononderbroken. Schuif het voorbeeld zo nodig opzij.</p>
         <div class="actions"><button id="kopieer" disabled>Kopieer mijn handtekening</button><button class="secondary small" id="download">Download HTML</button><button class="secondary small" id="andere-kleur" hidden>Andere logokleur</button></div>
         <p id="status" class="status" role="status" aria-live="polite"></p>
-        <details><summary>Wat verandert er automatisch?</summary>
-          <p class="muted">De bloeiregel en agenda worden elke ochtend vernieuwd. Bij de optie ‘seizoenskleur’ verandert ook het woordbeeld met het seizoen. Je naam en functie blijven hetzelfde.</p>
-          <p class="muted">E-mailprogramma’s bewaren afbeeldingen soms tijdelijk. Daardoor kan een nieuwe versie daar later zichtbaar zijn. Na een wijziging in je naam, functie of de algemene logo-instelling kopieer je de handtekening opnieuw.</p>
-        </details>
       </section>
       <aside>
-        <section class="panel"><h2>In drie stappen</h2><ol class="steps">
-          <li>Kopieer je handtekening met de groene knop.</li>
-          <li>Open in Outlook <strong>Instellingen → Accounts → Handtekeningen</strong> (of E-mail → Opstellen en beantwoorden).</li>
-          <li>Plak in het handtekeningveld en sla op.</li>
-        </ol><p class="fine">Plak met behoud van opmaak. Je kunt ook het handtekeningveld van Apple Mail of Gmail gebruiken.</p></section>
+        <section class="panel"><h2>Eenmalig instellen</h2><p class="muted">Kopieer je handtekening en plak hem met behoud van opmaak in je mailprogramma.</p><a href="#installeren">Uitleg voor jouw mailprogramma ↓</a></section>
         <section class="panel"><p class="caption">Nu in de handtekening</p><p class="muted" id="actueel">{{EVENT}}</p>
           <button id="ververs" class="secondary small">Voorbeeld verversen</button></section>
       </aside>
     </div>
+    <section class="panel installatie" id="installeren" aria-label="Handtekening installeren">
+      <h2>Je handtekening gebruiken</h2>
+      <p class="muted">Kies hierboven je naam en uitvoering. Vervang je oude handtekening door de nieuwe; voeg hem niet eronder toe. Stel hem eenmalig in op elk apparaat waarop je mailt.</p>
+      <details><summary>Outlook</summary>
+        <p>Open Instellingen → Accounts → Handtekeningen (in sommige versies: E-mail → Opstellen en beantwoorden). Maak of bewerk je handtekening, plak met behoud van opmaak en kies het juiste mailaccount. In klassieke Outlook vind je dit onder Bestand → Opties → E-mail → Handtekeningen.</p>
+        <p class="fine">Outlook op je telefoon heeft eigen instellingen en kan opmaak anders behandelen. Controleer daar apart een nieuw bericht. <a href="https://support.microsoft.com/en-gb/outlook/mail/how-to-add-and-change-an-email-signature-in-outlook" target="_blank" rel="noopener">Handleiding van Microsoft ↗</a></p>
+      </details>
+      <details><summary>Apple Mail op Mac</summary>
+        <p>Open Mail → Instellingen → Handtekeningen. Kies je account en maak of bewerk je handtekening. Zet ‘Gebruik altijd mijn standaardberichtlettertype’ uit voordat je plakt, zodat Mail de gekozen opmaak niet bewust vervangt. Kies de handtekening als standaard voor je account.</p>
+        <p class="fine"><a href="https://support.apple.com/guide/mail/change-signatures-settings-cpmlprefsig/mac" target="_blank" rel="noopener">Handtekeninginstellingen bij Apple ↗</a></p>
+      </details>
+      <details><summary>Apple Mail op iPhone</summary>
+        <p>Open deze tool in Safari en kopieer je persoonlijke handtekening. Ga naar Instellingen → Apps → Mail → Handtekening en plak bij het juiste account. Op oudere iOS-versies staat Mail direct onder Instellingen.</p>
+        <p class="fine">Apple documenteert dit veld als alleen tekst. Het behouden van geplakte opmaak en afbeeldingen is daarom geen garantie. Controleer in een nieuw én een ontvangen testbericht of logo, links en het actuele blok zijn behouden. Als ze ontbreken, is de volledige installatie op dat apparaat nog niet geslaagd.</p>
+        <p class="fine"><a href="https://support.apple.com/guide/iphone/change-mail-settings-iph80dabb18b/ios" target="_blank" rel="noopener">Mail-instellingen bij Apple ↗</a></p>
+      </details>
+      <details><summary>Wat verandert automatisch, en wat niet?</summary>
+        <p>Bloei en agenda worden elke ochtend vernieuwd. Bij de seizoensvariant verandert ook de logokleur. Je mailprogramma moet de online afbeeldingen wel laden en kan een oudere versie bewaren.</p>
+        <p>Naam, functie, telefoonnummer, adreskeuze en de overige tekst zijn een kopie. Na wijzigingen kopieer je de handtekening opnieuw, ook na deze vernieuwde mobiele opmaak. De tekst van je eigen bericht erboven wordt niet door deze tool aangepast.</p>
+      </details>
+      <p class="fine" style="margin-top:18px">De tekst gebruikt Helvetica, met Arial als alternatief, op 12 pixels (9 punten) en normale regelafstand. De omlijnde labels en actuele teksten vormen één afbeelding. Een goed voorbeeld in deze tool is nog geen garantie voor de weergave in elk mailprogramma.</p>
+    </section>
     <p class="footer">Met zorg voor het Park · bijgewerkt op {{DATUM}} · <a href="beheer.html">Bloeikalender</a></p>
     <noscript><p>Schakel JavaScript in om je persoonlijke handtekening te laden en kopiëren.</p></noscript>
   </main>

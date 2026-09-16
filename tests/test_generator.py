@@ -91,6 +91,32 @@ class PersonTests(unittest.TestCase):
 
 
 class LayoutTests(unittest.TestCase):
+    def test_mobile_banner_keeps_width_and_grows_in_height(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            short, long = Path(tmp) / 'short.png', Path(tmp) / 'long.png'
+            genereer.maak_mobiel_png('Rozen', 'Parkwoensdag', '#00752e', short)
+            genereer.maak_mobiel_png('Lampenpoetsersgras bij het Parkpaviljoen ' * 4,
+                                    'Een lange evenementtitel met veel woorden · woensdag 30 september, 13:00 uur ' * 4,
+                                    '#ca7b00', long)
+            with Image.open(short) as a, Image.open(long) as b:
+                self.assertEqual(a.width, 600)
+                self.assertEqual(b.width, 600)
+                self.assertGreater(b.height, a.height)
+                # Content must not touch the final edge of the canvas.
+                self.assertEqual(b.crop((0, b.height-2, 600, b.height)).getextrema(), ((255, 255),)*3)
+
+    def test_mobile_wrap_preserves_words_accents_and_long_unbroken_text(self):
+        d = ImageDraw.Draw(Image.new('RGB', (600, 1)))
+        f = genereer.helvetica(12, 2)
+        for text in ['Lampenpoetsersgras bij het Parkpaviljoen', 'Coördinatie & café — wandeling · 13:00 uur',
+                     'Park' * 80, '', '  Rozen\n en\t grassen  ']:
+            lines = genereer.mobiele_regels(d, text, f, 592)
+            self.assertEqual(''.join(lines).replace(' ', ''), ''.join(text.split()))
+            for line in lines:
+                self.assertLessEqual(d.textlength(line, font=f), 592)
+        words = 'Rozen in het Park en bloemen bij het paviljoen'
+        self.assertEqual(' '.join(genereer.mobiele_regels(d, words, f, 200)), words)
+
     def test_unbroken_banner_grows_sideways_without_shrinking_or_wrapping(self):
         with tempfile.TemporaryDirectory() as tmp:
             short, long = Path(tmp) / 'short.png', Path(tmp) / 'long.png'

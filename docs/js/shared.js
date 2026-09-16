@@ -71,8 +71,8 @@ export async function kopieer(html, tekst, element) {
 }
 
 export function downloadHandtekening(html, naam = 'handtekening') {
-  const documentHtml = '<!doctype html><html lang="nl"><head><meta charset="utf-8"><title>Handtekening</title></head>' +
-    '<body style="background:white;padding:24px">' + html + '</body></html>';
+  const documentHtml = '<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Handtekening</title></head>' +
+    '<body style="background:white;margin:0;padding:10px">' + html + '</body></html>';
   const url = URL.createObjectURL(new Blob([documentHtml], {type:'text/html;charset=utf-8'}));
   const link = document.createElement('a');
   link.href = url; link.download = naam.replace(/[^a-zA-Z0-9_-]/g, '-') + '.html';

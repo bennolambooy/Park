@@ -314,6 +314,54 @@ def maak_regels_png(bloei, event, kleur_event, pad):
         d.text((x, y), tekst, font=f, fill='#000000', anchor='lm')
     img.save(pad, optimize=True)
 
+
+def mobiele_regels(d, tekst, f, breedte):
+    """Wrap whole words using the same kerning as the final drawing; never truncate."""
+    regels, regel = [], ''
+    for woord in tekst.split():
+        voorstel = (regel + ' ' + woord).strip()
+        if d.textlength(voorstel, font=f) <= breedte:
+            regel = voorstel
+            continue
+        if regel:
+            regels.append(regel)
+            regel = ''
+        # Exceptionally long unbroken words must not push the image off-screen.
+        for char in woord:
+            if regel and d.textlength(regel + char, font=f) > breedte:
+                regels.append(regel)
+                regel = ''
+            regel += char
+    if regel:
+        regels.append(regel)
+    return regels or ['']
+
+
+def maak_mobiel_png(bloei, event, kleur_event, pad):
+    """Fixed 300px width, content-driven height; labels above readable 12px text."""
+    S, W = 2, 300
+    f, chipfont = helvetica(12, S), helvetica(8.5, S, True)
+    proef = ImageDraw.Draw(Image.new('RGB', (W*S, 1)))
+    ascent, descent = f.getmetrics()
+    regelhoogte = ascent + descent
+    rijen = [('NU IN BLOEI', KLEUREN['groen'], bloei),
+             ('IN DE AGENDA', kleur_event, event)]
+    layouts = [mobiele_regels(proef, tekst, f, (W-4)*S) for _, _, tekst in rijen]
+    # 19px label, 5px gap, natural font metrics, 12px between sections.
+    hoogte = 2*S + sum(24*S + len(regels)*regelhoogte for regels in layouts) + 12*S + 2*S
+    img = Image.new('RGB', (W*S, hoogte), 'white')
+    d = ImageDraw.Draw(img)
+    y = 2*S
+    for (label, kleur, _), regels in zip(rijen, layouts):
+        teken_chip(d, S, y + 9.5*S, label, kleur, S, lettertype=chipfont)
+        y += 24*S
+        for regel in regels:
+            d.text((S, y + ascent), regel, font=f, fill='#000000', anchor='ls')
+            y += regelhoogte
+        y += 12*S
+    img.save(pad, optimize=True)
+
+
 def maak_index(bloei, event, dag):
     sjabloon = (BASIS / "sjabloon_index.html").read_text()
     pagina = (sjabloon
@@ -344,6 +392,7 @@ def main():
     maak_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / "handtekening.png")
     maak_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / "handtekening-compact.png", compact=True)
     maak_regels_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / 'handtekening-regels.png')
+    maak_mobiel_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / 'handtekening-mobiel.png')
     (DOCS / "handtekening.txt").write_text(
         f"Nu in bloei: {bloei}\nIn de agenda: {event}\n")
     # kopie van de bloeikalender voor de tabel op de kopieerpagina

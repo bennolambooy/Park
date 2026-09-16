@@ -18,17 +18,21 @@ test('no phone means no empty phone line', () => {
 });
 test('copy assets stay absolute and use stable addresses', () => {
   const {html} = handtekening(p);
-  assert.match(html, /https:\/\/bennolambooy.github.io\/Park\/handtekening-regels.png/);
+  assert.match(html, /https:\/\/bennolambooy.github.io\/Park\/handtekening-mobiel.png/);
   assert.ok(!html.includes('?v='));
 });
-test('signature uses Helvetica, unbroken lines and approved order without address', () => {
+test('signature uses Helvetica, natural line spacing and approved order without address', () => {
   const {html, tekst} = handtekening(p, {logovariant:'groen'});
-  const parts = ['Met vriendelijke groet', 'tel:', 'woordbeeld-groen', 'www.hetparkinrotterdam.nl', 'Het Parkpaviljoen is elke dag open van 10 tot 18 uur.', 'Volg onze', 'handtekening-regels.png'];
+  const parts = ['Met vriendelijke groet', 'tel:', 'woordbeeld-groen', 'www.hetparkinrotterdam.nl', 'Het Parkpaviljoen is elke dag open van 10 tot 18 uur.', 'Volg onze', 'handtekening-mobiel.png'];
   for (let i = 1; i < parts.length; i++) assert.ok(html.indexOf(parts[i]) > html.indexOf(parts[i-1]));
-  assert.match(html, /height="56"/);
+  assert.match(html, /width="300"/);
+  assert.ok(!html.includes('height="56"'));
   assert.match(html, /width="132"/);
   assert.match(html, /font-family:Helvetica,Arial,sans-serif;font-size:12px/);
-  assert.match(html, /white-space:nowrap/);
+  assert.match(html, /line-height:normal/);
+  assert.match(html, /white-space:normal/);
+  assert.ok(!html.includes('nowrap'));
+  assert.match(html, /max-width:100%;height:auto/);
   assert.ok(!html.includes('Baden Powelllaan'));
   assert.ok(!tekst.includes('3016 GJ'));
   assert.ok(!html.includes('width:560px'));
