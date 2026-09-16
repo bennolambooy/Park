@@ -33,6 +33,20 @@ export async function leesPubliek(pad) {
 }
 
 export async function kopieer(html, tekst, element) {
+  // First attempt during the click itself: works in Safari and Outlook-oriented
+  // browsers where an async permission failure loses the user activation.
+  let copied = false;
+  const writeEvent = event => {
+    if (!event.clipboardData) return;
+    event.clipboardData.setData('text/html', html);
+    event.clipboardData.setData('text/plain', tekst);
+    event.preventDefault();
+    copied = true;
+  };
+  document.addEventListener('copy', writeEvent);
+  try { document.execCommand('copy'); } catch {}
+  finally { document.removeEventListener('copy', writeEvent); }
+  if (copied) return 'Gekopieerd. Plak je handtekening nu in je e-mailinstellingen.';
   try {
     await navigator.clipboard.write([new ClipboardItem({
       'text/html': new Blob([html], {type: 'text/html'}),
@@ -54,6 +68,15 @@ export async function kopieer(html, tekst, element) {
     }
     return 'De handtekening is geselecteerd. Druk op ⌘C (Mac) of Ctrl+C (Windows).';
   }
+}
+
+export function downloadHandtekening(html, naam = 'handtekening') {
+  const documentHtml = '<!doctype html><html lang="nl"><head><meta charset="utf-8"><title>Handtekening</title></head>' +
+    '<body style="background:white;padding:24px">' + html + '</body></html>';
+  const url = URL.createObjectURL(new Blob([documentHtml], {type:'text/html;charset=utf-8'}));
+  const link = document.createElement('a');
+  link.href = url; link.download = naam.replace(/[^a-zA-Z0-9_-]/g, '-') + '.html';
+  link.click(); setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
 
 export async function wachtOpPublicatie(pad, klaar, {pogingen = 40, pauze = 3000, isActueel = () => true} = {}) {

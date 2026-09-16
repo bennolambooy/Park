@@ -6,7 +6,9 @@
 
 De beheerder maakt personen aan met naam, functie en eventueel een zakelijk telefoonnummer.
 Iedere persoon krijgt een vaste kopieerlink. De handtekening bevat de groet, persoonsgegevens,
-het originele Park-woordbeeld en het dagelijks bijgewerkte bloei- en agendablok.
+het originele Park-woordbeeld, adres, website, nieuwsbrief, sociale links, openingstijden
+en het dagelijks bijgewerkte bloei- en agendablok. Het overzicht toont direct alle personen
+in Park-groen en de actuele seizoenskleur. Elke variant kan worden gekopieerd of als HTML gedownload.
 
 ## Gebruik
 
@@ -48,8 +50,12 @@ mails houden de afbeeldingen vaste URL’s, zodat toekomstige updates mogelijk b
 
 ## Toegang en gegevens
 
-Dit is een statische GitHub Pages-site. Er is één gedeelde beheerrol; personen hebben geen
-eigen login nodig. Het bestaande wachtwoord ontgrendelt een beperkte GitHub-sleutel.
+Dit is een statische GitHub Pages-site. Voor alle schermen staat een wachtwoordscherm;
+het gebruikt het bestaande Park-wachtwoord en onthoudt toegang alleen binnen het tabblad.
+**Vergrendelen** sluit de toegang en eventuele beheersessie. Dit is een eenvoudige schermvergrendeling,
+geen serverbeveiliging: de bestanden en repository blijven openbaar.
+Er is één gedeelde beheerrol; personen hebben geen eigen account nodig. De eerste toegang
+maakt nog geen beheersessie aan. De afzonderlijke beheerlogin ontgrendelt een beperkte GitHub-sleutel.
 GitHub controleert schrijfbevoegdheid bij iedere wijziging. De ontsleutelde sleutel blijft
 alleen in sessionStorage van het tabblad, met een expliciete uitlogknop. Er wordt geen nieuwe
 sleutel of wachtwoord in dit project aangemaakt.
@@ -109,6 +115,9 @@ GitHub Pages gebruikt **GitHub Actions** als bron. `.github/workflows/ververs.ym
 draait dagelijks, handmatig en na wijzigingen op `main`. Hij valideert, genereert,
 bewaart de output en publiceert die expliciet met `actions/deploy-pages`. Daarmee
 zijn generatie en publicatie onderdeel van dezelfde gecontroleerde run.
+
+`vercel.json` schakelt automatische Vercel-Git-deployments uit. Vercel is niet nodig voor
+deze GitHub Pages-site; bestaande mislukte deployments blijven wel in de Vercel-historie staan.
 
 Bij eerste ingebruikname van deze versie: zet bij **Settings → Pages → Source**
 de bron op **GitHub Actions**, merge naar `main` en controleer de workflow.

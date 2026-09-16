@@ -27,7 +27,7 @@ let publicPeople = {personen:[]};
 let peoplePending = null, settingsPending = null, peopleReads = 0, settingsReads = 0, writes = 0, conflict = false, offline = false;
 const files = {
   'data/personen.json': {data: people, sha:'people-0'},
-  'data/instellingen.json': {data:{vastgezet_titel:baseAgenda.vastgezet_titel, logostijl:'random'}, sha:'settings-0'},
+  'data/instellingen.json': {data:{vastgezet_id:baseAgenda.vastgezet_id, vastgezet_titel:baseAgenda.vastgezet_titel, logostijl:'random'}, sha:'settings-0'},
   'data/bloeikalender.json': {data:JSON.parse(await readFile('data/bloeikalender.json','utf8')),sha:'calendar-0'},
 };
 
@@ -77,6 +77,14 @@ await context.route(base + 'agenda.json?*', async route => {
 try {
   const page = await context.newPage();
   await page.goto(base + 'admin.html');
+  assert.equal(await page.locator('.shell').isVisible(), false);
+  await page.locator('.toegang input').fill('verkeerd');
+  await page.locator('.toegang button').click();
+  await page.waitForFunction(() => document.querySelector('.toegang .status').textContent.includes('klopt niet'));
+  await page.locator('.toegang input').fill('test-park-password');
+  await page.locator('.toegang button').click();
+  await page.locator('.toegang').waitFor({state:'detached'});
+  assert.equal(await page.evaluate(() => sessionStorage.getItem('park-beheer-sessie')), null);
   await page.evaluate(() => document.fonts.ready);
   assert.equal(await page.evaluate(() => document.fonts.check('16px Walsheim') && document.fonts.check('16px Roslindale')), true, 'real house fonts load from the site origin');
   assert.equal(await page.locator('.brand img').count(), 1, 'header uses the real PNG wordmark');
@@ -146,6 +154,8 @@ try {
 
   const copy = await context.newPage();
   await copy.goto(base + '?persoon=' + id);
+  await copy.locator('.toegang input').fill('test-park-password');
+  await copy.locator('.toegang button').click();
   await copy.locator('#kopieer:not([disabled])').waitFor();
   assert.match(await copy.locator('#handtekening').innerText(), /Met vriendelijke groet,[\s\S]*Zoë van het Park[\s\S]*Coördinator/);
   assert.equal(await copy.locator('#handtekening a[href^="tel:"]').count(), 0);
@@ -159,6 +169,14 @@ try {
   });
   assert.match(copied, /Met vriendelijke groet/);
   assert.match(copied, /woordbeeld-groen.png/);
+  assert.match(copied, /Baden Powelllaan 2/);
+  assert.match(copied, /3016 GJ Rotterdam/);
+  assert.match(copied, /list-manage.com/);
+  assert.match(copied, /facebook.com/);
+  assert.match(copied, /instagram.com/);
+  assert.match(copied, /linkedin.com/);
+  assert.match(copied, /width="144"/);
+  assert.match(copied, /10.00 - 18.00/);
   assert.ok(!copied.includes('?v='), 'email images must keep stable URLs');
   await copy.screenshot({path:'test-results/handtekening-desktop.png',fullPage:true});
   await copy.setViewportSize({width:390,height:844});
@@ -185,6 +203,20 @@ try {
   await copy.waitForFunction(() => document.querySelector('#status').textContent.startsWith('Gekopieerd.'));
   assert.equal(new URL(await copy.locator('#handtekening img').first().getAttribute('src')).pathname, visibleLogo, 'copy keeps the displayed logo colour');
 
+  await copy.goto(base);
+  await copy.locator('[data-copy="3"]').waitFor();
+  assert.equal(await copy.locator('#overzicht .panel').count(), 4);
+  assert.equal(await copy.locator('#detail').isVisible(), false);
+  await copy.locator('[data-copy="2"]').click();
+  await copy.waitForFunction(() => document.querySelector('#kaart-status-2').textContent.startsWith('Gekopieerd.'));
+  const galleryHtml = await copy.evaluate(async () => (await (await navigator.clipboard.read())[0].getType('text/html')).text());
+  assert.match(galleryHtml, /Zoë van het Park/);
+  const downloadPromise = copy.waitForEvent('download');
+  await copy.locator('[data-download="2"]').click();
+  assert.match((await downloadPromise).suggestedFilename(), /\.html$/);
+  assert.ok(await copy.locator('#kaart-2').evaluate(el => el.scrollWidth <= el.clientWidth + 1), 'mobile overview shows the complete signature without sideways scrolling');
+  await copy.screenshot({path:'test-results/overzicht-mobiel.png',fullPage:true});
+
   // The same session opens the calendar, including its shared auth and DST-safe preview.
   await page.goto(base + 'beheer.html');
   await page.locator('#kalender-inhoud').waitFor({state:'visible'});
@@ -197,12 +229,15 @@ try {
   await page.locator('[data-verwijder="' + id + '"]').click();
   await page.waitForFunction(() => document.querySelector('#personenlijst').textContent.includes('nog geen personen'));
   await page.waitForFunction(() => document.querySelector('#persoon-status').textContent.startsWith('Gepubliceerd.'));
-  await copy.reload();
+  await copy.goto(base + '?persoon=' + id);
   await copy.waitForFunction(() => document.querySelector('#melding').textContent.includes('bestaat niet meer'));
   assert.equal(await copy.locator('#kopieer').isDisabled(), true);
   await page.locator('#uitloggen').click();
   assert.equal(await page.locator('#beheer').isVisible(), false);
   assert.equal(await page.evaluate(() => sessionStorage.getItem('park-beheer-sessie')), null);
+  await page.getByRole('button', {name:'Vergrendelen', exact:true}).click();
+  await page.locator('.toegang').waitFor();
+  assert.equal(await page.locator('.shell').isVisible(), false);
   assert.deepEqual(errors, []);
   console.log('PASS: login, create/edit/delete, optional phone, conflicts, pin/unpin publication, global logo modes, clipboard, mobile, calendar, logout.');
 } finally {

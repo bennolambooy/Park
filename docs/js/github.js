@@ -1,5 +1,5 @@
-import {REPO, BRANCH, GEHEIM} from './config.js?v=20260916-2';
-import {verzoek} from './shared.js?v=20260916-2';
+import {REPO, BRANCH, GEHEIM} from './config.js?v=20260916-3';
+import {verzoek} from './shared.js?v=20260916-3';
 
 const KEY = 'park-beheer-sessie';
 export class GitHubFout extends Error {
@@ -27,6 +27,13 @@ async function ontgrendel(wachtwoord) {
     {name: 'PBKDF2', salt: bytes(GEHEIM.zout), iterations: 300000, hash: 'SHA-256'},
     basis, {name: 'AES-GCM', length: 256}, false, ['decrypt']);
   return new TextDecoder().decode(await crypto.subtle.decrypt({name: 'AES-GCM', iv: bytes(GEHEIM.iv)}, sleutel, bytes(GEHEIM.blob)));
+}
+
+export async function controleerToegang(wachtwoord) {
+  try { await ontgrendel(wachtwoord); }
+  catch { throw new Error('Het wachtwoord klopt niet. Probeer opnieuw.'); }
+  // Only the gate marker is kept. This does not start an administrator session.
+  sessionStorage.setItem('park-toegang', 'open');
 }
 
 export async function inloggen(wachtwoord) {

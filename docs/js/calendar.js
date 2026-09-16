@@ -1,5 +1,8 @@
-import {inloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-2';
-import {esc, dagVanJaar} from './shared.js?v=20260916-2';
+import {toegang} from './gate.js?v=20260916-3';
+import {inloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-3';
+import {esc, dagVanJaar} from './shared.js?v=20260916-3';
+await toegang();
+
 const PAD = 'data/bloeikalender.json';
 const MAANDEN = ['januari','februari','maart','april','mei','juni','juli',
                  'augustus','september','oktober','november','december'];

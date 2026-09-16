@@ -1,6 +1,9 @@
-import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-2';
-import {handtekening, persoonlijkeLink, valideerPersoon, kiesLogovariant} from './signature.js?v=20260916-2';
-import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260916-2';
+import {toegang} from './gate.js?v=20260916-3';
+import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-3';
+import {handtekening, persoonlijkeLink, valideerPersoon, kiesLogovariant} from './signature.js?v=20260916-3';
+import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260916-3';
+
+await toegang();
 
 const $ = id => document.getElementById(id);
 const basis = new URL('./', location.href).href;
