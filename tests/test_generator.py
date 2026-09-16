@@ -91,6 +91,18 @@ class PersonTests(unittest.TestCase):
 
 
 class LayoutTests(unittest.TestCase):
+    def test_unbroken_banner_grows_sideways_without_shrinking_or_wrapping(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            short, long = Path(tmp) / 'short.png', Path(tmp) / 'long.png'
+            genereer.maak_regels_png('Rozen', 'Parkwoensdag', '#00752e', short)
+            genereer.maak_regels_png('Lampenpoetsersgras bij het Parkpaviljoen',
+                                    'Een bijzonder lange evenementtitel met veel woorden · woensdag 30 september, 13:00 uur',
+                                    '#00752e', long)
+            with Image.open(short) as a, Image.open(long) as b:
+                self.assertEqual(a.height, 112)
+                self.assertEqual(b.height, 112)
+                self.assertGreater(b.width, a.width)
+
     def test_compact_banner_uses_mobile_width_and_grows_for_long_titles(self):
         with tempfile.TemporaryDirectory() as tmp:
             short, long = Path(tmp) / 'short.png', Path(tmp) / 'long.png'

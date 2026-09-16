@@ -1,7 +1,7 @@
-import {toegang} from './gate.js?v=20260916-4';
-import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-4';
-import {handtekening, persoonlijkeLink, valideerPersoon, kiesLogovariant} from './signature.js?v=20260916-4';
-import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260916-4';
+import {toegang} from './gate.js?v=20260916-5';
+import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-5';
+import {handtekening, persoonlijkeLink, valideerPersoon, kiesLogovariant} from './signature.js?v=20260916-5';
+import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260916-5';
 
 await toegang();
 
@@ -32,6 +32,7 @@ function previewPersoon() {
   try {
     $('persoon-preview').innerHTML = handtekening(formPersoon(), {
       basis, versie: agenda?.versie || '', logovariant: previewLogo,
+      toonAdres: $('toon-adres').checked,
     }).html;
   } catch { $('persoon-preview').textContent = 'Controleer het telefoonnummer voor een voorbeeld.'; }
 }
@@ -75,11 +76,12 @@ async function laad() {
   ]);
   personen = p.data.personen.map(valideerPersoon); personenSha = p.sha;
   instellingen = settings.data; instellingenSha = settings.sha; agenda = a;
+  $('toon-adres').checked = instellingen.toon_adres === true;
   const stijl = ['random', 'seizoen', 'groen'].includes(instellingen.logostijl) ? instellingen.logostijl : 'random';
   document.querySelector('input[name="logostijl"][value="' + stijl + '"]').checked = true;
   updateKleurvoorbeeld();
   renderPersonen(); renderAgenda(); previewPersoon();
-  $('banner').src = 'handtekening-compact.png?v=' + encodeURIComponent(agenda.versie || Date.now());
+  $('banner').src = 'handtekening-regels.png?v=' + encodeURIComponent(agenda.versie || Date.now());
   const pending = sessionStorage.getItem('park-publicatie');
   if (pending) {
     $('agenda-status').textContent = pending === agenda.aanvraag_id ?
@@ -206,11 +208,11 @@ async function volgInstellingenPublicatie(aanvraag, statusId, versie) {
     return;
   }
   agenda = gepubliceerd;
-  $('banner').src = 'handtekening-compact.png?v=' + encodeURIComponent(agenda.versie);
+  $('banner').src = 'handtekening-regels.png?v=' + encodeURIComponent(agenda.versie);
   updateKleurvoorbeeld(); renderAgenda();
   sessionStorage.removeItem('park-publicatie');
   $(statusId).textContent = statusId === 'logo-status'
-    ? 'Gepubliceerd. De kleurkeuze is actief voor alle nieuwe handtekeningen.'
+    ? 'Gepubliceerd. De instellingen zijn actief voor alle nieuwe handtekeningen.'
     : 'Gepubliceerd. Het agendavoorbeeld is bijgewerkt.';
 }
 $('agenda').addEventListener('click', event => {
@@ -222,12 +224,12 @@ $('agenda').addEventListener('click', event => {
 });
 $('logo-form').addEventListener('submit', event => {
   event.preventDefault();
-  bewaarInstellingen({logostijl: new FormData(event.currentTarget).get('logostijl')}, 'logo-status');
+  bewaarInstellingen({logostijl: gekozenStijl(), toon_adres: $('toon-adres').checked}, 'logo-status');
 });
 $('logo-form').addEventListener('change', () => {
   updateKleurvoorbeeld();
-  $('logo-status').textContent = gekozenStijl() === (instellingen.logostijl || 'random')
-    ? '' : 'Het voorbeeld is aangepast. Sla op om deze kleurkeuze voor iedereen te gebruiken.';
+  $('logo-status').textContent = gekozenStijl() === (instellingen.logostijl || 'random') && $('toon-adres').checked === (instellingen.toon_adres === true)
+    ? '' : 'Het voorbeeld is aangepast. Sla op om deze instellingen voor iedereen te gebruiken.';
 });
 $('preview-wissel').addEventListener('click', () => {
   previewLogo = previewLogo === 'groen' ? 'seizoen' : 'groen';

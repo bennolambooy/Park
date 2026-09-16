@@ -9,6 +9,7 @@ Output in docs/: handtekening.png, handtekening.txt, index.html
 Draait dagelijks via GitHub Actions, maar werkt ook lokaal: python3 genereer.py
 """
 import json
+import math
 import re
 import hashlib
 import shutil
@@ -125,6 +126,7 @@ def schrijf_agenda(events, dag, gekozen, instellingen, waarschuwing=""):
     """Publiceer de werkelijk gekozen activiteit en de verwerkte aanvraag."""
     data = {"bijgewerkt": dag.isoformat(),
             "logostijl": instellingen.get("logostijl", "random"),
+            "toon_adres": instellingen.get("toon_adres") is True,
             "vastgezet_id": instellingen.get("vastgezet_id", ""),
             "vastgezet_titel": instellingen.get("vastgezet_titel", ""),
             "aanvraag_id": instellingen.get("aanvraag_id", ""),
@@ -207,9 +209,9 @@ def mailfont(maat, S, vet=False):
     raise RuntimeError('Installeer Arial of fonts-liberation voor de compacte handtekening.')
 
 
-def teken_chip(d, x, ycent, label, kleur, S, compact=False):
+def teken_chip(d, x, ycent, label, kleur, S, compact=False, lettertype=None):
     """Outlined pill-chip, zoals de tags op de website."""
-    f = mailfont(8.5, S, True) if compact else font("GTWalsheim-Bd.ttf", 8.5, S)
+    f = lettertype or (mailfont(8.5, S, True) if compact else font("GTWalsheim-Bd.ttf", 8.5, S))
     # lichte letterspatiëring, zoals caps op de site
     tw = sum(d.textlength(c, font=f) + 0.7 * S for c in label) - 0.7 * S
     padx, h = 9 * S, 19 * S
@@ -284,6 +286,34 @@ def maak_png(bloei, event, kleur_event, pad, compact=False):
 
 # ---------- publicatiepagina ----------
 
+def helvetica(maat, S, vet=False):
+    mac = Path('/System/Library/Fonts/Helvetica.ttc')
+    if mac.exists():
+        return ImageFont.truetype(str(mac), int(maat * S), index=1 if vet else 0)
+    # Nimbus Sans is the Helvetica-compatible font supplied by URW on Linux.
+    naam = 'NimbusSans-Bold.otf' if vet else 'NimbusSans-Regular.otf'
+    return ImageFont.truetype('/usr/share/fonts/opentype/urw-base35/' + naam, int(maat * S))
+
+
+def maak_regels_png(bloei, event, kleur_event, pad):
+    """Two unbroken lines at 12px. Fixed display height preserves type size as width changes."""
+    S = 2
+    f, chipfont = helvetica(12, S), helvetica(8.5, S, True)
+    rijen = [('NU IN BLOEI', KLEUREN['groen'], ' '.join(bloei.split())),
+             ('IN DE AGENDA', kleur_event, ' '.join(event.split()))]
+    proef = ImageDraw.Draw(Image.new('RGB', (1000, 112)))
+    chipbreedtes = [teken_chip(proef, S, 13*S, label, kleur, S, lettertype=chipfont)
+                   for label, kleur, _ in rijen]
+    x = S + max(chipbreedtes) + 12*S
+    breedte = max(300*S, math.ceil(x + max(proef.textlength(t, font=f) for _, _, t in rijen) + 3*S))
+    img = Image.new('RGB', (breedte, 56*S), 'white')
+    d = ImageDraw.Draw(img)
+    for i, (label, kleur, tekst) in enumerate(rijen):
+        y = (13 + 26*i)*S
+        teken_chip(d, S, y, label, kleur, S, lettertype=chipfont)
+        d.text((x, y), tekst, font=f, fill='#000000', anchor='lm')
+    img.save(pad, optimize=True)
+
 def maak_index(bloei, event, dag):
     sjabloon = (BASIS / "sjabloon_index.html").read_text()
     pagina = (sjabloon
@@ -313,6 +343,7 @@ def main():
     print(f"In de agenda: {event}  [{seizoen(event_datum)}]")
     maak_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / "handtekening.png")
     maak_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / "handtekening-compact.png", compact=True)
+    maak_regels_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / 'handtekening-regels.png')
     (DOCS / "handtekening.txt").write_text(
         f"Nu in bloei: {bloei}\nIn de agenda: {event}\n")
     # kopie van de bloeikalender voor de tabel op de kopieerpagina

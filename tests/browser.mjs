@@ -169,23 +169,48 @@ try {
   });
   assert.match(copied, /Met vriendelijke groet/);
   assert.match(copied, /woordbeeld-groen.png/);
-  assert.match(copied, /Baden Powelllaan 2/);
-  assert.match(copied, /3016 GJ Rotterdam/);
+  assert.ok(!copied.includes('Baden Powelllaan 2'));
+  assert.ok(!copied.includes('3016 GJ Rotterdam'));
   assert.match(copied, /list-manage.com/);
   assert.match(copied, /facebook.com/);
   assert.match(copied, /instagram.com/);
   assert.match(copied, /linkedin.com/);
-  assert.match(copied, /width="120"/);
-  assert.match(copied, /Elke dag open van 10 tot 18 uur/);
-  assert.ok(copied.indexOf('handtekening-compact.png') < copied.indexOf('Volg ons via'));
-  assert.ok(copied.indexOf('Het Parkpaviljoen') < copied.indexOf('Baden Powelllaan'));
+  assert.match(copied, /width="132"/);
+  assert.match(copied, /Het Parkpaviljoen is elke dag open van 10 tot 18 uur\./);
+  assert.ok(copied.indexOf('handtekening-regels.png') > copied.indexOf('Volg onze'));
+  assert.ok(copied.indexOf('www.hetparkinrotterdam.nl') < copied.indexOf('Het Parkpaviljoen'));
   assert.ok(!copied.includes('?v='), 'email images must keep stable URLs');
   await copy.screenshot({path:'test-results/handtekening-desktop.png',fullPage:true});
   await copy.setViewportSize({width:390,height:844});
   await copy.screenshot({path:'test-results/handtekening-mobiel.png',fullPage:true});
   assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
-  assert.ok(await copy.locator('#handtekening img').last().evaluate(img => img.getBoundingClientRect().width >= 295), 'mobile banner keeps its intended readable size');
-  assert.ok(await copy.locator('#handtekening img').last().evaluate(img => img.complete && img.naturalWidth === 600));
+  await copy.locator('#handtekening img').last().evaluate(img => img.decode());
+  assert.equal(await copy.locator('#handtekening img').last().evaluate(img => img.getBoundingClientRect().height), 56);
+  assert.ok(await copy.locator('#handtekening img').last().evaluate(img => Math.abs(img.getBoundingClientRect().width - img.naturalWidth / 2) < 1), 'mobile banner keeps 12px type without downscaling');
+  const pavilion = copy.locator('#handtekening td').nth(2);
+  assert.equal(await pavilion.evaluate(el => getComputedStyle(el).fontSize), '12px');
+  assert.equal(await pavilion.evaluate(el => getComputedStyle(el).whiteSpace), 'nowrap');
+
+  // Global address switch previews, persists, survives reload and reaches copied HTML.
+  assert.equal(await page.locator('#toon-adres').isChecked(), false);
+  await page.locator('#toon-adres').check();
+  assert.match(await page.locator('#persoon-preview').innerText(), /Baden Powelllaan 2/);
+  await page.locator('#logo-opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
+  assert.equal(files['data/instellingen.json'].data.toon_adres, true);
+  await copy.reload(); await copy.locator('#kopieer:not([disabled])').waitFor();
+  assert.match(await copy.locator('#handtekening').innerText(), /Baden Powelllaan 2/);
+  await copy.locator('#kopieer').click();
+  const addressHtml = await copy.evaluate(async () => (await (await navigator.clipboard.read())[0].getType('text/html')).text());
+  assert.match(addressHtml, /Baden Powelllaan 2/);
+  await page.reload(); await page.locator('#beheer').waitFor({state:'visible'});
+  assert.equal(await page.locator('#toon-adres').isChecked(), true);
+  await page.locator('#toon-adres').uncheck();
+  await page.locator('#logo-opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
+  assert.equal(files['data/instellingen.json'].data.toon_adres, false);
+  await copy.reload(); await copy.locator('#kopieer:not([disabled])').waitFor();
+  assert.ok(!(await copy.locator('#handtekening').innerText()).includes('Baden Powelllaan'));
 
   await page.locator('input[value="seizoen"]').check();
   assert.match(await page.locator('#persoon-preview img').first().getAttribute('src'), /woordbeeld-seizoen/);
@@ -218,7 +243,7 @@ try {
   const downloadPromise = copy.waitForEvent('download');
   await copy.locator('[data-download="2"]').click();
   assert.match((await downloadPromise).suggestedFilename(), /\.html$/);
-  assert.ok(await copy.locator('#kaart-2').evaluate(el => el.scrollWidth <= el.clientWidth + 1), 'mobile overview shows the complete signature without sideways scrolling');
+  assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'only the preview scrolls horizontally, not the whole page');
   await copy.screenshot({path:'test-results/overzicht-mobiel.png',fullPage:true});
 
   // The same session opens the calendar, including its shared auth and DST-safe preview.

@@ -10,14 +10,17 @@ het originele Park-woordbeeld, adres, website, nieuwsbrief, sociale links, openi
 en het dagelijks bijgewerkte bloei- en agendablok. Het overzicht toont direct alle personen
 in Park-groen en de actuele seizoenskleur. Elke variant kan worden gekopieerd of als HTML gedownload.
 
-De compacte indeling gebruikt Arial 14px, een logo van 120px, de gegevens van het
-Parkpaviljoen en onderaan de sociale links. De website staat direct onder de
-openingstijden en zit ook achter het logo.
-Bloei en agenda behouden de omlijnde labels, met tekst in Arial (op Linux de
-metrisch compatibele Liberation Sans). De dynamische afbeelding is 300px breed
-op het scherm, op dubbele resolutie voor scherpe tekst. Lange titels lopen door
-op een nieuwe regel. De oude brede afbeelding blijft beschikbaar voor bestaande mails.
-Op Linux is voor generatie het pakket `fonts-liberation` nodig.
+De actuele indeling gebruikt Helvetica 12px (Arial als terugval), een logo van 132px,
+de website, openingstijden en sociale links, gevolgd door bloei en agenda.
+**Adres tonen** is een toolbrede optie die standaard uitstaat; aanzetten voegt straat
+en postcode toe onder de website. Na een wijziging moet de handtekening opnieuw worden gekopieerd.
+Bloei en agenda behouden de omlijnde labels met Helvetica 12px (op Linux de
+Helvetica-compatibele Nimbus Sans). De dynamische afbeelding `handtekening-regels.png`
+heeft een vaste schermhoogte van 56px en dubbele pixelresolutie; de breedte groeit
+mee met de inhoud. Geen regels worden afgebroken of kleiner gemaakt. Op een smal
+scherm kan het voorbeeld daarom horizontaal scrollen; mailapps kunnen zelf schalen.
+De oude afbeeldingen blijven beschikbaar voor bestaande mails.
+Op Linux zijn voor generatie `fonts-liberation` en `fonts-urw-base35` nodig.
 
 ## Gebruik
 

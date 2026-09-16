@@ -18,19 +18,27 @@ test('no phone means no empty phone line', () => {
 });
 test('copy assets stay absolute and use stable addresses', () => {
   const {html} = handtekening(p);
-  assert.match(html, /https:\/\/bennolambooy.github.io\/Park\/handtekening-compact.png/);
+  assert.match(html, /https:\/\/bennolambooy.github.io\/Park\/handtekening-regels.png/);
   assert.ok(!html.includes('?v='));
 });
-test('compact signature follows the approved order and mobile dimensions', () => {
+test('signature uses Helvetica, unbroken lines and approved order without address', () => {
   const {html, tekst} = handtekening(p, {logovariant:'groen'});
-  const parts = ['Met vriendelijke groet', 'tel:', 'woordbeeld-groen', 'Het Parkpaviljoen', 'Baden Powelllaan', 'Elke dag open van 10 tot 18 uur.', 'www.hetparkinrotterdam.nl', 'handtekening-compact.png', 'Volg ons via'];
+  const parts = ['Met vriendelijke groet', 'tel:', 'woordbeeld-groen', 'www.hetparkinrotterdam.nl', 'Het Parkpaviljoen is elke dag open van 10 tot 18 uur.', 'Volg onze', 'handtekening-regels.png'];
   for (let i = 1; i < parts.length; i++) assert.ok(html.indexOf(parts[i]) > html.indexOf(parts[i-1]));
-  assert.match(html, /width="300"/);
-  assert.match(html, /width="120"/);
-  assert.match(html, /font-size:14px/);
+  assert.match(html, /height="56"/);
+  assert.match(html, /width="132"/);
+  assert.match(html, /font-family:Helvetica,Arial,sans-serif;font-size:12px/);
+  assert.match(html, /white-space:nowrap/);
+  assert.ok(!html.includes('Baden Powelllaan'));
+  assert.ok(!tekst.includes('3016 GJ'));
   assert.ok(!html.includes('width:560px'));
-  assert.match(html, /uur\.<br><a[^>]+>www\.hetparkinrotterdam\.nl<\/a>/);
-  assert.ok(tekst.includes(p.functie + '\n\n' + p.telefoon));
+  assert.ok(tekst.includes(p.functie + '\n' + p.telefoon));
+});
+test('address can be enabled for HTML and plain-text signatures', () => {
+  const {html, tekst} = handtekening(p, {toonAdres:true});
+  assert.match(html, /Baden Powelllaan 2<br>3016 GJ Rotterdam/);
+  assert.ok(html.indexOf('Baden Powelllaan') > html.indexOf('www.hetparkinrotterdam.nl'));
+  assert.match(tekst, /Baden Powelllaan 2\n3016 GJ Rotterdam/);
 });
 test('random can select either green or the current season on each call', () => {
   assert.equal(kiesLogovariant('random', () => 0.1), 'groen');

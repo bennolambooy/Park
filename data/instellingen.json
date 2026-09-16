@@ -2,5 +2,6 @@
   "vastgezet_titel": "Parkwoensdag",
   "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
   "aanvraag_id": "dac185d8-4a8f-4480-8579-d26b8e93d06d",
-  "logostijl": "random"
+  "logostijl": "random",
+  "toon_adres": false
 }
