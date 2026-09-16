@@ -1,5 +1,5 @@
-import {SITE, WEBSITE} from './config.js?v=20260916-6';
-import {esc} from './shared.js?v=20260916-6';
+import {SITE, WEBSITE} from './config.js?v=20260916-7';
+import {esc} from './shared.js?v=20260916-7';
 
 export function valideerPersoon(p) {
   if (!p || !/^[a-zA-Z0-9_-]{8,80}$/.test(p.id)) throw new Error('Ongeldig persoonsprofiel.');

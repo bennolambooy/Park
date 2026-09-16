@@ -78,6 +78,7 @@ try {
   const page = await context.newPage();
   await page.goto(base + 'admin.html');
   assert.equal(await page.locator('.shell').isVisible(), false);
+  assert.ok(!(await page.locator('.toegang').innerText()).includes('Vul het Park-wachtwoord'));
   await page.locator('.toegang input').fill('verkeerd');
   await page.locator('.toegang button').click();
   await page.waitForFunction(() => document.querySelector('.toegang .status').textContent.includes('klopt niet'));
@@ -236,12 +237,23 @@ try {
 
   await copy.goto(base);
   await copy.locator('[data-copy="3"]').waitFor();
+  assert.equal(await copy.locator('#titel').innerText(), 'Handtekeningen');
+  assert.equal(await copy.locator('.eyebrow').count(), 0);
+  assert.equal(await copy.locator('#intro').count(), 0);
+  assert.equal(await copy.locator('#installeren').getAttribute('open'), null);
+  assert.equal(await copy.locator('[data-download="2"]').isVisible(), false);
   assert.equal(await copy.locator('#overzicht .panel').count(), 4);
+  await copy.setViewportSize({width:1100,height:1000});
+  const cardTops = await copy.locator('#overzicht .panel').evaluateAll(els => els.slice(0,2).map(el => el.getBoundingClientRect().top));
+  assert.equal(cardTops[0], cardTops[1], 'variant cards align in desktop grid');
+  await copy.setViewportSize({width:390,height:844});
   assert.equal(await copy.locator('#detail').isVisible(), false);
   await copy.locator('[data-copy="2"]').click();
   await copy.waitForFunction(() => document.querySelector('#kaart-status-2').textContent.startsWith('Gekopieerd.'));
   const galleryHtml = await copy.evaluate(async () => (await (await navigator.clipboard.read())[0].getType('text/html')).text());
   assert.match(galleryHtml, /Zoë van het Park/);
+  await copy.locator('#overzicht .panel').nth(2).locator('.extra-opties summary').click();
+  assert.equal(await copy.locator('[data-download="2"]').isVisible(), true);
   const downloadPromise = copy.waitForEvent('download');
   await copy.locator('[data-download="2"]').click();
   const download = await downloadPromise;
@@ -253,6 +265,10 @@ try {
   assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'the page does not scroll horizontally');
   assert.ok(await copy.locator('.signature-wrap:visible').evaluateAll(els => els.every(el => el.scrollWidth <= el.clientWidth + 1)), 'none of the previews scroll horizontally');
   assert.equal(await copy.locator('#installeren').isVisible(), true, 'installation help is also available on the overview');
+  await copy.locator('#installeren > summary').click();
+  await copy.locator('#installeren details').filter({hasText:'Apple Mail op iPhone'}).locator('summary').click();
+  assert.equal(await copy.getByText('Apple documenteert dit veld als alleen tekst.', {exact:false}).isVisible(), true, 'important limitations remain available in help');
+  await copy.locator('#installeren > summary').click();
   for (const width of [320, 375, 390]) {
     await copy.setViewportSize({width,height:844});
     assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `overview fits ${width}px`);

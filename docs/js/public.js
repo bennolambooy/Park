@@ -1,6 +1,6 @@
-import {handtekening, kiesLogovariant} from './signature.js?v=20260916-6';
-import {leesPubliek, kopieer, esc, downloadHandtekening} from './shared.js?v=20260916-6';
-import {toegang} from './gate.js?v=20260916-6';
+import {handtekening, kiesLogovariant} from './signature.js?v=20260916-7';
+import {leesPubliek, kopieer, esc, downloadHandtekening} from './shared.js?v=20260916-7';
+import {toegang} from './gate.js?v=20260916-7';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -11,8 +11,6 @@ const basis = new URL('./', location.href).href;
 function teken() {
   const versie = (agenda?.versie || agenda?.bijgewerkt || '') + '-' + new Date().toISOString().slice(0, 10);
   $('handtekening').innerHTML = handtekening(persoon, {basis, toonAdres: agenda?.toon_adres === true, versie, logovariant: logo}).html;
-  const gekozen = agenda?.events?.find(ev => ev.id === agenda.gekozen_id);
-  $('actueel').textContent = gekozen ? gekozen.tekst : 'Bekijk wat er binnenkort in het Park te doen is.';
   if (agenda?.waarschuwing) {
     $('melding').hidden = false;
     $('melding').textContent = agenda.waarschuwing;
@@ -27,16 +25,14 @@ async function start() {
     if (id) {
       persoon = allePersonen.find(p => p.id === id);
       if (!persoon) throw new Error('Deze persoonlijke link bestaat niet meer. Vraag de beheerder om je nieuwe link.');
-      $('titel').textContent = 'De handtekening van ' + persoon.naam;
-      $('intro').textContent = 'Je gegevens staan al goed. Kopieer je handtekening en plak hem in de instellingen van je e-mailprogramma.';
+      $('titel').textContent = persoon.naam;
     } else if (params.has('voorbeeld')) {
       persoon = {id: 'voorbeeld-profiel', naam: 'Robin van het Park', functie: 'Medewerker · Stichting het Park',
         telefoon: '010 123 45 67'};
       $('melding').hidden = false;
-      $('melding').textContent = 'Voorbeeld met fictieve gegevens. De beheerder maakt voor iedere persoon een eigen link.';
+      $('melding').textContent = 'Voorbeeld met fictieve gegevens.';
     } else {
-      $('titel').textContent = 'Alle handtekeningen';
-      $('intro').textContent = 'Kies je naam en de gewenste uitvoering. Kopieer de volledige handtekening direct uit het overzicht.';
+      $('titel').textContent = 'Handtekeningen';
     }
     logo = kiesLogovariant(agenda.logostijl);
     teken();
@@ -60,12 +56,12 @@ function renderOverzicht() {
   kaarten = [null, ...allePersonen].flatMap(p => ['groen', 'seizoen'].map(variant => ({persoon:p, variant})));
   overzicht.innerHTML = kaarten.map((kaart, i) => {
     const sig = handtekening(kaart.persoon, {basis, toonAdres: agenda?.toon_adres === true, versie:agenda?.versie || '', logovariant:kaart.variant});
-    return '<section class="panel"><h2>' + esc(kaart.persoon?.naam || 'Algemene handtekening') +
-      '</h2><p class="variant-label">' + (kaart.variant === 'groen' ? 'Park-groen' : 'Actuele seizoenskleur') +
-      '</p><div class="signature-wrap" id="kaart-' + i + '" tabindex="0">' + sig.html +
-      '</div><div class="actions"><button data-copy="' + i + '">Kopieer handtekening</button>' +
-      '<button class="secondary small" data-download="' + i + '">Download HTML</button></div>' +
-      '<p class="status" id="kaart-status-' + i + '" role="status"></p></section>';
+    return '<section class="panel"><div class="kaart-kop"><h2>' + esc(kaart.persoon?.naam || 'Algemeen') +
+      '</h2><span class="variant-label">' + (kaart.variant === 'groen' ? 'Groen' : 'Seizoen') +
+      '</span></div><div class="signature-wrap" id="kaart-' + i + '" tabindex="0">' + sig.html +
+      '</div><div class="actions"><button data-copy="' + i + '">Kopieer handtekening</button></div>' +
+      '<p class="status" id="kaart-status-' + i + '" role="status"></p>' +
+      '<details class="extra-opties"><summary>Meer opties</summary><div class="actions"><button class="secondary small" data-download="' + i + '">Download HTML</button></div></details></section>';
   }).join('');
 }
 $('overzicht').addEventListener('click', async event => {

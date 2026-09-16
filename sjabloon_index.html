@@ -3,33 +3,26 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="same-origin">
-  <title>E-mailhandtekening · het Park</title><link rel="stylesheet" href="assets/app.css?v=20260916-6">
-  <script type="module" src="js/public.js?v=20260916-6"></script>
+  <title>E-mailhandtekening · het Park</title><link rel="stylesheet" href="assets/app.css?v=20260916-7">
+  <script type="module" src="js/public.js?v=20260916-7"></script>
 </head>
 <body><div class="shell">
-  <header class="topbar"><a class="brand" href="./" aria-label="het Park – handtekeningen"><img src="woordbeeld-groen.png" width="152" height="36" alt="het Park"></a><nav aria-label="Hoofdnavigatie"><a href="admin.html">Beheer</a><a href="https://hetparkinrotterdam.nl">Naar het Park ↗</a></nav></header>
+  <header class="topbar"><a class="brand" href="./" aria-label="het Park – handtekeningen"><img src="woordbeeld-groen.png" width="152" height="36" alt="het Park"></a><nav aria-label="Hoofdnavigatie"><a href="admin.html">Beheer</a></nav></header>
   <main>
-    <p class="eyebrow">Een stukje Park in je e-mail</p>
-    <h1 id="titel">Je handtekening, klaar om te delen.</h1>
-    <p class="intro" id="intro">Je handtekening wordt geladen…</p>
+    <h1 id="titel">Handtekeningen</h1>
     <div id="melding" class="notice" role="status" hidden></div>
     <div id="overzicht" class="overzicht" hidden></div>
-    <div class="columns" id="detail">
+    <div id="detail">
       <section class="panel" aria-label="Voorbeeld van je handtekening">
-        <p class="caption">Zo komt hij onder je e-mail</p>
         <div class="signature-wrap" id="handtekening" tabindex="0">Even laden…</div>
-        <div class="actions"><button id="kopieer" disabled>Kopieer mijn handtekening</button><button class="secondary small" id="download">Download HTML</button><button class="secondary small" id="andere-kleur" hidden>Andere logokleur</button></div>
+        <div class="actions"><button id="kopieer" disabled>Kopieer handtekening</button><button class="secondary small" id="andere-kleur" hidden>Andere logokleur</button></div>
         <p id="status" class="status" role="status" aria-live="polite"></p>
+        <details class="extra-opties"><summary>Meer opties</summary><div class="actions"><button class="secondary small" id="download">Download HTML</button><button id="ververs" class="secondary small">Verversen</button></div></details>
       </section>
-      <aside>
-        <section class="panel"><h2>Eenmalig instellen</h2><p class="muted">Kopieer je handtekening en plak hem met behoud van opmaak in je mailprogramma.</p><a href="#installeren">Uitleg voor jouw mailprogramma ↓</a></section>
-        <section class="panel"><p class="caption">Nu in de handtekening</p><p class="muted" id="actueel">{{EVENT}}</p>
-          <button id="ververs" class="secondary small">Voorbeeld verversen</button></section>
-      </aside>
     </div>
-    <section class="panel installatie" id="installeren" aria-label="Handtekening installeren">
-      <h2>Je handtekening gebruiken</h2>
-      <p class="muted">Kies hierboven je naam en uitvoering. Vervang je oude handtekening door de nieuwe; voeg hem niet eronder toe. Stel hem eenmalig in op elk apparaat waarop je mailt.</p>
+    <details class="installatie" id="installeren">
+      <summary>Hulp bij instellen</summary>
+      <p class="muted">Kopieer je handtekening en vervang de oude in je mailinstellingen. Doe dit op elk apparaat waarop je mailt.</p>
       <details><summary>Outlook</summary>
         <p>Open Instellingen → Accounts → Handtekeningen (in sommige versies: E-mail → Opstellen en beantwoorden). Maak of bewerk je handtekening, plak met behoud van opmaak en kies het juiste mailaccount. In klassieke Outlook vind je dit onder Bestand → Opties → E-mail → Handtekeningen.</p>
         <p class="fine">Outlook op je telefoon heeft eigen instellingen en kan opmaak anders behandelen. Controleer daar apart een nieuw bericht. <a href="https://support.microsoft.com/en-gb/outlook/mail/how-to-add-and-change-an-email-signature-in-outlook" target="_blank" rel="noopener">Handleiding van Microsoft ↗</a></p>
@@ -47,9 +40,7 @@
         <p>Bloei en agenda worden elke ochtend vernieuwd. Bij de seizoensvariant verandert ook de logokleur. Je mailprogramma moet de online afbeeldingen wel laden en kan een oudere versie bewaren.</p>
         <p>Naam, functie, telefoonnummer, adreskeuze en de overige tekst zijn een kopie. Na wijzigingen kopieer je de handtekening opnieuw, ook na deze vernieuwde mobiele opmaak. De tekst van je eigen bericht erboven wordt niet door deze tool aangepast.</p>
       </details>
-      <p class="fine" style="margin-top:18px">De tekst gebruikt Helvetica, met Arial als alternatief, op 12 pixels (9 punten) en normale regelafstand. De omlijnde labels en actuele teksten vormen één afbeelding. Een goed voorbeeld in deze tool is nog geen garantie voor de weergave in elk mailprogramma.</p>
-    </section>
-    <p class="footer">Met zorg voor het Park · bijgewerkt op {{DATUM}} · <a href="beheer.html">Bloeikalender</a></p>
+    </details>
     <noscript><p>Schakel JavaScript in om je persoonlijke handtekening te laden en kopiëren.</p></noscript>
   </main>
 </div></body></html>

@@ -1,7 +1,7 @@
-import {toegang} from './gate.js?v=20260916-6';
-import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-6';
-import {handtekening, persoonlijkeLink, valideerPersoon, kiesLogovariant} from './signature.js?v=20260916-6';
-import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260916-6';
+import {toegang} from './gate.js?v=20260916-7';
+import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-7';
+import {handtekening, persoonlijkeLink, valideerPersoon, kiesLogovariant} from './signature.js?v=20260916-7';
+import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260916-7';
 
 await toegang();
 

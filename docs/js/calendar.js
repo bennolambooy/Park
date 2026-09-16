@@ -1,6 +1,6 @@
-import {toegang} from './gate.js?v=20260916-6';
-import {inloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-6';
-import {esc, dagVanJaar} from './shared.js?v=20260916-6';
+import {toegang} from './gate.js?v=20260916-7';
+import {inloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260916-7';
+import {esc, dagVanJaar} from './shared.js?v=20260916-7';
 await toegang();
 
 const PAD = 'data/bloeikalender.json';

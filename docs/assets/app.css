@@ -6,8 +6,12 @@ html[data-locked] .shell{display:none!important}
 .toegang{min-height:100vh;display:grid;place-items:center;padding:24px}
 .toegang .panel{width:100%;max-width:440px}
 .overzicht{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:30px}
-.overzicht .panel{margin:0}.overzicht .signature-wrap{padding:16px 0}
+.overzicht .panel,.overzicht .panel+.panel{margin:0}.overzicht .signature-wrap{padding:10px 0}
 .variant-label{font-size:12px;color:#627368;margin:4px 0 16px}
+.kaart-kop{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+.kaart-kop h2{font-size:18px;margin:0}.kaart-kop .variant-label{margin:0;white-space:nowrap}
+#detail{max-width:650px;margin-top:24px}
+.extra-opties{margin-top:14px}.extra-opties summary{color:#627368;font-size:12px}
 @media(max-width:900px){.overzicht{grid-template-columns:1fr}}
 :root{color:#193728;background:#f5f5ef;font-family:Walsheim,Arial,sans-serif;font-size:16px;line-height:1.55}
 body{margin:0} a{color:#00752e;text-underline-offset:3px} button,input{font:inherit}

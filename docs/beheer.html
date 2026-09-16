@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Bloeikalender bijwerken · het Park</title>
-<link rel="stylesheet" href="assets/app.css?v=20260916-6">
+<link rel="stylesheet" href="assets/app.css?v=20260916-7">
 <style>
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
@@ -72,24 +72,18 @@
 <body><div class="shell">
 <header class="topbar"><a class="brand" href="./" aria-label="het Park – handtekeningen"><img src="woordbeeld-groen.png" width="152" height="36" alt="het Park"></a><nav aria-label="Hoofdnavigatie"><a href="./">Handtekening</a><a href="admin.html">Beheer</a><a href="beheer.html" aria-current="page">Bloeikalender</a></nav></header>
 <main>
-<p class="eyebrow">Beheer · bloeikalender</p>
-<h1>Bloeikalender van het Park</h1>
-<p class="sub">Voor de hoveniers en vrijwilligers · wat je hier aanpast wordt automatisch gepubliceerd
-in de <a href="./">e-mailhandtekening</a>.</p>
+<h1>Bloeikalender</h1>
 <div id="melding" role="status" aria-live="polite"></div>
 
 <div class="kaart" id="sleutelkaart" hidden>
   <div class="naam">Inloggen als beheerder</div>
-  <p class="periode" id="sleuteluitleg" style="margin:4px 0 0">Vraag het wachtwoord aan de beheerder
-  en typ het hieronder. Je sessie blijft actief zolang dit tabblad open is.</p>
+  <p class="periode" id="sleuteluitleg" role="status" style="margin:4px 0 0"></p>
   <label for="sleutelveld">Wachtwoord</label><input id="sleutelveld" type="password" placeholder="wachtwoord" autocomplete="current-password">
   <button class="knopje dicht" style="margin-top:8px" onclick="bewaarSleutel()">Inloggen</button>
 </div>
 
 <div id="kalender-inhoud" hidden>
-<h2>In de handtekening</h2>
-<p class="klein" style="margin:0 0 6px">De bloeiregel wisselt elke dag. Zo ziet de komende week eruit
-— dit past zich direct aan op je wijzigingen hieronder:</p>
+<h2>Komende week</h2>
 <div id="preview"></div>
 
 <h2>Jaaroverzicht</h2>
@@ -120,6 +114,6 @@ dan verdwijnt het voor de rest van dit seizoen en komt het volgend jaar vanzelf 
 
 </div>
 </main></div>
-<script type="module" src="js/calendar.js?v=20260916-6"></script>
+<script type="module" src="js/calendar.js?v=20260916-7"></script>
 </body>
 </html>
