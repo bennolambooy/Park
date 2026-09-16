@@ -1,10 +1,10 @@
 {
   "bijgewerkt": "2026-09-16",
-  "logostijl": "random",
+  "logostijl": "groen",
   "toon_adres": false,
   "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
   "vastgezet_titel": "Parkwoensdag",
-  "aanvraag_id": "dac185d8-4a8f-4480-8579-d26b8e93d06d",
+  "aanvraag_id": "1e43d729-4b8d-4c85-8faf-dd5026732676",
   "gekozen_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
   "waarschuwing": "",
   "events": [
@@ -108,5 +108,5 @@
       "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
     }
   ],
-  "versie": "20a6f57faffd0950"
+  "versie": "0cbbf810fe8699b2"
 }
