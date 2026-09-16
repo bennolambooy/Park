@@ -1,68 +1,123 @@
-# E-mailhandtekening van het Park
+# E-mailhandtekeningen van het Park
 
-Een blokje onder de e-mailhandtekening van Stichting het Park dat elke dag
-automatisch laat zien **wat er nu bloeit in het Park** en **wat het
-eerstvolgende evenement is** (live van de agenda op hetparkinrotterdam.nl).
+[Handtekening kopiëren](https://bennolambooy.github.io/Park/) ·
+[Beheer](https://bennolambooy.github.io/Park/admin.html) ·
+[Voorbeeld met fictieve gegevens](https://bennolambooy.github.io/Park/?voorbeeld)
 
-Zo ziet het eruit:
+De beheerder maakt personen aan met naam, functie en eventueel een zakelijk telefoonnummer.
+Iedere persoon krijgt een vaste kopieerlink. De handtekening bevat de groet, persoonsgegevens,
+het originele Park-woordbeeld en het dagelijks bijgewerkte bloei- en agendablok.
 
-<img src="docs/handtekening.png" width="560" alt="voorbeeld van de handtekening">
+## Gebruik
 
-Het plaatje staat op dubbele resolutie (1120px) en wordt op 560px getoond,
-zodat het op high-dpi-schermen scherp blijft.
+1. Open **Beheer** en log in met het bestaande beheerwachtwoord.
+2. Voeg een persoon toe, wacht op “Gepubliceerd” en deel de persoonlijke link.
+3. De persoon kopieert de hele handtekening naar de e-mailinstellingen.
+4. Na een wijziging van naam of functie moet de persoon opnieuw kopiëren. De link blijft gelijk.
 
-## Hoe het werkt
+De beheerder kan personen bewerken en verwijderen. Verwijderen trekt de kopieerlink in;
+al verstuurde mails of eerder geplakte handtekeningen verdwijnen daarmee niet.
 
-- `data/bloeikalender.json` — de bloeikalender, samengesteld uit de
-  beplantingslijsten van het Park (hoofdroute 2025, vak 11, gebied 10,
-  Schiereiland/gebieden 1+7), de toelichting gebieden 12+13, het
-  stinzenplanten-artikel en de Van der Kloet-bedden bij het Parkpaviljoen.
-- `genereer.py` — kiest de bloeiregel van de dag (wisselt dagelijks tussen wat
-  er op dat moment bloeit), leest het eerstvolgende evenement van
-  [de agenda](https://hetparkinrotterdam.nl/agenda) en tekent het plaatje.
-- `.github/workflows/ververs.yml` — draait het script elke ochtend en publiceert
-  het resultaat in `docs/`.
-- `docs/index.html` — de pagina waar medewerkers en vrijwilligers met één klik
-  hun handtekening kopiëren.
+**Logokleur** is één algemene instelling:
 
-De handtekening verwijst naar het plaatje via een **vast webadres**. Het is dus
-géén bijlage: mailprogramma's van ontvangers laden het plaatje van internet,
-en daar staat altijd de versie van vandaag.
+- **Random** kiest bij openen of kopiëren tussen standaardgroen en de huidige seizoenskleur.
+- **Seizoenskleur** gebruikt paars (lente), rood (zomer), oker (herfst) of blauw (winter).
+- **Groen** gebruikt altijd het standaard Park-groen.
 
-## Eenmalige installatie
+De random keuze zit daarna in de gekopieerde handtekening; hij wordt niet opnieuw geloot
+wanneer een ontvanger dezelfde e-mail opent. Seizoenskleur-afbeeldingen veranderen automatisch
+met het seizoen. Een gewijzigde algemene modus geldt voor nieuwe kopieën.
+De seizoensgrenzen zijn gelijk aan de oorspronkelijke tool: 21 maart, 21 juni, 21 september en 21 december.
 
-1. Zet deze map op GitHub (nieuw repository, bijv. `park-handtekening`,
-   zichtbaarheid *public* — nodig voor GitHub Pages).
-2. Ga naar **Settings → Pages** en kies bij *Source*: branch `main`,
-   map `/docs`. Opslaan.
-3. Ga naar de **Actions**-tab en zet workflows aan (groene knop).
-   Start de workflow *Ververs handtekening* één keer handmatig via *Run workflow*.
-4. Na een paar minuten staat de kopieerpagina op
-   `https://<gebruikersnaam>.github.io/park-handtekening/`.
-   Deel die link met iedereen die de handtekening wil gebruiken.
+## Vastzetten en vernieuwen
 
-## Bloeikalender bijwerken
+Vastzetten gebruikt de unieke evenement-URL, niet alleen de titel. Terugkerende activiteiten
+met dezelfde naam zijn daardoor afzonderlijk selecteerbaar. Na de einddatum wordt automatisch
+het eerstvolgende evenement gekozen.
 
-**Voor hoveniers en vrijwilligers:** open `beheer.html` op de kopieerpagina-site.
-Daar staat wat er volgens de kalender nu bloeit, met grote knoppen: *Uitgebloeid*
-(verbergt de regel voor de rest van dit seizoen), *Bloeit nu al* en een
-invulveld om zelf iets toe te voegen. Opslaan vraagt eenmalig een wachtwoord;
-de beheerder deelt dat onderhands. Technisch: het wachtwoord ontgrendelt een
-AES-versleutelde *fine-grained personal access token* (alléén *Contents:
-read and write*, alléén dit repository) die in `beheer.html` staat.
+Opslaan start een nieuwe publicatie. De beheerpagina wacht op de bijbehorende aanvraag-id
+in de gepubliceerde agenda en laadt pas daarna de nieuwe afbeelding. Bij vertraging blijft
+er “opgeslagen, nog niet gepubliceerd” staan; **Lijst herladen** controleert opnieuw.
+De kopieerpagina controleert elke minuut op een nieuwe versie.
 
-Handmatig kan ook: pas `data/bloeikalender.json` aan (potloodje op GitHub →
-commit). Elke regel heeft een periode (`van`/`tot`, als `[maand, helft]`),
-een prioriteit (1 = blikvanger, 2 = mooi, 3 = voor de fijnproever) en de bron.
-Een entry kan ook `"pauze_tot": "JJJJ-MM-DD"` hebben: tot en met die datum
-wordt hij overgeslagen (zo werkt de *Uitgebloeid*-knop).
+Mailprogramma’s kunnen externe afbeeldingen cachen of blokkeren. De tool kan die cache niet
+op afstand wissen. De preview krijgt een nieuwe afbeeldings-URL per versie; in gekopieerde
+mails houden de afbeeldingen vaste URL’s, zodat toekomstige updates mogelijk blijven.
 
-Na elke aanpassing aan de kalender draait de workflow automatisch en staat de
-nieuwe versie binnen een minuut op het plaatje.
+## Toegang en gegevens
 
-Lokaal testen kan ook:
+Dit is een statische GitHub Pages-site. Er is één gedeelde beheerrol; personen hebben geen
+eigen login nodig. Het bestaande wachtwoord ontgrendelt een beperkte GitHub-sleutel.
+GitHub controleert schrijfbevoegdheid bij iedere wijziging. De ontsleutelde sleutel blijft
+alleen in sessionStorage van het tabblad, met een expliciete uitlogknop. Er wordt geen nieuwe
+sleutel of wachtwoord in dit project aangemaakt.
 
-```bash
-pip install pillow
-python3 genereer.py        # schrijft docs/handtekening.png + index.html
+De site én repository zijn openbaar. Personen en zakelijke telefoonnummers zijn dus openbare
+gegevens; persoonlijke links zijn geen toegangsbeveiliging. Vul geen privégegevens in.
+Het verwijderen van een persoon wist de historische Git-commits niet.
+
+Bij gelijktijdige wijzigingen controleert GitHub de bestandsversie. Een conflict overschrijft
+geen gegevens en laat de invoer staan. Herlaad en controleer de invoer voordat je opnieuw opslaat.
+
+## Opbouw
+
+- `genereer.py`: dagelijkse generatie van banner, woordbeelden en openbare gegevens.
+- `park/agenda.py`: begrensde HTML-parser, datums en evenementweergave.
+- `park/personen.py`: profielvalidatie voor publicatie.
+- `data/bloeikalender.json`, `data/instellingen.json`, `data/personen.json`: brongegevens.
+- `sjabloon_index.html`: bron van de kopieerpagina; `docs/index.html` is gegenereerd.
+- `docs/js/`: losse modules voor handtekening, beheer, kalender, opslag en klembord.
+- `assets/woordbeeld.svg`: het originele horizontale woordbeeld van de Park-website.
+- `assets/woordbeeld-masker.png`: transparante weergave op hoge resolutie; de generator
+  kleurt alleen de originele vorm. Bron: https://hetparkinrotterdam.nl/assets/img/hetParkT.svg.
+- `docs/woordbeeld-groen.png` en `docs/woordbeeld-seizoen.png`: e-mailgeschikte PNG’s.
+- `tests/`: regressietests en browsercontrole met gesimuleerde GitHub-opslag.
+
+## Lokaal uitvoeren
+
+```sh
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python genereer.py
+.venv/bin/python -m http.server 8765 --directory docs
 ```
+
+De huisstijlfonts worden bij de eerste generatie van de eigen Park-website opgehaald en
+blijven buiten de repository. Open http://localhost:8765/?voorbeeld voor fictieve gegevens.
+Beheerpagina’s schrijven met een geldige login naar het echte Park-repository; gebruik voor
+testen de browsercontrole hieronder, die alle schrijftoegang vervangt door testgegevens.
+
+```sh
+.venv/bin/python -m unittest discover -s tests -v
+npm ci
+npm test
+npx playwright install chromium
+npm run test:browser
+```
+
+Browsertests controleren inloggen, personen aanmaken/bewerken/verwijderen, conflicten,
+vastzetten en loslaten met vertraagde publicatie, alle logomodi, HTML-kopiëren, mobiele
+weergave, kalender en uitloggen. Screenshots komen in `test-results/`.
+
+## Publicatie
+
+GitHub Pages gebruikt **GitHub Actions** als bron. `.github/workflows/ververs.yml`
+draait dagelijks, handmatig en na wijzigingen op `main`. Hij valideert, genereert,
+bewaart de output en publiceert die expliciet met `actions/deploy-pages`. Daarmee
+zijn generatie en publicatie onderdeel van dezelfde gecontroleerde run.
+
+Bij eerste ingebruikname van deze versie: zet bij **Settings → Pages → Source**
+de bron op **GitHub Actions**, merge naar `main` en controleer de workflow.
+De bestaande site-URL blijft gelijk. De productiejob draait uitsluitend op `main`.
+`controle.yml` voert de volledige regressie- en browsertests uit op werkbranches en PR’s.
+
+## Gerepareerde fouten
+
+- De laatste agendakaart nam datums uit de footer mee: 11 oktober werd ten onrechte
+  11 oktober t/m 4 september van het volgende jaar.
+- Oude evenementen werden na 45 dagen naar volgend jaar verschoven.
+- Vastzetten meldde succes vóór publicatie en ververste de afbeelding niet.
+- Evenementen met dezelfde titel konden niet afzonderlijk worden vastgezet.
+- Lange evenementtitels konden van de afbeelding vallen; ze worden nu afgebroken.
+- De kalenderpreview telde dagen op basis van verstreken uren, met een afwijking rond
+  zomertijd; hij gebruikt nu kalenderdagen.

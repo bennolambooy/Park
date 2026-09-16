@@ -9,3 +9,7 @@ __pycache__/
 # gelicenseerde huisstijlfonts: worden bij het draaien van de site gehaald
 fonts/
 docs/fonts/
+.venv/
+test-results/
+node_modules/
+.DS_Store

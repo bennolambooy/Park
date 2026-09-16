@@ -1,0 +1,189 @@
+import assert from 'node:assert/strict';
+import {readFile, mkdir} from 'node:fs/promises';
+import {resolve, extname} from 'node:path';
+import {createServer} from 'node:http';
+import {webcrypto} from 'node:crypto';
+import {chromium} from 'playwright';
+
+const docs = resolve('docs');
+const mime = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.json':'application/json', '.png':'image/png'};
+const server = createServer(async (req, res) => {
+  const path = resolve(docs, '.' + new URL(req.url, 'http://localhost').pathname.replace(/\/$/, '/index.html'));
+  if (!path.startsWith(docs + '/')) { res.writeHead(403); res.end(); return; }
+  try { res.setHeader('Content-Type', mime[extname(path)] || 'application/octet-stream'); res.end(await readFile(path)); }
+  catch { res.writeHead(404); res.end(); }
+});
+await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+const base = 'http://127.0.0.1:' + server.address().port + '/';
+await mkdir('test-results', {recursive:true});
+const browser = await chromium.launch({headless:true});
+const context = await browser.newContext({permissions:['clipboard-read', 'clipboard-write'], viewport:{width:1280,height:1000}});
+const errors = [];
+context.on('page', page => page.on('pageerror', error => errors.push(error.message)));
+const baseAgenda = JSON.parse(await readFile('docs/agenda.json', 'utf8'));
+let agenda = structuredClone(baseAgenda);
+const people = {personen:[]};
+let publicPeople = {personen:[]};
+let peoplePending = null, settingsPending = null, peopleReads = 0, settingsReads = 0, writes = 0, conflict = false;
+const files = {
+  'data/personen.json': {data: people, sha:'people-0'},
+  'data/instellingen.json': {data:{vastgezet_titel:baseAgenda.vastgezet_titel, logostijl:'random'}, sha:'settings-0'},
+  'data/bloeikalender.json': {data:JSON.parse(await readFile('data/bloeikalender.json','utf8')),sha:'calendar-0'},
+};
+
+// A fake encrypted credential exercises login without using the production password/token.
+const salt = new Uint8Array(16).fill(7), iv = new Uint8Array(12).fill(9);
+const keyMaterial = await webcrypto.subtle.importKey('raw', new TextEncoder().encode('test-park-password'), 'PBKDF2', false, ['deriveKey']);
+const key = await webcrypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:300000,hash:'SHA-256'},keyMaterial,{name:'AES-GCM',length:256},false,['encrypt']);
+const cipher = await webcrypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode('test-only-credential'));
+const envelope = {zout:Buffer.from(salt).toString('base64'), iv:Buffer.from(iv).toString('base64'), blob:Buffer.from(cipher).toString('base64')};
+await context.route('**/js/config.js', async route => {
+  const source = await readFile('docs/js/config.js','utf8');
+  await route.fulfill({contentType:'text/javascript',body:source.replace(/export const GEHEIM = .*?;/, 'export const GEHEIM = ' + JSON.stringify(envelope) + ';')});
+});
+await context.route('https://api.github.com/**', async route => {
+  const request = route.request();
+  assert.equal(request.headers().authorization, 'Bearer test-only-credential');
+  const path = new URL(request.url()).pathname.split('/contents/')[1];
+  if (!path) { await route.fulfill({json:{permissions:{push:true}}}); return; }
+  const file = files[path];
+  if (!file) { await route.fulfill({status:404,json:{message:'Not found'}}); return; }
+  if (request.method() === 'GET') {
+    await route.fulfill({json:{sha:file.sha,content:Buffer.from(JSON.stringify(file.data)).toString('base64')}});
+  } else {
+    const body = request.postDataJSON();
+    if (conflict || body.sha !== file.sha) { conflict = false; await route.fulfill({status:409,json:{message:'Conflict'}}); return; }
+    assert.equal(body.branch, 'main');
+    file.data = JSON.parse(Buffer.from(body.content, 'base64').toString('utf8'));
+    file.sha += '-next'; writes++;
+    if (path === 'data/personen.json') { peoplePending = structuredClone(file.data); peopleReads = 0; }
+    if (path === 'data/instellingen.json') { settingsPending = structuredClone(file.data); settingsReads = 0; }
+    await route.fulfill({json:{content:{sha:file.sha}}});
+  }
+});
+await context.route(base + 'personen.json?*', async route => {
+  if (peoplePending && ++peopleReads >= 2) { publicPeople = peoplePending; peoplePending = null; }
+  await route.fulfill({json:publicPeople});
+});
+await context.route(base + 'agenda.json?*', async route => {
+  if (settingsPending && ++settingsReads >= 2) {
+    agenda = {...agenda, ...settingsPending, gekozen_id:settingsPending.vastgezet_id || agenda.events[0].id, versie:'test-version-' + writes};
+    settingsPending = null;
+  }
+  await route.fulfill({json:agenda});
+});
+
+try {
+  const page = await context.newPage();
+  await page.goto(base + 'admin.html');
+  assert.equal(await page.locator('#beheer').isVisible(), false);
+  await page.locator('#wachtwoord').fill('verkeerd');
+  await page.locator('#login-form button').click();
+  await page.waitForFunction(() => document.querySelector('#melding').textContent.includes('klopt niet'));
+  assert.equal(writes, 0);
+  await page.locator('#wachtwoord').fill('test-park-password');
+  await page.locator('#login-form button').click();
+  await page.locator('#beheer').waitFor({state:'visible'});
+  assert.equal(await page.locator('#wachtwoord').inputValue(), '');
+  assert.equal(await page.evaluate(() => localStorage.getItem('parksleutel')), null);
+  await page.locator('#naam').fill('Zoë van het Park');
+  await page.locator('#functie').fill('Hovenier & beheer');
+  await page.locator('#telefoon').fill('010 123 45 67');
+  await page.locator('#opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#persoon-status').textContent.startsWith('Opgeslagen.'));
+  assert.equal(publicPeople.personen.length, 0, 'do not claim publication before public data changes');
+  await page.waitForFunction(() => document.querySelector('#persoon-status').textContent.startsWith('Gepubliceerd.'));
+  assert.equal(publicPeople.personen.length, 1);
+  const id = publicPeople.personen[0].id;
+  await page.locator('#functie').fill('Coördinator vrijwilligers');
+  await page.locator('#telefoon').fill('');
+  await page.locator('#opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#persoon-status').textContent.startsWith('Gepubliceerd.'));
+  assert.equal(publicPeople.personen[0].id, id);
+
+  conflict = true;
+  await page.locator('#functie').fill('Nog niet opgeslagen');
+  await page.locator('#opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#persoon-status').textContent.includes('ondertussen gewijzigd'));
+  assert.equal(await page.locator('#functie').inputValue(), 'Nog niet opgeslagen');
+  assert.equal(publicPeople.personen[0].functie, 'Coördinator vrijwilligers');
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('#annuleren').click();
+
+  // Pin, then unpin, using ids; the preview changes only after public confirmation.
+  const pin = agenda.events.find(ev => ev.id !== agenda.gekozen_id);
+  await page.locator('[data-pin="' + pin.id + '"]').click();
+  await page.waitForFunction(() => document.querySelector('#agenda-status').textContent.startsWith('Opgeslagen.'));
+  assert.ok(!(await page.locator('#banner').getAttribute('src')).includes('test-version'));
+  await page.waitForFunction(() => document.querySelector('#agenda-status').textContent.startsWith('Gepubliceerd.'));
+  assert.equal(agenda.gekozen_id, pin.id);
+  assert.match(await page.locator('#banner').getAttribute('src'), /test-version/);
+  await page.locator('[data-pin=""]').click();
+  await page.waitForFunction(() => document.querySelector('#agenda-status').textContent.startsWith('Gepubliceerd.'));
+  assert.equal(agenda.gekozen_id, agenda.events[0].id);
+
+  await page.locator('input[value="groen"]').check();
+  await page.locator('#logo-opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
+  assert.equal(agenda.logostijl, 'groen');
+  assert.equal(files['data/instellingen.json'].data.vastgezet_id, '');
+  await page.screenshot({path:'test-results/beheer-desktop.png',fullPage:true});
+
+  const copy = await context.newPage();
+  await copy.goto(base + '?persoon=' + id);
+  await copy.locator('#kopieer:not([disabled])').waitFor();
+  assert.match(await copy.locator('#handtekening').innerText(), /Met vriendelijke groet,[\s\S]*Zoë van het Park[\s\S]*Coördinator/);
+  assert.equal(await copy.locator('#handtekening a[href^="tel:"]').count(), 0);
+  assert.match(await copy.locator('#handtekening img').first().getAttribute('src'), /woordbeeld-groen/);
+  assert.equal(await copy.locator('#andere-kleur').isVisible(), false);
+  await copy.locator('#kopieer').click();
+  await copy.waitForFunction(() => document.querySelector('#status').textContent.startsWith('Gekopieerd.'));
+  const copied = await copy.evaluate(async () => {
+    const items = await navigator.clipboard.read();
+    return (await items[0].getType('text/html')).text();
+  });
+  assert.match(copied, /Met vriendelijke groet/);
+  assert.match(copied, /woordbeeld-groen.png/);
+  assert.ok(!copied.includes('?v='), 'email images must keep stable URLs');
+  await copy.screenshot({path:'test-results/handtekening-desktop.png',fullPage:true});
+  await copy.setViewportSize({width:390,height:844});
+  await copy.screenshot({path:'test-results/handtekening-mobiel.png',fullPage:true});
+  assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+
+  await page.locator('input[value="seizoen"]').check();
+  await page.locator('#logo-opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
+  await copy.reload(); await copy.locator('#kopieer:not([disabled])').waitFor();
+  assert.match(await copy.locator('#handtekening img').first().getAttribute('src'), /woordbeeld-seizoen/);
+
+  await page.locator('input[value="random"]').check();
+  await page.locator('#logo-opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
+  await copy.reload(); await copy.locator('#kopieer:not([disabled])').waitFor();
+  assert.equal(await copy.locator('#andere-kleur').isVisible(), true);
+  const before = await copy.locator('#handtekening img').first().getAttribute('src');
+  await copy.locator('#andere-kleur').click();
+  assert.notEqual(await copy.locator('#handtekening img').first().getAttribute('src'), before);
+
+  // The same session opens the calendar, including its shared auth and DST-safe preview.
+  await page.goto(base + 'beheer.html');
+  await page.locator('#kalender-inhoud').waitFor({state:'visible'});
+  assert.match(await page.locator('.kallabel').first().innerText(), /^\d{4} →$/);
+  await page.goto(base + 'admin.html');
+  await page.locator('#beheer').waitFor({state:'visible'});
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('[data-verwijder="' + id + '"]').click();
+  await page.waitForFunction(() => document.querySelector('#personenlijst').textContent.includes('nog geen personen'));
+  await page.waitForFunction(() => !document.querySelector('#opslaan').disabled);
+  await copy.reload();
+  await copy.waitForFunction(() => document.querySelector('#melding').textContent.includes('bestaat niet meer'));
+  assert.equal(await copy.locator('#kopieer').isDisabled(), true);
+  await page.locator('#uitloggen').click();
+  assert.equal(await page.locator('#beheer').isVisible(), false);
+  assert.equal(await page.evaluate(() => sessionStorage.getItem('park-beheer-sessie')), null);
+  assert.deepEqual(errors, []);
+  console.log('PASS: login, create/edit/delete, optional phone, conflicts, pin/unpin publication, global logo modes, clipboard, mobile, calendar, logout.');
+} finally {
+  await browser.close();
+  await new Promise(resolve => server.close(resolve));
+}

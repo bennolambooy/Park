@@ -10,24 +10,21 @@ Draait dagelijks via GitHub Actions, maar werkt ook lokaal: python3 genereer.py
 """
 import json
 import re
+import hashlib
+from html import escape
 import sys
 import time
 import urllib.request
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
+from park.agenda import MAANDEN, parse_events, formatteer_event
+from park.personen import valideer_personen
 
 BASIS = Path(__file__).parent
 DOCS = BASIS / "docs"
 AGENDA_URL = "https://hetparkinrotterdam.nl/agenda"
-
-MAANDEN = ["januari", "februari", "maart", "april", "mei", "juni", "juli",
-           "augustus", "september", "oktober", "november", "december"]
-WEEKDAGEN = ["ma", "di", "wo", "do", "vr", "za", "zo"]
-MND_AFKO = {"jan": 1, "feb": 2, "mrt": 3, "mar": 3, "maa": 3, "apr": 4,
-            "mei": 5, "may": 5, "jun": 6, "jul": 7, "aug": 8, "sep": 9,
-            "okt": 10, "oct": 10, "nov": 11, "dec": 12}
 
 # huisstijlkleuren van hetparkinrotterdam.nl (uit assets/css/bundle.css)
 KLEUREN = {
@@ -115,57 +112,6 @@ def haal_agenda():
     return haal(AGENDA_URL).decode("utf-8", "replace")
 
 
-def parse_events(html, dag):
-    events = []
-    for kaart in re.split(r'class="card-group__card"', html)[1:]:
-        link = re.search(r'href="(https://hetparkinrotterdam\.nl/agenda/(?!tag:)[^"]+)"', kaart)
-        titel = re.search(r'<h1 class="title">\s*(.*?)\s*</h1>', kaart, re.S)
-        if not link or not titel:
-            continue
-        blokken = re.findall(r'class="date__block[^"]*"\s*>(.*?)</div>', kaart, re.S)
-        datums = []
-        for blok in blokken:
-            mnd = re.search(r'class="mnd">\s*([A-Za-z]+)', blok)
-            dagnr = re.search(r'<br>\s*(\d{1,2})', blok)
-            if not (mnd and dagnr):
-                continue
-            maand = MND_AFKO.get(mnd.group(1).strip().lower()[:3])
-            if not maand:
-                continue
-            jaar = dag.year
-            d = date(jaar, maand, int(dagnr.group(1)))
-            if d < dag - timedelta(days=45):  # ruim voorbij: hoort bij volgend jaar
-                d = date(jaar + 1, maand, int(dagnr.group(1)))
-            datums.append(d)
-        if not datums:
-            continue
-        start, eind = datums[0], datums[-1]
-        if eind < start:
-            eind = date(start.year + 1, eind.month, eind.day)
-        sub = re.search(r'class="subTitle">(.*?)</div>', kaart, re.S)
-        tijd = re.search(r'(\d{1,2})[:.](\d{2})', sub.group(1)) if sub else None
-        events.append({
-            "titel": re.sub(r"<[^>]+>", "", titel.group(1)).strip(),
-            "start": start, "eind": eind,
-            "tijd": f"{int(tijd.group(1))}:{tijd.group(2)}" if tijd else None,
-        })
-    events.sort(key=lambda e: e["start"])
-    return events
-
-
-def formatteer_event(ev):
-    start, eind = ev["start"], ev["eind"]
-    if start == eind:
-        wanneer = f"{WEEKDAGEN[start.weekday()]} {start.day} {MAANDEN[start.month - 1]}"
-        if ev["tijd"]:
-            wanneer += f", {ev['tijd']} uur"
-    elif start.month == eind.month:
-        wanneer = f"{start.day} & {eind.day} {MAANDEN[start.month - 1]}"
-    else:
-        wanneer = f"{start.day} {MAANDEN[start.month - 1]} t/m {eind.day} {MAANDEN[eind.month - 1]}"
-    return f"{ev['titel']} · {wanneer}"
-
-
 def lees_instellingen():
     """data/instellingen.json: { "vastgezet_titel": "..." } — gezet via de kopieerpagina."""
     try:
@@ -174,34 +120,52 @@ def lees_instellingen():
         return {}
 
 
-def schrijf_agenda(events, dag):
-    """docs/agenda.json: de geparste agenda, zodat de kopieerpagina hem kan tonen."""
-    DOCS.mkdir(exist_ok=True)
+def schrijf_agenda(events, dag, gekozen, instellingen, waarschuwing=""):
+    """Publiceer de werkelijk gekozen activiteit en de verwerkte aanvraag."""
     data = {"bijgewerkt": dag.isoformat(),
-            "vastgezet_titel": lees_instellingen().get("vastgezet_titel", ""),
-            "events": [{"titel": ev["titel"], "start": ev["start"].isoformat(),
+            "logostijl": instellingen.get("logostijl", "random"),
+            "vastgezet_id": instellingen.get("vastgezet_id", ""),
+            "vastgezet_titel": instellingen.get("vastgezet_titel", ""),
+            "aanvraag_id": instellingen.get("aanvraag_id", ""),
+            "gekozen_id": gekozen["id"] if gekozen else "",
+            "waarschuwing": waarschuwing,
+            "events": [{**ev, "start": ev["start"].isoformat(),
                         "eind": ev["eind"].isoformat(), "tekst": formatteer_event(ev)}
                        for ev in events]}
-    (DOCS / "agenda.json").write_text(json.dumps(data, ensure_ascii=False, indent=1))
+    # Content version changes even when a second pin happens on the same day.
+    data["versie"] = hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()[:16]
+    (DOCS / "agenda.json").write_text(json.dumps(data, ensure_ascii=False, indent=2))
 
 
 def kies_event(dag):
-    """Geeft (tekst, datum) terug; de datum bepaalt de seizoenskleur van de regel.
-
-    Normaal het eerstvolgende evenement; is er via de kopieerpagina een evenement
-    vastgezet, dan dat — tot de einddatum voorbij is (of het van de site verdwijnt),
-    daarna vanzelf weer het eerstvolgende."""
+    instellingen = lees_instellingen()
+    waarschuwing = ""
     try:
-        events = [ev for ev in parse_events(haal_agenda(), dag) if ev["eind"] >= dag]
-        schrijf_agenda(events, dag)
-        vast = lees_instellingen().get("vastgezet_titel")
-        gekozen = next((ev for ev in events if ev["titel"] == vast), None) \
-            or (events[0] if events else None)
-        if gekozen:
-            return formatteer_event(gekozen), gekozen["start"]
+        events = parse_events(haal_agenda(), dag)
+        if not events:
+            raise ValueError("Geen evenementkaarten herkend")
     except Exception as e:
-        print(f"agenda ophalen mislukt ({e}), gebruik vaste tekst", file=sys.stderr)
-    return "elke woensdagmiddag werken de vrijwilligers in het Park", dag
+        print(f"Agenda ophalen mislukt ({e}); gebruik de laatst bekende agenda.", file=sys.stderr)
+        waarschuwing = "De agenda kon niet worden opgehaald. De laatst bekende evenementen worden gebruikt."
+        try:
+            vorige = json.loads((DOCS / "agenda.json").read_text())
+            events = [{**ev, "start": date.fromisoformat(ev["start"]),
+                       "eind": date.fromisoformat(ev["eind"]),
+                       "id": ev.get("id", ev.get("url", ev["titel"]))}
+                      for ev in vorige["events"]]
+        except (OSError, ValueError, KeyError):
+            events = []
+    events = [ev for ev in events if ev["eind"] >= dag]
+    if "vastgezet_id" in instellingen:
+        gekozen = next((ev for ev in events if ev["id"] == instellingen["vastgezet_id"]), None)
+    else:
+        # Preserve the existing pinned title during the one-time migration.
+        gekozen = next((ev for ev in events if ev["titel"] == instellingen.get("vastgezet_titel")), None)
+    gekozen = gekozen or (events[0] if events else None)
+    schrijf_agenda(events, dag, gekozen, instellingen, waarschuwing)
+    if gekozen:
+        return formatteer_event(gekozen), gekozen["start"]
+    return "bekijk de actuele agenda op hetparkinrotterdam.nl", dag
 
 
 # ---------- tekenen ----------
@@ -241,47 +205,58 @@ def teken_chip(d, x, ycent, label, kleur, S):
     return w
 
 
-def teken_tekst(d, x, ycent, segmenten, S, max_x):
-    """Tekent [(tekst, vet?)]-segmenten in GT Walsheim, verkleint tot het past."""
-    maat = 14.0
-    while maat >= 11:
-        fonts = {True: font("GTWalsheim-Bd.ttf", maat, S),
-                 False: font("GTWalsheim-Md.ttf", maat, S)}
-        breedte = sum(d.textlength(t, font=fonts[v]) for t, v in segmenten)
-        if x + breedte <= max_x:
-            break
-        maat -= 0.5
-    cx = x
-    for t, vet in segmenten:
-        d.text((cx, ycent), t, font=fonts[vet], fill=KLEUREN["tekst"], anchor="lm")
-        cx += d.textlength(t, font=fonts[vet])
+def tekstregels(d, segmenten, fonts, breedte):
+    """Word wrap instead of clipping long titles or shrinking them to tiny type."""
+    regels, regel, gebruikt = [], [], 0
+    for tekst, vet in segmenten:
+        for woord in re.findall(r"\S+\s*|\s+", tekst):
+            if not regel:
+                woord = woord.lstrip()
+            w = d.textlength(woord, font=fonts[vet])
+            if regel and gebruikt + w > breedte:
+                regels.append(regel)
+                regel, gebruikt = [], 0
+                woord = woord.lstrip()
+            # Very long unbroken words are split rather than lost off-canvas.
+            for char in woord:
+                cw = d.textlength(char, font=fonts[vet])
+                if regel and gebruikt + cw > breedte:
+                    regels.append(regel)
+                    regel, gebruikt = [], 0
+                regel.append((char, vet))
+                gebruikt += cw
+    if regel:
+        regels.append(regel)
+    return regels or [[("", False)]]
 
 
 def maak_png(bloei, event, kleur_event, pad):
-    # Retina: we tekenen op dubbele resolutie (1120px) en tonen op 560px,
-    # zodat het plaatje ook op high-dpi-schermen scherp is.
-    S = 2
-    W, H = 560, 70
-    img = Image.new("RGB", (W * S, H * S), (255, 255, 255))
-    d = ImageDraw.Draw(img)
-
+    S, W = 2, 560
+    proef = ImageDraw.Draw(Image.new("RGB", (W * S, 100)))
+    fonts = {True: font("GTWalsheim-Bd.ttf", 13, S),
+             False: font("GTWalsheim-Md.ttf", 13, S)}
     if " · " in event:
         titel, rest = event.split(" · ", 1)
         event_seg = [(titel, True), ("  ·  " + rest, False)]
     else:
         event_seg = [(event, False)]
-
-    rijen = [
-        ("NU IN BLOEI", KLEUREN["groen"], [(bloei, False)], 19),
-        ("IN DE AGENDA", kleur_event, event_seg, 51),
-    ]
-    # pills strak links uitgelijnd, tekstkolom erachter op één lijn
-    breedtes = [teken_chip(d, S, ym * S, label, kleur, S)
-                for label, kleur, _, ym in rijen]
-    kolom_x = S + max(breedtes) + 12 * S
-    for label, kleur, segmenten, ym in rijen:
-        teken_tekst(d, kolom_x, ym * S, segmenten, S, (W - 4) * S)
-
+    rijen = [("NU IN BLOEI", KLEUREN["groen"], [(bloei, False)]),
+             ("IN DE AGENDA", kleur_event, event_seg)]
+    breedtes = [teken_chip(proef, S, 20 * S, label, kleur, S) for label, kleur, _ in rijen]
+    x = S + max(breedtes) + 12 * S
+    layouts = [tekstregels(proef, seg, fonts, (W - 4) * S - x) for _, _, seg in rijen]
+    hoogtes = [max(32, len(regels) * 18 + 12) for regels in layouts]
+    img = Image.new("RGB", (W * S, (sum(hoogtes) + 6) * S), (255, 255, 255))
+    d = ImageDraw.Draw(img)
+    y = 19 * S
+    for (label, kleur, _), regels, hoogte in zip(rijen, layouts, hoogtes):
+        teken_chip(d, S, y, label, kleur, S)
+        for k, regel in enumerate(regels):
+            cx = x
+            for char, vet in regel:
+                d.text((cx, y + k * 18 * S), char, font=fonts[vet], fill=KLEUREN["tekst"], anchor="lm")
+                cx += d.textlength(char, font=fonts[vet])
+        y += hoogte * S
     img.save(pad, optimize=True)
 
 
@@ -290,14 +265,24 @@ def maak_png(bloei, event, kleur_event, pad):
 def maak_index(bloei, event, dag):
     sjabloon = (BASIS / "sjabloon_index.html").read_text()
     pagina = (sjabloon
-              .replace("{{BLOEI}}", bloei)
-              .replace("{{EVENT}}", event)
+              .replace("{{BLOEI}}", escape(bloei))
+              .replace("{{EVENT}}", escape(event))
               .replace("{{DATUM}}", f"{dag.day} {MAANDEN[dag.month - 1]} {dag.year}"))
     (DOCS / "index.html").write_text(pagina)
 
 
+def maak_woordbeeld(dag):
+    # The original vector wordmark is rasterised once, preserving its alpha mask.
+    with Image.open(BASIS / "assets" / "woordbeeld-masker.png") as masker:
+        for variant, kleur in [("groen", "groen"), ("seizoen", seizoen(dag))]:
+            img = Image.new("RGBA", masker.size, KLEUREN[kleur] + (255,))
+            img.putalpha(masker.convert("RGBA").getchannel("A"))
+            img.save(DOCS / f"woordbeeld-{variant}.png", optimize=True)
+
+
 def main():
     DOCS.mkdir(exist_ok=True)
+    personen = valideer_personen(json.loads((BASIS / "data" / "personen.json").read_text()))
     zorg_voor_fonts()
     dag = vandaag()
     bloei = kies_bloei(dag)
@@ -309,6 +294,8 @@ def main():
         f"Nu in bloei: {bloei}\nIn de agenda: {event}\n")
     # kopie van de bloeikalender voor de tabel op de kopieerpagina
     (DOCS / "bloei.json").write_text((BASIS / "data" / "bloeikalender.json").read_text())
+    maak_woordbeeld(dag)
+    (DOCS / "personen.json").write_text(json.dumps(personen, ensure_ascii=False, indent=2) + "\n")
     maak_index(bloei, event, dag)
     print(f"Geschreven naar {DOCS}/")
 

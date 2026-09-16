@@ -1,72 +1,111 @@
 {
- "bijgewerkt": "2026-09-16",
- "vastgezet_titel": "Anne Vegter presenteert Herfst",
- "events": [
-  {
-   "titel": "Parkwoensdag",
-   "start": "2026-09-16",
-   "eind": "2026-09-16",
-   "tekst": "Parkwoensdag · wo 16 september, 13:00 uur"
-  },
-  {
-   "titel": "Baby Bosbaden",
-   "start": "2026-09-17",
-   "eind": "2026-09-17",
-   "tekst": "Baby Bosbaden · do 17 september, 10:15 uur"
-  },
-  {
-   "titel": "Anne-Roos",
-   "start": "2026-09-20",
-   "eind": "2026-09-20",
-   "tekst": "Anne-Roos · zo 20 september, 11:30 uur"
-  },
-  {
-   "titel": "Anne Vegter presenteert Herfst",
-   "start": "2026-09-20",
-   "eind": "2026-09-20",
-   "tekst": "Anne Vegter presenteert Herfst · zo 20 september, 15:30 uur"
-  },
-  {
-   "titel": "Parkwoensdag",
-   "start": "2026-09-23",
-   "eind": "2026-09-23",
-   "tekst": "Parkwoensdag · wo 23 september, 13:00 uur"
-  },
-  {
-   "titel": "Bosbaden voor aanstaande ouders",
-   "start": "2026-09-24",
-   "eind": "2026-09-24",
-   "tekst": "Bosbaden voor aanstaande ouders · do 24 september, 10:15 uur"
-  },
-  {
-   "titel": "Yiorgos Bereris Quartet",
-   "start": "2026-09-27",
-   "eind": "2026-09-27",
-   "tekst": "Yiorgos Bereris Quartet · zo 27 september, 11:30 uur"
-  },
-  {
-   "titel": "Parkwoensdag",
-   "start": "2026-09-30",
-   "eind": "2026-09-30",
-   "tekst": "Parkwoensdag · wo 30 september, 13:00 uur"
-  },
-  {
-   "titel": "Dark Fire",
-   "start": "2026-10-04",
-   "eind": "2026-10-04",
-   "tekst": "Dark Fire · zo 4 oktober, 11:30 uur"
-  },
-  {
-   "titel": "Paper Songs",
-   "start": "2026-10-11",
-   "eind": "2026-10-11",
-   "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
-  },
-  {
-   "titel": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter",
-   "start": "2026-10-11",
-   "eind": "2027-09-04",
-   "tekst": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter · 11 oktober t/m 4 september"
-  }
- ]
+  "bijgewerkt": "2026-09-16",
+  "logostijl": "random",
+  "vastgezet_id": "",
+  "vastgezet_titel": "Anne Vegter presenteert Herfst",
+  "aanvraag_id": "",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
+  "waarschuwing": "",
+  "events": [
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-16",
+      "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-16",
+      "titel": "Parkwoensdag",
+      "start": "2026-09-16",
+      "eind": "2026-09-16",
+      "tijd": "13:00",
+      "tekst": "Parkwoensdag · wo 16 september, 13:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/baby-bosbaden",
+      "url": "https://hetparkinrotterdam.nl/agenda/baby-bosbaden",
+      "titel": "Baby Bosbaden",
+      "start": "2026-09-17",
+      "eind": "2026-09-17",
+      "tijd": "10:15",
+      "tekst": "Baby Bosbaden · do 17 september, 10:15 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/anne-roos",
+      "url": "https://hetparkinrotterdam.nl/agenda/anne-roos",
+      "titel": "Anne-Roos",
+      "start": "2026-09-20",
+      "eind": "2026-09-20",
+      "tijd": "11:30",
+      "tekst": "Anne-Roos · zo 20 september, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
+      "url": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
+      "titel": "Anne Vegter presenteert Herfst",
+      "start": "2026-09-20",
+      "eind": "2026-09-20",
+      "tijd": "15:30",
+      "tekst": "Anne Vegter presenteert Herfst · zo 20 september, 15:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-23",
+      "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-23",
+      "titel": "Parkwoensdag",
+      "start": "2026-09-23",
+      "eind": "2026-09-23",
+      "tijd": "13:00",
+      "tekst": "Parkwoensdag · wo 23 september, 13:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/bosbaden-voor-aanstaande-ouders",
+      "url": "https://hetparkinrotterdam.nl/agenda/bosbaden-voor-aanstaande-ouders",
+      "titel": "Bosbaden voor aanstaande ouders",
+      "start": "2026-09-24",
+      "eind": "2026-09-24",
+      "tijd": "10:15",
+      "tekst": "Bosbaden voor aanstaande ouders · do 24 september, 10:15 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/yiorgos-bereris-quartet",
+      "url": "https://hetparkinrotterdam.nl/agenda/yiorgos-bereris-quartet",
+      "titel": "Yiorgos Bereris Quartet",
+      "start": "2026-09-27",
+      "eind": "2026-09-27",
+      "tijd": "11:30",
+      "tekst": "Yiorgos Bereris Quartet · zo 27 september, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
+      "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
+      "titel": "Parkwoensdag",
+      "start": "2026-09-30",
+      "eind": "2026-09-30",
+      "tijd": "13:00",
+      "tekst": "Parkwoensdag · wo 30 september, 13:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/dark-fire",
+      "url": "https://hetparkinrotterdam.nl/agenda/dark-fire",
+      "titel": "Dark Fire",
+      "start": "2026-10-04",
+      "eind": "2026-10-04",
+      "tijd": "11:30",
+      "tekst": "Dark Fire · zo 4 oktober, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/parkbaden-oktober",
+      "url": "https://hetparkinrotterdam.nl/agenda/parkbaden-oktober",
+      "titel": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter",
+      "start": "2026-10-11",
+      "eind": "2026-10-11",
+      "tijd": "10:00",
+      "tekst": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter · zo 11 oktober, 10:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/paper-songs",
+      "url": "https://hetparkinrotterdam.nl/agenda/paper-songs",
+      "titel": "Paper Songs",
+      "start": "2026-10-11",
+      "eind": "2026-10-11",
+      "tijd": "11:30",
+      "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
+    }
+  ],
+  "versie": "9079031874a4ae91"
 }
