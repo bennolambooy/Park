@@ -2,9 +2,9 @@
   "bijgewerkt": "2026-09-16",
   "logostijl": "random",
   "vastgezet_id": "",
-  "vastgezet_titel": "Anne Vegter presenteert Herfst",
-  "aanvraag_id": "",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
+  "vastgezet_titel": "",
+  "aanvraag_id": "119d6131-bb96-4ad8-b3de-204832cf4848",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-16",
   "waarschuwing": "",
   "events": [
     {
@@ -107,5 +107,5 @@
       "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
     }
   ],
-  "versie": "9079031874a4ae91"
+  "versie": "6d25c86df3646c9b"
 }
