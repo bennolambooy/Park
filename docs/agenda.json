@@ -1,22 +1,13 @@
 {
-  "bijgewerkt": "2026-09-16",
+  "bijgewerkt": "2026-09-17",
   "logostijl": "random",
   "toon_adres": false,
-  "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
-  "vastgezet_titel": "Parkwoensdag",
-  "aanvraag_id": "c8a93e97-d0fd-4956-9f27-432de676864f",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
+  "vastgezet_id": "",
+  "vastgezet_titel": "",
+  "aanvraag_id": "76d6f51e-c205-46d8-80ec-798920931819",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/baby-bosbaden",
   "waarschuwing": "",
   "events": [
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-16",
-      "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-16",
-      "titel": "Parkwoensdag",
-      "start": "2026-09-16",
-      "eind": "2026-09-16",
-      "tijd": "13:00",
-      "tekst": "Parkwoensdag · wo 16 september, 13:00 uur"
-    },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/baby-bosbaden",
       "url": "https://hetparkinrotterdam.nl/agenda/baby-bosbaden",
@@ -108,5 +99,5 @@
       "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
     }
   ],
-  "versie": "f8971caf0388c07d"
+  "versie": "e96a4f1ddfdd8bb8"
 }
