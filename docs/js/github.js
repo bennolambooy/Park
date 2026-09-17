@@ -1,5 +1,5 @@
-import {REPO, BRANCH, GEHEIM} from './config.js?v=20260917-8';
-import {verzoek} from './shared.js?v=20260917-8';
+import {REPO, BRANCH, GEHEIM} from './config.js?v=20260917-9';
+import {verzoek} from './shared.js?v=20260917-9';
 
 const KEY = 'park-beheer-sessie';
 export class GitHubFout extends Error {

@@ -1,6 +1,6 @@
-import {SITE, WEBSITE} from './config.js?v=20260917-8';
-import {esc} from './shared.js?v=20260917-8';
-import {algemeneTekst} from './general.js?v=20260917-8';
+import {SITE, WEBSITE} from './config.js?v=20260917-9';
+import {esc} from './shared.js?v=20260917-9';
+import {algemeneTekst} from './general.js?v=20260917-9';
 
 export function valideerPersoon(p) {
   if (!p || !/^[a-zA-Z0-9_-]{8,80}$/.test(p.id)) throw new Error('Ongeldig persoonsprofiel.');
@@ -39,8 +39,9 @@ export function handtekening(persoon, {basis = SITE, versie = '', logovariant, t
   const tekststijl = 'font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.4;color:#1d1d1b;white-space:normal;word-wrap:break-word;overflow-wrap:break-word';
   const gegevens = '<tr><td style="padding:0 0 16px;' + tekststijl + '">' +
     esc(a.groet)+'<br><br><strong>' + esc(p?.naam || a.naam) + '</strong>' + (p?'<br>'+esc(p.functie)+telefoon:'') + '</td></tr>';
-  // WebKit can ignore max-width on a fixed-width table; constrain a block instead.
-  const html = '<div style="width:420px;max-width:100%"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;table-layout:fixed;width:100%;' + tekststijl + '"><tbody>' +
+  // Keep ordinary text independent of the dynamic image's intrinsic width.
+  // Neither section should require a 420px-wide viewport on a phone.
+  const html = '<div style="width:100%;max-width:420px"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;table-layout:fixed;width:100%;' + tekststijl + '"><tbody>' +
     gegevens + '<tr><td style="padding:0 0 14px"><a href="' + esc(a.website_url) + '" style="text-decoration:none">' +
     '<img src="' + asset('woordbeeld-' + variant + '.png') + '" width="132" height="31" alt="het Park" style="display:block;border:0;width:132px;height:31px"></a></td></tr>' +
     '<tr><td style="padding:0 0 18px;' + tekststijl + '">' +
@@ -50,10 +51,10 @@ export function handtekening(persoon, {basis = SITE, versie = '', logovariant, t
     '<a href="'+esc(a.nieuwsbrief_url)+'" style="color:#00752e;text-decoration:underline">nieuwsbrief</a>, ' +
     '<a href="'+esc(a.facebook_url)+'" style="color:#00752e;text-decoration:underline">Facebook</a>, ' +
     '<a href="'+esc(a.instagram_url)+'" style="color:#00752e;text-decoration:underline">Instagram</a> en ' +
-    '<a href="'+esc(a.linkedin_url)+'" style="color:#00752e;text-decoration:underline">LinkedIn</a>.</td></tr>' +
-    '<tr><td style="padding:0"><a href="' + WEBSITE + '/agenda" style="text-decoration:none">' +
+    '<a href="'+esc(a.linkedin_url)+'" style="color:#00752e;text-decoration:underline">LinkedIn</a>.</td></tr></tbody></table></div>' +
+    '<div style="width:100%;max-width:420px;line-height:0"><a href="' + WEBSITE + '/agenda" style="text-decoration:none">' +
     '<img src="' + asset('handtekening-mobiel.png') + '" width="420" alt="Nu in bloei en in de agenda van het Park — bekijk de actuele agenda" ' +
-    'style="display:block;border:0;width:420px;max-width:100%;height:auto"></a></td></tr></tbody></table></div>';
+    'style="display:block;border:0;width:100%;max-width:420px;height:auto"></a></div>';
   const tekst = [a.groet+'\n\n'+(p ? p.naam + '\n' + p.functie + (p.telefoon ? '\n' + p.telefoon : '') : a.naam),
     'het Park',
     a.website_tekst+'\n' + (toonAdres ? a.adres1+'\n'+a.adres2+'\n\n' : '') +

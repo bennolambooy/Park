@@ -1,4 +1,4 @@
-import {dagVanJaar} from './shared.js?v=20260917-8';
+import {dagVanJaar} from './shared.js?v=20260917-9';
 
 export function bloeiTekst(tekst) {
   const t=tekst.trim();

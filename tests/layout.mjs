@@ -49,12 +49,16 @@ for (const engine of [chromium, webkit]) {
           return dimensions.h;
         };
         const before = await check();
+        assert.equal(await page.locator('img').last().evaluate(img=>img.closest('table')), null, 'image is outside the text table');
+        const textBefore = await page.locator('td').first().boundingBox();
         if (long) {
           // Longer unbroken lines scale the whole block down, without a fixed HTML height.
           imageBody = longImage;
           await page.locator('img').last().evaluate(img => { img.src += '?new-content'; });
           await page.locator('img').last().evaluate(img => img.decode());
           assert.ok(await check() < before, 'long lines scale down without wrapping or distorting text');
+          const textAfter = await page.locator('td').first().boundingBox();
+          assert.deepEqual(textAfter, textBefore, 'image changes never resize or reposition the text section');
         }
         await page.screenshot({path:`test-results/mail-${engine.name()}-${width}-${long ? 'lang' : 'normaal'}.png`,fullPage:true});
       }

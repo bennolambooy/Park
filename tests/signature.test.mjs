@@ -53,11 +53,17 @@ test('signature uses readable Arial, relative line spacing and approved order wi
   assert.match(html, /line-height:1.4/);
   assert.match(html, /white-space:normal/);
   assert.ok(!html.includes('nowrap'));
-  assert.match(html, /max-width:100%;height:auto/);
+  assert.match(html, /width:100%;max-width:420px;height:auto/);
   assert.ok(!html.includes('Baden Powelllaan'));
   assert.ok(!tekst.includes('3016 GJ'));
   assert.ok(!html.includes('width:560px'));
   assert.ok(tekst.includes(p.functie + '\n' + p.telefoon));
+});
+test('text and dynamic image are separate fluid sections, without a shared fixed-width table', () => {
+  const {html} = handtekening(p);
+  assert.ok(html.indexOf('</table>') < html.indexOf('handtekening-mobiel.png'));
+  assert.equal((html.match(/<div style="width:100%;max-width:420px/g) || []).length, 2);
+  assert.ok(!/(?:^|;)width:420px/.test(html));
 });
 test('address can be enabled for HTML and plain-text signatures', () => {
   const {html, tekst} = handtekening(p, {toonAdres:true});

@@ -24,6 +24,10 @@ in `data/instellingen.json.algemeen`; de generator publiceert dit in `agenda.jso
 
 De handtekening gebruikt Arial 14px (Helvetica als terugval), **relatieve regelafstand 1.4**, een logo van 132px,
 de website, openingstijden en sociale links, gevolgd door bloei en agenda.
+Tekst/logo en de dynamische afbeelding staan in twee afzonderlijke HTML-blokken.
+Beide gebruiken de beschikbare breedte tot maximaal 420px; er is geen gezamenlijke
+vaste tabelbreedte. Schalen van het beeldblok verandert de tekstinstellingen niet.
+Browsercontroles vervangen geen echte verzendtest in Apple Mail op iPhone.
 **Adres tonen** is een toolbrede optie die standaard uitstaat; aanzetten voegt straat
 en postcode toe onder de website. Na een wijziging moet de handtekening opnieuw worden gekopieerd.
 Bloei en agenda gebruiken bewust de Park-huisstijl: GT Walsheim 13px met

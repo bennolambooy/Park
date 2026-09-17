@@ -1,9 +1,9 @@
-import {toegang} from './gate.js?v=20260917-8';
-import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260917-8';
-import {persoonlijkeLink, valideerPersoon} from './signature.js?v=20260917-8';
-import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260917-8';
-import {bloeikalender} from './calendar.js?v=20260917-8';
-import {ALGEMENE_VELDEN, algemeneTekst} from './general.js?v=20260917-8';
+import {toegang} from './gate.js?v=20260917-9';
+import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260917-9';
+import {persoonlijkeLink, valideerPersoon} from './signature.js?v=20260917-9';
+import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260917-9';
+import {bloeikalender} from './calendar.js?v=20260917-9';
+import {ALGEMENE_VELDEN, algemeneTekst} from './general.js?v=20260917-9';
 
 await toegang();
 

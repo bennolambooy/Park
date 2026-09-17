@@ -2,6 +2,13 @@
 
 Status: Accepted for implementation — 2026-09-16
 
+Aanvulling tweedelige opbouw 2026-09-17: gewone tekst/logo krijgen een eigen
+flexibel blok (100%, maximaal 420px). Het dynamische beeld staat daaronder buiten
+de teksttabel, eveneens flexibel. Geen gedeelde vaste breedte die mailclients kan
+aanzetten de hele handtekening te verkleinen. Tekst blijft Arial 14px/1.4;
+uitsluitend het dynamische beeld wordt intern geschaald. Browsers lokaal getest,
+weergave in een daadwerkelijk verzonden iPhone-mail moet nog worden bevestigd.
+
 Definitieve aanvulling 2026-09-17: bloei en agenda mogen NOOIT afbreken.
 Elk blijft één complete regel; de gezamenlijke afbeelding schaalt proportioneel
 kleiner bij lange teksten. Dit vervangt alle eerdere keuzes voor regelafbreking
