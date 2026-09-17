@@ -1,7 +1,21 @@
 {
   "vastgezet_titel": "",
   "vastgezet_id": "",
-  "aanvraag_id": "76d6f51e-c205-46d8-80ec-798920931819",
-  "logostijl": "random",
-  "toon_adres": false
+  "aanvraag_id": "395e4211-4e41-4cab-9338-d63bd5b4adf9",
+  "logostijl": "groen",
+  "toon_adres": false,
+  "algemeen": {
+    "groet": "Met vriendelijke groet,",
+    "naam": "Stichting het Park",
+    "website_tekst": "www.hetparkinrotterdam.nl",
+    "website_url": "https://hetparkinrotterdam.nl/",
+    "adres1": "Baden Powelllaan 2",
+    "adres2": "3016 GJ Rotterdam",
+    "opening": "Het Parkpaviljoen is elke dag open van 10 tot 18 uur.",
+    "volgen": "Volg onze",
+    "nieuwsbrief_url": "https://hetparkinrotterdam.us2.list-manage.com/subscribe?u=fe120296f8b3715025a0f4f7f&id=bdc33ac363",
+    "facebook_url": "https://www.facebook.com/hetparkinrotterdam",
+    "instagram_url": "https://www.instagram.com/hetparkinrotterdam/",
+    "linkedin_url": "https://www.linkedin.com/company/het-park-in-rotterdam/"
+  }
 }
