@@ -16,11 +16,11 @@
     "instagram_url": "https://www.instagram.com/hetparkinrotterdam/",
     "linkedin_url": "https://www.linkedin.com/company/het-park-in-rotterdam/"
   },
-  "vastgezet_id": "",
-  "vastgezet_titel": "",
+  "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
+  "vastgezet_titel": "Anne Vegter presenteert Herfst",
   "agenda_verborgen": [],
-  "aanvraag_id": "395e4211-4e41-4cab-9338-d63bd5b4adf9",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/baby-bosbaden",
+  "aanvraag_id": "32522db6-e1b1-4911-9547-742242c2f007",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
   "waarschuwing": "",
   "events": [
     {
@@ -114,5 +114,5 @@
       "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
     }
   ],
-  "versie": "42c7c848753ce938"
+  "versie": "22ccc59d240674c1"
 }
