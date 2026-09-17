@@ -74,6 +74,52 @@ class AgendaTests(unittest.TestCase):
                          (date(2026,12,21), "winter")]:
             self.assertEqual(genereer.seizoen(d), kleur)
 
+    def test_hidden_occurrence_is_not_selected_even_if_pinned_but_other_dates_remain(self):
+        url='https://hetparkinrotterdam.nl/agenda/parkwoensdag'
+        settings={'vastgezet_id':url,'agenda_verborgen':[{'id':url,'start':'2026-10-11','eind':'2026-10-11'}]}
+        with tempfile.TemporaryDirectory() as tmp, patch.object(genereer,'DOCS',Path(tmp)), \
+             patch.object(genereer,'haal_agenda',return_value=kaart('Parkwoensdag',dag=11,url='parkwoensdag')+kaart('Parkwoensdag',dag=18,url='parkwoensdag')), \
+             patch.object(genereer,'lees_instellingen',return_value=settings):
+            self.assertEqual(genereer.kies_event(date(2026,10,1))[1],date(2026,10,18))
+            published=json.loads((Path(tmp)/'agenda.json').read_text())
+            self.assertEqual(len(published['events']),2,'hidden events remain available for undo')
+            self.assertEqual(published['agenda_verborgen'],settings['agenda_verborgen'])
+
+    def test_all_hidden_events_produce_neutral_fallback_even_offline(self):
+        url='https://hetparkinrotterdam.nl/agenda/parkbaden'
+        settings={'agenda_verborgen':[{'id':url,'start':'2026-10-11','eind':'2026-10-11'}]}
+        with tempfile.TemporaryDirectory() as tmp, patch.object(genereer,'DOCS',Path(tmp)), \
+             patch.object(genereer,'haal_agenda',return_value=kaart()), \
+             patch.object(genereer,'lees_instellingen',return_value=settings):
+            self.assertIn('bekijk de actuele agenda',genereer.kies_event(date(2026,10,1))[0])
+            with patch.object(genereer,'haal_agenda',side_effect=OSError('offline')):
+                self.assertIn('bekijk de actuele agenda',genereer.kies_event(date(2026,10,1))[0])
+
+
+class BloomTests(unittest.TestCase):
+    def test_season_skip_excludes_even_pinned_bloom_and_returns_next_bloom_season(self):
+        entry={'id':'roos','tekst':'Rozen','van':[6,1],'tot':[9,2],'prio':1,'overslaan_tot':'2026-09-30'}
+        calendar={'entries':[entry],'vastgezet':{'id':'roos','tot':'2026-09-30'}}
+        with patch.object(Path,'read_text',return_value=json.dumps(calendar)):
+            self.assertEqual(genereer.kies_bloei(date(2026,9,20)),'Het Park, in elk seizoen de moeite waard')
+            self.assertEqual(genereer.kies_bloei(date(2026,9,30)),'Het Park, in elk seizoen de moeite waard')
+            self.assertEqual(genereer.kies_bloei(date(2026,10,1)),'Het Park, in elk seizoen de moeite waard')
+            self.assertEqual(genereer.kies_bloei(date(2027,6,1)),'Rozen')
+
+    def test_bloom_pin_and_expiry(self):
+        entry = {'id':'rozen', 'tekst': 'rozen', 'van': [6, 1], 'tot': [9, 2], 'prio': 1}
+        pin = {'id':'rozen','tot':'2026-09-30'}
+        other = {**entry, 'id':'asters', 'tekst':'Asters', 'van':[1,1], 'tot':[12,2], 'prio':3}
+        def keuze(entries, dag=date(2026, 9, 16), vast=pin):
+            with patch.object(Path, 'read_text', return_value=json.dumps({'entries': entries, 'vastgezet':vast})):
+                return genereer.kies_bloei(dag)
+        for day in range(16,23):
+            self.assertEqual(keuze([entry,other],date(2026,9,day)), 'Rozen')
+        self.assertEqual(keuze([{**entry, 'pauze_tot': '2026-09-30'},other]), 'Asters')
+        self.assertEqual(keuze([entry,other],date(2026,10,1)), 'Asters')
+        self.assertEqual(keuze([other]),'Asters')
+        self.assertEqual(keuze([entry,other],date(2027,9,17)),keuze([entry,other],date(2027,9,17),None))
+
 
 class PersonTests(unittest.TestCase):
     def test_optional_phone(self):
@@ -91,6 +137,41 @@ class PersonTests(unittest.TestCase):
 
 
 class LayoutTests(unittest.TestCase):
+    def test_body_capitals_align_with_pill_label_center(self):
+        d = ImageDraw.Draw(Image.new('RGB', (840, 120)))
+        f, chip = genereer.font('GTWalsheim-Md.ttf', 13, 2), genereer.font('GTWalsheim-Bd.ttf', 9, 2)
+        for y, label in [(4, 'NU IN BLOEI'), (59, 'IN DE AGENDA')]:
+            w, h, x, ty = genereer.pil_geometrie(d, label, chip, 2)
+            py = y + (39-h)/2
+            _, t, _, b = d.textbbox((0, genereer.tekst_bovenkant(d, f, y, 39)), 'H', font=f)
+            _, ct, _, cb = d.textbbox((x, py+ty), label, font=chip)
+            self.assertAlmostEqual((t+b)/2, (ct+cb)/2, delta=0.5)
+
+    def test_pill_ink_is_centered_and_spacing_is_not_a_shared_column(self):
+        d = ImageDraw.Draw(Image.new('RGB', (600, 100)))
+        f = genereer.font('GTWalsheim-Bd.ttf', 9, 2)
+        widths = []
+        for label in ['NU IN BLOEI', 'IN DE AGENDA']:
+            w, h, x, y = genereer.pil_geometrie(d, label, f, 2)
+            l, t, r, b = d.textbbox((x, y), label, font=f)
+            self.assertAlmostEqual(l, w-r, delta=1)
+            self.assertAlmostEqual(t, h-b, delta=1)
+            widths.append(w)
+        self.assertNotEqual(*widths)
+
+    def test_inline_wrap_uses_remaining_first_line_and_full_following_lines(self):
+        d = ImageDraw.Draw(Image.new('RGB', (600, 1)))
+        f = genereer.mailfont(14, 2)
+        text = 'Rozen en lampenpoetsersgras bij het Parkpaviljoen'
+        lines = genereer.mobiele_regels(d, text, f, 596, 400)
+        self.assertEqual(' '.join(lines), text)
+        self.assertLessEqual(d.textlength(lines[0], font=f), 400)
+        for line in lines[1:]:
+            self.assertLessEqual(d.textlength(line, font=f), 596)
+        lines = genereer.mobiele_regels(d, 'Lampenpoetsersgras bij het Park', f, 596, 30)
+        self.assertEqual(lines[0], '')
+        self.assertIn('Lampenpoetsersgras', lines[1])
+
     def test_mobile_banner_keeps_width_and_grows_in_height(self):
         with tempfile.TemporaryDirectory() as tmp:
             short, long = Path(tmp) / 'short.png', Path(tmp) / 'long.png'
@@ -99,11 +180,19 @@ class LayoutTests(unittest.TestCase):
                                     'Een lange evenementtitel met veel woorden · woensdag 30 september, 13:00 uur ' * 4,
                                     '#ca7b00', long)
             with Image.open(short) as a, Image.open(long) as b:
-                self.assertEqual(a.width, 600)
-                self.assertEqual(b.width, 600)
+                self.assertEqual(a.width, 1260)
+                self.assertEqual(b.width, 1260)
                 self.assertGreater(b.height, a.height)
                 # Content must not touch the final edge of the canvas.
-                self.assertEqual(b.crop((0, b.height-2, 600, b.height)).getextrema(), ((255, 255),)*3)
+                self.assertEqual(b.crop((0, b.height-2, 1260, b.height)).getextrema(), ((255, 255),)*3)
+
+    def test_current_park_lines_fit_without_breaking(self):
+        d = ImageDraw.Draw(Image.new('RGB', (840, 1)))
+        f, chip = genereer.font('GTWalsheim-Md.ttf', 13, 2), genereer.font('GTWalsheim-Bd.ttf', 9, 2)
+        for label, text in [('NU IN BLOEI', 'lampenpoetsersgras bij het Parkpaviljoen'),
+                            ('IN DE AGENDA', 'Parkwoensdag · wo 30 september, 13:00 uur')]:
+            width = genereer.pil_geometrie(d, label, chip, 2)[0]
+            self.assertEqual(genereer.mobiele_regels(d, text, f, 836, 836-width-d.textlength(' ', font=f)), [text])
 
     def test_mobile_wrap_preserves_words_accents_and_long_unbroken_text(self):
         d = ImageDraw.Draw(Image.new('RGB', (600, 1)))

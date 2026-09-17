@@ -1,16 +1,18 @@
-import {handtekening, kiesLogovariant} from './signature.js?v=20260916-7';
-import {leesPubliek, kopieer, esc, downloadHandtekening} from './shared.js?v=20260916-7';
-import {toegang} from './gate.js?v=20260916-7';
+import {handtekening, kiesLogovariant} from './signature.js?v=20260917-7';
+import {leesPubliek, kopieer, kopieerHtmlTekst, esc} from './shared.js?v=20260917-7';
+import {toegang} from './gate.js?v=20260917-7';
+import {algemeneTekst} from './general.js?v=20260917-7';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
 let persoon = null, agenda = null, logo = kiesLogovariant(), klaar = false;
 let allePersonen = [], kaarten = [];
 const basis = new URL('./', location.href).href;
+const maakHandtekening=(p,opties={})=>handtekening(p,{basis,algemeen:agenda?.algemeen,toonAdres:agenda?.toon_adres===true,logovariant:logo,...opties});
 
 function teken() {
   const versie = (agenda?.versie || agenda?.bijgewerkt || '') + '-' + new Date().toISOString().slice(0, 10);
-  $('handtekening').innerHTML = handtekening(persoon, {basis, toonAdres: agenda?.toon_adres === true, versie, logovariant: logo}).html;
+  $('handtekening').innerHTML = maakHandtekening(persoon,{versie}).html;
   if (agenda?.waarschuwing) {
     $('melding').hidden = false;
     $('melding').textContent = agenda.waarschuwing;
@@ -53,38 +55,56 @@ function renderOverzicht() {
   overzicht.hidden = Boolean(params.get('persoon') || params.has('voorbeeld'));
   $('detail').hidden = !overzicht.hidden;
   if (overzicht.hidden) return;
-  kaarten = [null, ...allePersonen].flatMap(p => ['groen', 'seizoen'].map(variant => ({persoon:p, variant})));
-  overzicht.innerHTML = kaarten.map((kaart, i) => {
-    const sig = handtekening(kaart.persoon, {basis, toonAdres: agenda?.toon_adres === true, versie:agenda?.versie || '', logovariant:kaart.variant});
-    return '<section class="panel"><div class="kaart-kop"><h2>' + esc(kaart.persoon?.naam || 'Algemeen') +
-      '</h2><span class="variant-label">' + (kaart.variant === 'groen' ? 'Groen' : 'Seizoen') +
-      '</span></div><div class="signature-wrap" id="kaart-' + i + '" tabindex="0">' + sig.html +
-      '</div><div class="actions"><button data-copy="' + i + '">Kopieer handtekening</button></div>' +
-      '<p class="status" id="kaart-status-' + i + '" role="status"></p>' +
-      '<details class="extra-opties"><summary>Meer opties</summary><div class="actions"><button class="secondary small" data-download="' + i + '">Download HTML</button></div></details></section>';
-  }).join('');
+  // One choice per person, following the global style. Copy keeps this choice.
+  kaarten = [null, ...allePersonen].map(p => ({persoon:p, variant:logo}));
+  const preview=(p,n)=>'<div class="kaart-voorbeeld" id="voorbeeld-'+n+'" hidden><div class="signature-wrap" id="kaart-'+n+'" tabindex="0">'+maakHandtekening(p,{versie:agenda?.versie || ''}).html+'</div><button class="tekstlink" data-html="'+n+'">Kopieer HTML</button></div>';
+  const naamKnop=(naam,n)=>'<button type="button" class="naam-voorbeeld" data-preview="'+n+'" aria-expanded="false" aria-controls="voorbeeld-'+n+'" aria-label="Bekijk handtekening van '+esc(naam)+'">'+esc(naam)+'</button>';
+  const kopieerKnop=(naam,n)=>'<button class="secondary small" data-copy="'+n+'" aria-label="Kopieer handtekening van '+esc(naam)+'">Kopieer</button>';
+  const algemeenNaam=algemeneTekst(agenda?.algemeen).naam;
+  overzicht.innerHTML = '<section class="panel"><h2>Algemeen</h2>' +
+    '<div class="algemeen-rij">'+naamKnop(algemeenNaam,0)+kopieerKnop(algemeenNaam,0)+'</div>'+preview(null,0)+
+    '<p class="status" id="kaart-status-0" role="status"></p>' +
+    '</section>' +
+    (allePersonen.length ? '<section class="panel medewerkers"><h2>Medewerkers</h2><div class="medewerker-kop" aria-hidden="true"><span>Naam</span><span>Functie</span><span>Telefoon</span><span></span></div><ul class="medewerker-lijst" aria-label="Medewerkers">' + allePersonen.map((p, i) => {
+      const n = i+1;
+      return '<li class="collega medewerker-rij">'+naamKnop(p.naam,n)+'<span>'+esc(p.functie)+'</span><span>'+esc(p.telefoon || '—')+'</span>' +
+        kopieerKnop(p.naam,n)+preview(p,n)+
+        '<p class="status" id="kaart-status-' + n + '" role="status"></p></li>';
+    }).join('') + '</ul></section>' : '');
 }
 $('overzicht').addEventListener('click', async event => {
-  const button = event.target.closest('[data-copy],[data-download]');
+  const button = event.target.closest('[data-copy],[data-html],[data-preview]');
   if (!button) return;
-  const i = Number(button.dataset.copy ?? button.dataset.download);
+  if(button.hasAttribute('data-preview')){
+    const preview=$('voorbeeld-'+button.dataset.preview);
+    preview.hidden=!preview.hidden;button.setAttribute('aria-expanded',String(!preview.hidden));return;
+  }
+  const i = Number(button.dataset.copy ?? button.dataset.html);
   const kaart = kaarten[i];
-  const sig = handtekening(kaart.persoon, {basis, toonAdres: agenda?.toon_adres === true, logovariant:kaart.variant});
-  if (button.hasAttribute('data-download')) {
-    downloadHandtekening(sig.html, kaart.persoon?.naam || 'het-Park');
+  const sig = maakHandtekening(kaart.persoon, {logovariant:kaart.variant});
+  if (button.hasAttribute('data-html')) {
+    $('kaart-status-' + i).textContent = await kopieerHtmlTekst(sig.html);
   } else {
-    $('kaart-' + i).innerHTML = sig.html;
-    $('kaart-status-' + i).textContent = await kopieer(sig.html, sig.tekst, $('kaart-' + i));
+    const preview = $('kaart-' + i);
+    const container=$('voorbeeld-'+i), wasHidden=container.hidden;
+    preview.innerHTML = sig.html;
+    // Selection-based copy must have a rendered element, including older Safari.
+    container.hidden = false;
+    const status = await kopieer(sig.html, sig.tekst, preview);
+    if (status.startsWith('Gekopieerd.')) container.hidden = wasHidden;
+    $('overzicht').querySelector('[data-preview="'+i+'"]').setAttribute('aria-expanded',String(!container.hidden));
+    $('kaart-status-' + i).textContent = status;
   }
 });
-$('download').addEventListener('click', () => {
-  downloadHandtekening(handtekening(persoon, {basis, toonAdres: agenda?.toon_adres === true, logovariant:logo}).html, persoon?.naam || 'het-Park');
+$('kopieer-html').addEventListener('click', async () => {
+  if (!klaar) return;
+  $('status').textContent = await kopieerHtmlTekst(maakHandtekening(persoon).html);
 });
 
 $('kopieer').addEventListener('click', async () => {
   if (!klaar) return;
   // Copy exactly the visible choice, including an explicitly selected colour.
-  const signature = handtekening(persoon, {basis, toonAdres: agenda?.toon_adres === true, logovariant: logo});
+  const signature = maakHandtekening(persoon);
   // Manual selection fallback also needs stable URLs, not preview cache-busters.
   $('handtekening').innerHTML = signature.html;
   $('status').textContent = await kopieer(signature.html, signature.tekst, $('handtekening'));
@@ -92,16 +112,6 @@ $('kopieer').addEventListener('click', async () => {
 $('andere-kleur').addEventListener('click', () => {
   logo = logo === 'groen' ? 'seizoen' : 'groen';
   teken();
-});
-$('ververs').addEventListener('click', async () => {
-  $('ververs').disabled = true;
-  try {
-    agenda = await leesPubliek('agenda.json'); logo = kiesLogovariant(agenda.logostijl);
-    $('andere-kleur').hidden = (agenda.logostijl ?? 'random') !== 'random';
-    teken(); $('status').textContent = 'De nieuwste versie is geladen.';
-  }
-  catch (e) { $('status').textContent = e.message; }
-  finally { $('ververs').disabled = false; }
 });
 setInterval(async () => {
   if (document.hidden || !klaar) return;

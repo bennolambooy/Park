@@ -7,24 +7,64 @@
 De beheerder maakt personen aan met naam, functie en eventueel een zakelijk telefoonnummer.
 Iedere persoon krijgt een vaste kopieerlink. De handtekening bevat de groet, persoonsgegevens,
 het originele Park-woordbeeld, adres, website, nieuwsbrief, sociale links, openingstijden
-en het dagelijks bijgewerkte bloei- en agendablok. Het overzicht toont direct alle personen
-in Park-groen en de actuele seizoenskleur. Elke variant kan worden gekopieerd of als HTML gedownload.
+en het dagelijks bijgewerkte bloei- en agendablok. Het overzicht toont één
+algemene kaart en daaronder een medewerkerskaart met één rij per collega,
+naam, functie, telefoonnummer en rechts een kopieerknop. Kaartbreedte en kolommen
+zijn gelijk aan Beheer; de handtekening binnen de kaart blijft compact.
+De globale logostijl bepaalt de kleur, zonder dubbele kleurvarianten. Een klik op
+de naam klapt het voorbeeld open; dat is standaard dicht voor zowel Algemeen als
+medewerkers. Beide hebben dezelfde kopieerknop. ‘Kopieer HTML’ staat bij het voorbeeld
+en kopieert de broncode als tekst. Persoonlijke links blijven beschikbaar via Beheer.
+Algemeen bevat standaard ‘Met vriendelijke groet,’ en ‘Stichting het Park’.
+De beheerkaart Algemeen laat de gedeelde groet, openingstekst, website, adres en
+sociale links aanpassen. Alleen de organisatienaam geldt uitsluitend voor de
+algemene handtekening; persoonlijke namen en functies blijven intact. Opslag gaat
+in `data/instellingen.json.algemeen`; de generator publiceert dit in `agenda.json`.
 
-De actuele indeling gebruikt Helvetica 12px (9pt, Arial als terugval), **normale regelafstand**, een logo van 132px,
+De handtekening gebruikt Arial 14px (Helvetica als terugval), **relatieve regelafstand 1.4**, een logo van 132px,
 de website, openingstijden en sociale links, gevolgd door bloei en agenda.
 **Adres tonen** is een toolbrede optie die standaard uitstaat; aanzetten voegt straat
 en postcode toe onder de website. Na een wijziging moet de handtekening opnieuw worden gekopieerd.
-Bloei en agenda behouden de omlijnde labels met Helvetica 12px (op Linux de
-Helvetica-compatibele Nimbus Sans). De nieuwe dynamische afbeelding `handtekening-mobiel.png`
-is 300px breed bij normale weergave, met dubbele pixelresolutie. Labels staan boven
-de bijbehorende tekst; lange teksten breken op woorden af en de hoogte groeit mee.
+Bloei en agenda gebruiken bewust de Park-huisstijl: GT Walsheim 13px met
+omlijnde labels. De dynamische afbeelding `handtekening-mobiel.png`
+is 420px breed bij normale weergave, met drievoudige pixelresolutie. De tekst volgt de
+eigen pil met één gemeten spatie, zonder gedeelde tabkolom. De zichtbare letters
+staan geometrisch midden in de pil. Vervolgregels gebruiken de volle breedte;
+lange teksten breken op woorden af en de hoogte groeit mee. De huidige bloei- en
+agendatekst passen elk op één regel. Op smallere schermen schaalt het blok mee.
+In beheer staan standaard vijf komende evenementen, met ‘Zie meer’ voor de rest.
+Daaronder staat de geïntegreerde bloeikalender: één plantenlijst met de geplande
+dagen erbij en een uitklapbaar jaaroverzicht. Teksten en periodes bewerken, toevoegen, verwijderen en uitgebloeid
+melden gebeurt op dezelfde beheerpagina, met dezelfde sessie en knopstijlen.
+De oude `beheer.html`-link verwijst naar `admin.html#bloeikalender`.
+Medewerkers staan ook in één beheerkaart, met naam, functie en telefoonnummer.
+Toevoegen en bewerken openen een formulier binnen die kaart. Nieuwe bloeiregels
+hebben dezelfde Van/Tot-keuze als bestaande regels; bloeiteksten beginnen automatisch
+met een hoofdletter. Kalenderinvoer blijft bij opslagfouten behouden.
+Actieve bloei wisselt dagelijks (prioriteit bepaalt alleen de sorteervolgorde).
+Met ‘Zet vast’ kies je één bloei; ‘Maak los’ hervat de dagelijkse wisseling.
+Een pin krijgt een stabiel ID en een einddatum voor deze bloeiperiode, zodat hij
+volgend jaar niet opnieuw actief wordt. Pauzeren of verwijderen heft de pin ook op.
+Vastzetten en losmaken slaan direct op; bewerkingen eerst apart opslaan.
+De verwachte dagen voor de komende week staan direct bij elke plant, inclusief een eventuele pin.
+Naast de plantnaam staat de bloeiperiode. Het kruisje haalt de plant tot het
+volgende bloeiseizoen uit de actieve lijst en de handtekening. De plant blijft in
+het jaaroverzicht staan; ‘Overgeslagen’ > ‘Terugzetten’ maakt de keuze ongedaan.
+Ook bij agenda staat een kruisje: dit sluit alleen de gekozen activiteit op die
+datum uit, niet een volgende editie met dezelfde naam of URL. Overgeslagen items
+zijn terug te zetten. Een eventuele pin op het overgeslagen item wordt losgemaakt.
+Het actuele PNG-blok wordt op 12x getekend en glad verkleind naar 3x resolutie
+voor scherpere omlijningen op schermen met hoge pixeldichtheid.
+Het persoonsformulier bevat geen handtekeningvoorbeeld.
+Publicatie van deze versie is op 17 september 2026 door de gebruiker gevraagd.
+Kliktracking is uitgesteld; er wordt geen meetdienst of analyticskaart toegevoegd.
 De afbeelding heeft bewust geen vaste HTML-hoogte: ook toekomstige langere teksten passen.
 Gewone handtekeningtekst loopt op smalle schermen door; het geheel is maximaal 420px breed.
 De eerdere drie afbeeldingen blijven ongewijzigd in opbouw voor bestaande mails.
 Gebruikers kopiëren de nieuwe handtekening eenmalig opnieuw op ieder apparaat.
 De tool stelt de berichttekst erboven niet in en kan een identieke weergave bij elke
 ontvanger of het verversen van externe afbeeldingscaches niet afdwingen.
-Installatiehulp voor Outlook, Apple Mail op Mac en iPhone staat ook op het overzicht.
+Installatiehulp voor Outlook, Apple Mail op Mac en iPhone staat standaard open op het overzicht.
 Apple documenteert de iPhone-handtekening als alleen tekst; behouden van geplakte
 afbeeldingen en opmaak moet op het echte apparaat worden gecontroleerd.
 Op Linux zijn voor generatie `fonts-liberation` en `fonts-urw-base35` nodig.
@@ -71,7 +111,7 @@ mails houden de afbeeldingen vaste URL’s, zodat toekomstige updates mogelijk b
 
 Dit is een statische GitHub Pages-site. Voor alle schermen staat een wachtwoordscherm;
 het gebruikt het bestaande Park-wachtwoord en onthoudt toegang alleen binnen het tabblad.
-**Vergrendelen** sluit de toegang en eventuele beheersessie. Dit is een eenvoudige schermvergrendeling,
+**Log uit** sluit de toegang en eventuele beheersessie. Dit is een eenvoudige schermvergrendeling,
 geen serverbeveiliging: de bestanden en repository blijven openbaar.
 Er is één gedeelde beheerrol; personen hebben geen eigen account nodig. De eerste toegang
 maakt nog geen beheersessie aan. De afzonderlijke beheerlogin ontgrendelt een beperkte GitHub-sleutel.

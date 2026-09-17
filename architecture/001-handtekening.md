@@ -2,6 +2,14 @@
 
 Status: Accepted for implementation — 2026-09-16
 
+Local refinement, pending user approval (2026-09-16): the user found the 12px
+normal-spaced version too cramped. Local signature now uses Arial/Helvetica 14px,
+relative line-height 1.4. The separate 420px image uses Park GT Walsheim 13px; 9px bold pill
+labels are centered by visible ink bounds. Each description follows its own pill
+with one measured space; the current entries fit on one line each. Longer entries
+can wrap and the whole image scales on narrow screens. This supersedes
+the typography and stacked-label decisions below. Do not publish until approved.
+
 ## Context
 
 Het team gebruikt verschillende mailprogramma's en apparaten. De handtekening moet

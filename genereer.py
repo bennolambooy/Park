@@ -85,13 +85,18 @@ def kies_bloei(dag):
     kalender = json.loads((BASIS / "data" / "bloeikalender.json").read_text())
     idx = periode_index(dag.month, 1 if dag.day <= 15 else 2)
     actief = [e for e in kalender["entries"]
-              if is_actief(e, idx) and not gepauzeerd(e, dag)]
-    pool = [e for e in actief if e["prio"] <= 2] or actief
+              if is_actief(e, idx) and not gepauzeerd(e, dag)
+              and not (e.get("overslaan_tot", "") >= dag.isoformat())]
+    pool = actief
     if not pool:
-        return "het Park, in elk seizoen de moeite waard"
+        return "Het Park, in elk seizoen de moeite waard"
     pool.sort(key=lambda e: (e["prio"], e["tekst"]))
-    keuze = pool[dag.timetuple().tm_yday % len(pool)]
-    return keuze["tekst"]
+    pin = kalender.get("vastgezet") or {}
+    vast = next((e for e in pool if pin.get("id") and e.get("id") == pin["id"]
+                 and pin.get("tot", "") >= dag.isoformat()), None)
+    keuze = vast or pool[dag.timetuple().tm_yday % len(pool)]
+    tekst = keuze["tekst"].strip()
+    return ('IJ' + tekst[2:]) if tekst[:2].lower() == 'ij' else tekst[:1].upper() + tekst[1:]
 
 
 # ---------- agenda ----------
@@ -127,8 +132,10 @@ def schrijf_agenda(events, dag, gekozen, instellingen, waarschuwing=""):
     data = {"bijgewerkt": dag.isoformat(),
             "logostijl": instellingen.get("logostijl", "random"),
             "toon_adres": instellingen.get("toon_adres") is True,
+            "algemeen": instellingen.get("algemeen", {}),
             "vastgezet_id": instellingen.get("vastgezet_id", ""),
             "vastgezet_titel": instellingen.get("vastgezet_titel", ""),
+            "agenda_verborgen": instellingen.get("agenda_verborgen", []),
             "aanvraag_id": instellingen.get("aanvraag_id", ""),
             "gekozen_id": gekozen["id"] if gekozen else "",
             "waarschuwing": waarschuwing,
@@ -159,12 +166,16 @@ def kies_event(dag):
         except (OSError, ValueError, KeyError):
             events = []
     events = [ev for ev in events if ev["eind"] >= dag]
+    verborgen = instellingen.get("agenda_verborgen", [])
+    beschikbaar = [ev for ev in events if not any(
+        item.get("id") == ev["id"] and item.get("start") == ev["start"].isoformat()
+        for item in verborgen)]
     if "vastgezet_id" in instellingen:
-        gekozen = next((ev for ev in events if ev["id"] == instellingen["vastgezet_id"]), None)
+        gekozen = next((ev for ev in beschikbaar if ev["id"] == instellingen["vastgezet_id"]), None)
     else:
         # Preserve the existing pinned title during the one-time migration.
-        gekozen = next((ev for ev in events if ev["titel"] == instellingen.get("vastgezet_titel")), None)
-    gekozen = gekozen or (events[0] if events else None)
+        gekozen = next((ev for ev in beschikbaar if ev["titel"] == instellingen.get("vastgezet_titel")), None)
+    gekozen = gekozen or (beschikbaar[0] if beschikbaar else None)
     schrijf_agenda(events, dag, gekozen, instellingen, waarschuwing)
     if gekozen:
         return formatteer_event(gekozen), gekozen["start"]
@@ -315,20 +326,25 @@ def maak_regels_png(bloei, event, kleur_event, pad):
     img.save(pad, optimize=True)
 
 
-def mobiele_regels(d, tekst, f, breedte):
+def mobiele_regels(d, tekst, f, breedte, eerste_breedte=None):
     """Wrap whole words using the same kerning as the final drawing; never truncate."""
     regels, regel = [], ''
+    def beschikbaar():
+        return eerste_breedte if not regels and eerste_breedte is not None else breedte
     for woord in tekst.split():
         voorstel = (regel + ' ' + woord).strip()
-        if d.textlength(voorstel, font=f) <= breedte:
+        if d.textlength(voorstel, font=f) <= beschikbaar():
             regel = voorstel
             continue
         if regel:
             regels.append(regel)
             regel = ''
+        elif not regels and eerste_breedte is not None and d.textlength(woord, font=f) > eerste_breedte:
+            # Keep a word whole on the next line if it cannot fit after the pill.
+            regels.append('')
         # Exceptionally long unbroken words must not push the image off-screen.
         for char in woord:
-            if regel and d.textlength(regel + char, font=f) > breedte:
+            if regel and d.textlength(regel + char, font=f) > beschikbaar():
                 regels.append(regel)
                 regel = ''
             regel += char
@@ -337,28 +353,48 @@ def mobiele_regels(d, tekst, f, breedte):
     return regels or ['']
 
 
+def pil_geometrie(d, label, f, S):
+    """Center visible ink, not the font's ascender/descender box."""
+    links, boven, rechts, onder = d.textbbox((0, 0), label, font=f)
+    breedte, hoogte = rechts-links + 14*S, 18*S
+    return breedte, hoogte, (breedte-(rechts-links))/2-links, (hoogte-(onder-boven))/2-boven
+
+
+def tekst_bovenkant(d, f, y, regelhoogte):
+    """Match the capital-height centre of body type to the pill's label centre."""
+    _, top, _, bottom = d.textbbox((0, 0), 'H', font=f)
+    return y + (regelhoogte-(bottom-top))/2-top
+
+
 def maak_mobiel_png(bloei, event, kleur_event, pad):
-    """Fixed 300px width, content-driven height; labels above readable 12px text."""
-    S, W = 2, 300
-    f, chipfont = helvetica(12, S), helvetica(8.5, S, True)
+    """Park house type with inline pills; ordinary entries fit on one full-width line."""
+    # Supersample curves and type, then retain 3x resolution for high-DPI mail.
+    S, W = 12, 420
+    f, chipfont = font('GTWalsheim-Md.ttf', 13, S), font('GTWalsheim-Bd.ttf', 9, S)
     proef = ImageDraw.Draw(Image.new('RGB', (W*S, 1)))
-    ascent, descent = f.getmetrics()
-    regelhoogte = ascent + descent
+    regelhoogte = round(13 * 1.5 * S)
+    spatie = proef.textlength(' ', font=f)
     rijen = [('NU IN BLOEI', KLEUREN['groen'], bloei),
              ('IN DE AGENDA', kleur_event, event)]
-    layouts = [mobiele_regels(proef, tekst, f, (W-4)*S) for _, _, tekst in rijen]
-    # 19px label, 5px gap, natural font metrics, 12px between sections.
-    hoogte = 2*S + sum(24*S + len(regels)*regelhoogte for regels in layouts) + 12*S + 2*S
+    pillen = [pil_geometrie(proef, label, chipfont, S) for label, _, _ in rijen]
+    layouts = [mobiele_regels(proef, tekst, f, (W-2)*S, (W-2)*S-pil[0]-spatie)
+               for (_, _, tekst), pil in zip(rijen, pillen)]
+    hoogte = 4*S + sum(len(regels)*regelhoogte for regels in layouts) + 8*S
     img = Image.new('RGB', (W*S, hoogte), 'white')
     d = ImageDraw.Draw(img)
     y = 2*S
-    for (label, kleur, _), regels in zip(rijen, layouts):
-        teken_chip(d, S, y + 9.5*S, label, kleur, S, lettertype=chipfont)
-        y += 24*S
-        for regel in regels:
-            d.text((S, y + ascent), regel, font=f, fill='#000000', anchor='ls')
+    # Align capital-height centres with the all-caps pill label. Including a
+    # descender (e.g. Ag) lifts the body baseline and makes adjacent text float.
+    for (label, kleur, _), regels, (pw, ph, tx, ty) in zip(rijen, layouts, pillen):
+        py = y + (regelhoogte-ph)/2
+        d.rounded_rectangle((S, py, S+pw, py+ph), radius=ph/2, outline=kleur, width=S)
+        d.text((S+tx, py+ty), label, font=chipfont, fill=kleur)
+        for i, regel in enumerate(regels):
+            x = S+pw+spatie if i == 0 else S
+            d.text((x, tekst_bovenkant(d, f, y, regelhoogte)), regel, font=f, fill=KLEUREN['tekst'])
             y += regelhoogte
-        y += 12*S
+        y += 8*S
+    img = img.resize((W*3, round(hoogte*3/S)), Image.Resampling.LANCZOS)
     img.save(pad, optimize=True)
 
 

@@ -1,4 +1,4 @@
-import {controleerToegang, isIngelogd, uitloggen} from './github.js?v=20260916-7';
+import {controleerToegang, isIngelogd, uitloggen} from './github.js?v=20260917-7';
 
 export async function toegang() {
   if (sessionStorage.getItem('park-toegang') !== 'open' && !isIngelogd()) {
@@ -23,8 +23,10 @@ export async function toegang() {
   const nav = document.querySelector('.topbar nav');
   if (nav) {
     const button = document.createElement('button');
-    button.className = 'secondary small'; button.textContent = 'Vergrendelen';
+    button.id = 'uitloggen';
+    button.className = 'secondary small'; button.textContent = 'Log uit';
     button.addEventListener('click', () => {
+      if (!window.dispatchEvent(new Event('park-uitloggen', {cancelable:true}))) return;
       sessionStorage.removeItem('park-toegang'); uitloggen(); location.reload();
     });
     nav.append(button);

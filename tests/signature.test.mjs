@@ -2,8 +2,28 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {handtekening, valideerPersoon, persoonlijkeLink, kiesLogovariant} from '../docs/js/signature.js';
 import {dagVanJaar, wachtOpPublicatie, verzoek} from '../docs/js/shared.js';
+import {algemeneTekst} from '../docs/js/general.js';
 
 const p = {id:'persoon-123', naam:'Zoë <script>alert(1)</script>', functie:'Hovenier & beheer', telefoon:'+31 (0)10 123 45 67'};
+test('general signature includes greeting and foundation identity; shared changes apply to everyone',()=>{
+  assert.match(handtekening(null).html,/Met vriendelijke groet,[\s\S]*Stichting het Park/);
+  assert.ok(handtekening(null).tekst.startsWith('Met vriendelijke groet,\n\nStichting het Park'));
+  const algemeen={groet:'Hartelijke groet,',naam:'Stichting <Park>',opening:'Elke dag welkom & tot snel',website_url:'https://example.org/park'};
+  for(const persoon of [null,p]){
+    const sig=handtekening(persoon,{algemeen});
+    assert.match(sig.html,/Hartelijke groet/);
+    assert.match(sig.html,/Elke dag welkom &amp; tot snel/);
+    assert.match(sig.html,/href="https:\/\/example.org\/park"/);
+    assert.match(sig.tekst,/Elke dag welkom & tot snel/);
+  }
+  assert.match(handtekening(null,{algemeen}).html,/Stichting &lt;Park&gt;/);
+  assert.ok(!handtekening(p,{algemeen}).html.includes('Stichting &lt;Park&gt;'));
+});
+test('shared links accept only http(s) and fields are validated',()=>{
+  for(const url of ['javascript:alert(1)','data:text/html,a','//example.org','https://user:secret@example.org'])assert.throws(()=>algemeneTekst({website_url:url}));
+  assert.throws(()=>algemeneTekst({naam:''}));
+  assert.throws(()=>algemeneTekst({opening:'x'.repeat(301)}));
+});
 test('signature escapes profile fields and includes an optional phone link', () => {
   const {html, tekst} = handtekening(p, {logovariant:'groen'});
   assert.match(html, /Met vriendelijke groet/);
@@ -21,15 +41,16 @@ test('copy assets stay absolute and use stable addresses', () => {
   assert.match(html, /https:\/\/bennolambooy.github.io\/Park\/handtekening-mobiel.png/);
   assert.ok(!html.includes('?v='));
 });
-test('signature uses Helvetica, natural line spacing and approved order without address', () => {
+test('signature uses readable Arial, relative line spacing and approved order without address', () => {
   const {html, tekst} = handtekening(p, {logovariant:'groen'});
   const parts = ['Met vriendelijke groet', 'tel:', 'woordbeeld-groen', 'www.hetparkinrotterdam.nl', 'Het Parkpaviljoen is elke dag open van 10 tot 18 uur.', 'Volg onze', 'handtekening-mobiel.png'];
   for (let i = 1; i < parts.length; i++) assert.ok(html.indexOf(parts[i]) > html.indexOf(parts[i-1]));
-  assert.match(html, /width="300"/);
+  assert.match(html, /width="420"/);
+  assert.match(html, /padding:0 0 18px;font-family:Arial/);
   assert.ok(!html.includes('height="56"'));
   assert.match(html, /width="132"/);
-  assert.match(html, /font-family:Helvetica,Arial,sans-serif;font-size:12px/);
-  assert.match(html, /line-height:normal/);
+  assert.match(html, /font-family:Arial,Helvetica,sans-serif;font-size:14px/);
+  assert.match(html, /line-height:1.4/);
   assert.match(html, /white-space:normal/);
   assert.ok(!html.includes('nowrap'));
   assert.match(html, /max-width:100%;height:auto/);

@@ -70,6 +70,24 @@ export async function kopieer(html, tekst, element) {
   }
 }
 
+export async function kopieerHtmlTekst(html) {
+  try {
+    await navigator.clipboard.writeText(html);
+    return 'HTML-code gekopieerd.';
+  } catch {
+    const veld = document.createElement('textarea');
+    veld.value = html;
+    veld.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+    const focus = document.activeElement;
+    document.body.append(veld);
+    veld.select();
+    let gelukt = false;
+    try { gelukt = document.execCommand('copy'); } catch {}
+    veld.remove(); focus?.focus();
+    return gelukt ? 'HTML-code gekopieerd.' : 'Kopiëren lukt niet. Geef je browser toegang tot het klembord en probeer opnieuw.';
+  }
+}
+
 export function downloadHandtekening(html, naam = 'handtekening') {
   const documentHtml = '<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Handtekening</title></head>' +
     '<body style="background:white;margin:0;padding:10px">' + html + '</body></html>';

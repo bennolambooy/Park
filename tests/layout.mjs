@@ -38,11 +38,12 @@ for (const engine of [chromium, webkit]) {
           assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${engine.name()} ${width}: no horizontal overflow`);
           assert.ok(await page.locator('table').evaluate(el => el.scrollWidth <= el.clientWidth + 1));
           const style = await page.locator('td').first().evaluate(el => ({size:getComputedStyle(el).fontSize, line:getComputedStyle(el).lineHeight}));
-          assert.deepEqual(style, {size:'12px',line:'normal'});
+          assert.equal(style.size, '14px');
+          assert.ok(Math.abs(parseFloat(style.line) - 19.6) < 0.1);
           const dimensions = await page.locator('img').last().evaluate(img => ({w:img.width,h:img.height,nw:img.naturalWidth,nh:img.naturalHeight}));
-          assert.equal(dimensions.nw, 600);
-          assert.equal(dimensions.w, 300, 'mail-width fixture keeps full 12px image text');
-          assert.ok(Math.abs(dimensions.h - dimensions.nh / 2) <= 1, 'height follows current image contents');
+          assert.equal(dimensions.nw, 1260);
+          assert.equal(dimensions.w, Math.min(420, width-20), 'Park block follows available mail width');
+          assert.ok(Math.abs(dimensions.h - dimensions.nh * dimensions.w / dimensions.nw) <= 1, 'height follows current image contents without distortion');
           return dimensions.h;
         };
         const before = await check();

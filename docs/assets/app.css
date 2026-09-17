@@ -5,14 +5,18 @@
 html[data-locked] .shell{display:none!important}
 .toegang{min-height:100vh;display:grid;place-items:center;padding:24px}
 .toegang .panel{width:100%;max-width:440px}
-.overzicht{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:30px}
+.overzicht{width:100%;margin-top:24px}
 .overzicht .panel,.overzicht .panel+.panel{margin:0}.overzicht .signature-wrap{padding:10px 0}
-.variant-label{font-size:12px;color:#627368;margin:4px 0 16px}
-.kaart-kop{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
-.kaart-kop h2{font-size:18px;margin:0}.kaart-kop .variant-label{margin:0;white-space:nowrap}
-#detail{max-width:650px;margin-top:24px}
-.extra-opties{margin-top:14px}.extra-opties summary{color:#627368;font-size:12px}
-@media(max-width:900px){.overzicht{grid-template-columns:1fr}}
+.overzicht .panel.medewerkers{margin-top:24px}
+.collega>.signature-wrap,.collega>.status{grid-column:1/-1}
+.collega>.status:empty{display:none}
+.collega>.kaart-voorbeeld{grid-column:1/-1;width:100%;margin:0}
+.algemeen-rij{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.naam-voorbeeld{border:0;background:transparent;color:inherit;padding:0;text-align:left;font:inherit;text-decoration:underline;text-underline-offset:3px;min-width:0;overflow-wrap:anywhere}
+.kaart-voorbeeld .signature-wrap{padding:20px 0 10px}
+.collega-naam{min-width:0;overflow-wrap:anywhere;color:inherit;text-decoration:none}
+.collega-naam:hover{text-decoration:underline}
+#detail{width:100%;margin-top:24px}
 :root{color:#193728;background:#f5f5ef;font-family:Walsheim,Arial,sans-serif;font-size:16px;line-height:1.55}
 body{margin:0} a{color:#00752e;text-underline-offset:3px} button,input{font:inherit}
 .shell{max-width:1100px;margin:auto;padding:32px 28px 64px}
@@ -31,6 +35,9 @@ p{margin:0 0 16px}.intro{max-width:670px;color:#587060;margin-bottom:30px}
 .actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
 .button,button{border:1px solid #00752e;border-radius:8px;background:#00752e;color:#fff;padding:11px 18px;cursor:pointer;font-size:14px;text-decoration:none;display:inline-block}
 .secondary{background:transparent;color:#00752e}.small{padding:7px 12px;font-size:13px}
+.tekstlink{border:0;border-radius:0;background:transparent;color:#00752e;text-decoration:underline;text-underline-offset:3px;padding:0;margin-top:14px;font-size:12px}
+.sectiekop{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}.sectiekop a{font-size:12px}
+.bloeidag{display:grid;grid-template-columns:85px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid #e2e7de;font-size:14px}.bloeidag:last-child{border-bottom:0}.bloeidag span:first-child{color:#627368}
 .danger{color:#9b2b28;border-color:#dcb5b0;background:#fff}
 button:disabled{opacity:.5;cursor:wait}button:hover:not(:disabled),.button:hover{filter:brightness(.94)}
 :focus-visible{outline:3px solid #ca7b00;outline-offset:3px}
@@ -40,7 +47,44 @@ button:disabled{opacity:.5;cursor:wait}button:hover:not(:disabled),.button:hover
 .steps{padding-left:21px;font-size:14px}.steps li{padding-left:4px;margin-bottom:12px}
 details{margin-top:22px}summary{cursor:pointer;font-size:14px;color:#00752e}
 .field{display:block;margin:0 0 15px;font-size:14px}
-.field input{display:block;border:1px solid #becbbf;border-radius:7px;background:white;width:100%;padding:11px 12px;margin-top:5px;color:#193728}
+.field input,.field select{display:block;border:1px solid #becbbf;border-radius:7px;background:white;width:100%;padding:11px 12px;margin-top:5px;color:#193728;font:inherit}
+.actions .tekstlink{margin-top:0}
+.medewerker-kop,.medewerker-rij{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) minmax(0,1fr) 88px;align-items:center;gap:16px}
+.medewerker-kop{font-size:12px;color:#627368;padding-bottom:10px}
+.medewerker-lijst{list-style:none;padding:0;margin:0}
+.medewerker-rij{font-size:14px;padding:16px 0;border-top:1px solid #dce2d7}
+.medewerker-rij>span{overflow-wrap:anywhere}.medewerker-rij button{justify-self:end}
+.medewerker-rij>.naam-voorbeeld{justify-self:stretch}
+.persoon-editor{border-top:1px solid #dce2d7;margin-top:22px;padding-top:22px}
+.persoon-editor h3{margin-bottom:16px}.verwijder-link{color:#9b2b28}
+@media(max-width:600px){.medewerker-kop{display:none}.medewerker-rij{grid-template-columns:minmax(0,1fr) auto;gap:4px 12px}.medewerker-rij>span{grid-column:1;color:#627368}.medewerker-rij>button:not(.naam-voorbeeld){grid-column:2;grid-row:1/4}.medewerker-rij:first-child{border-top:0;padding-top:0}}
+.bloei-velden{border:0;padding:0;margin:0;min-width:0}
+.bloei-keuze{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;padding:12px 0}
+.bloei-keuze+.bloei-keuze{border-top:1px solid #dce2d7}
+.bloei-keuze button{flex:none}
+.bloei-info{min-width:0}
+.bloei-periode{color:#707970;font-weight:400;font-size:12px}
+.bloei-planning{display:block;margin-top:4px;color:#50705a;font-size:12px}
+.bloei-acties{display:flex;align-items:center;gap:4px;flex:none}
+.bloei-overslaan{background:transparent;color:#657565;border:0;padding:0;width:36px;min-height:40px;font:24px/1 Arial,sans-serif}
+.bloei-overslaan:hover{background:#edf2ea;color:#193d2b}
+.bloei-selectie{border-bottom:1px solid #dce2d7;padding-bottom:14px;margin-bottom:20px}.bloei-selectie .fine{margin-bottom:6px}
+.bloei-velden>details:first-child{margin-top:0}
+.bloei-velden summary{margin-bottom:12px}
+.bloei-editor{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid #dce2d7;padding-top:18px;margin-top:18px}
+.bloei-tekst{grid-column:1/-1}.bloei-editor .field{margin:0;min-width:0}.bloei-editor .actions{margin-top:0}
+.kal{overflow-x:auto;border:1px solid #dce2d7;border-radius:8px}
+.kalbinnen{min-width:650px}
+.kalkop,.kalrij{display:grid;grid-template-columns:240px repeat(24,minmax(0,1fr));align-items:center}
+.kalkop{color:#627368;font-size:11px;text-align:center;padding:8px 0}
+.kalkop>span:first-child{text-align:left;padding-left:12px}
+button.kalrij{width:100%;border:0;border-top:1px solid #e2e7de;border-radius:0;background:#fff;color:#193728;padding:0;text-align:left;font-size:13px}
+.kalrij>*{grid-row:1}.kalrij[aria-expanded="true"]{background:#eef4e9}
+.kalrij:focus-visible{outline-offset:-3px}
+.kallabel{position:sticky;left:0;background:inherit;z-index:1;padding:10px 12px;white-space:normal;overflow-wrap:anywhere;border-right:1px solid #e2e7de}
+.kallabel.inpool{color:#00752e;font-weight:700}
+.nucol{height:100%;background:#eef4e9}.bloeibalk{height:9px;border-radius:5px;background:#00752e;margin:0 1px}.bloeibalk.gepauzeerd{opacity:.3}
+@media(max-width:600px){.kalkop,.kalrij{grid-template-columns:160px repeat(24,minmax(0,1fr))}.bloei-editor{grid-template-columns:1fr}.bloei-tekst{grid-column:auto}}
 .admin-columns{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
 .admin-columns>.panel+.panel{margin-top:0}
 .person{padding:16px 0;border-bottom:1px solid #e2e7de}.person:first-child{padding-top:0}
@@ -63,9 +107,6 @@ details{margin-top:22px}summary{cursor:pointer;font-size:14px;color:#00752e}
 .kleur-optie .logo-paar{display:flex;gap:8px;align-items:center;height:32px}
 .kleur-optie .logo-paar img{width:75px}
 .kleur-optie small{color:#627368;font-size:12px}
-.voorbeeld-kop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:22px 0 10px}
-.voorbeeld-kop .caption{margin:0}
-.preview-scroll{background:#fff;border:1px solid #e1e6dd;border-radius:8px;padding:18px}
 .installatie{margin-top:30px}.installatie details{margin-top:14px}.installatie details p{margin-top:10px;max-width:700px}
 .mobile-hint{display:none}.status:empty{min-height:0;margin:0}
 .admin-columns .mobile-hint{display:block}

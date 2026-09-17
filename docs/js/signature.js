@@ -1,5 +1,6 @@
-import {SITE, WEBSITE} from './config.js?v=20260916-7';
-import {esc} from './shared.js?v=20260916-7';
+import {SITE, WEBSITE} from './config.js?v=20260917-7';
+import {esc} from './shared.js?v=20260917-7';
+import {algemeneTekst} from './general.js?v=20260917-7';
 
 export function valideerPersoon(p) {
   if (!p || !/^[a-zA-Z0-9_-]{8,80}$/.test(p.id)) throw new Error('Ongeldig persoonsprofiel.');
@@ -24,8 +25,9 @@ export function kiesLogovariant(stijl = 'random', random = Math.random) {
   return stijl === 'random' ? (random() < 0.5 ? 'groen' : 'seizoen') : stijl;
 }
 
-export function handtekening(persoon, {basis = SITE, versie = '', logovariant, toonAdres = false} = {}) {
+export function handtekening(persoon, {basis = SITE, versie = '', logovariant, toonAdres = false, algemeen} = {}) {
   const p = persoon ? valideerPersoon(persoon) : null;
+  const a = algemeneTekst(algemeen);
   const variant = logovariant ?? kiesLogovariant();
   const asset = name => {
     const url = new URL(name, basis);
@@ -34,28 +36,28 @@ export function handtekening(persoon, {basis = SITE, versie = '', logovariant, t
   };
   const telefoon = p?.telefoon ? '<br><a href="tel:' + esc(p.telefoon.replace(/[^+0-9]/g, '')) +
     '" style="color:#1d1d1b;text-decoration:none">' + esc(p.telefoon) + '</a>' : '';
-  const tekststijl = 'font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:normal;color:#000;white-space:normal;word-wrap:break-word;overflow-wrap:break-word';
-  const gegevens = p ? '<tr><td style="padding:0 0 16px;' + tekststijl + '">' +
-    'Met vriendelijke groet,<br><br><strong>' + esc(p.naam) + '</strong><br>' + esc(p.functie) + telefoon + '</td></tr>' : '';
+  const tekststijl = 'font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.4;color:#1d1d1b;white-space:normal;word-wrap:break-word;overflow-wrap:break-word';
+  const gegevens = '<tr><td style="padding:0 0 16px;' + tekststijl + '">' +
+    esc(a.groet)+'<br><br><strong>' + esc(p?.naam || a.naam) + '</strong>' + (p?'<br>'+esc(p.functie)+telefoon:'') + '</td></tr>';
   // WebKit can ignore max-width on a fixed-width table; constrain a block instead.
   const html = '<div style="width:420px;max-width:100%"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;table-layout:fixed;width:100%;' + tekststijl + '"><tbody>' +
-    gegevens + '<tr><td style="padding:0 0 14px"><a href="' + WEBSITE + '" style="text-decoration:none">' +
+    gegevens + '<tr><td style="padding:0 0 14px"><a href="' + esc(a.website_url) + '" style="text-decoration:none">' +
     '<img src="' + asset('woordbeeld-' + variant + '.png') + '" width="132" height="31" alt="het Park" style="display:block;border:0;width:132px;height:31px"></a></td></tr>' +
-    '<tr><td style="padding:0 0 10px;' + tekststijl + '">' +
-    '<a href="' + WEBSITE + '/" style="color:#00752e;text-decoration:underline">www.hetparkinrotterdam.nl</a><br>' +
-    (toonAdres ? 'Baden Powelllaan 2<br>3016 GJ Rotterdam<br><br>' : '') +
-    'Het Parkpaviljoen is elke dag open van 10 tot 18 uur.<br>Volg onze ' +
-    '<a href="https://hetparkinrotterdam.us2.list-manage.com/subscribe?u=fe120296f8b3715025a0f4f7f&amp;id=bdc33ac363" style="color:#00752e;text-decoration:underline">nieuwsbrief</a>, ' +
-    '<a href="https://www.facebook.com/hetparkinrotterdam" style="color:#00752e;text-decoration:underline">Facebook</a>, ' +
-    '<a href="https://www.instagram.com/hetparkinrotterdam/" style="color:#00752e;text-decoration:underline">Instagram</a> en ' +
-    '<a href="https://www.linkedin.com/company/het-park-in-rotterdam/" style="color:#00752e;text-decoration:underline">LinkedIn</a>.</td></tr>' +
+    '<tr><td style="padding:0 0 18px;' + tekststijl + '">' +
+    '<a href="' + esc(a.website_url) + '" style="color:#00752e;text-decoration:underline">'+esc(a.website_tekst)+'</a><br>' +
+    (toonAdres ? esc(a.adres1)+'<br>'+esc(a.adres2)+'<br><br>' : '') +
+    esc(a.opening)+'<br>'+esc(a.volgen)+' ' +
+    '<a href="'+esc(a.nieuwsbrief_url)+'" style="color:#00752e;text-decoration:underline">nieuwsbrief</a>, ' +
+    '<a href="'+esc(a.facebook_url)+'" style="color:#00752e;text-decoration:underline">Facebook</a>, ' +
+    '<a href="'+esc(a.instagram_url)+'" style="color:#00752e;text-decoration:underline">Instagram</a> en ' +
+    '<a href="'+esc(a.linkedin_url)+'" style="color:#00752e;text-decoration:underline">LinkedIn</a>.</td></tr>' +
     '<tr><td style="padding:0"><a href="' + WEBSITE + '/agenda" style="text-decoration:none">' +
-    '<img src="' + asset('handtekening-mobiel.png') + '" width="300" alt="Nu in bloei en in de agenda van het Park — bekijk de actuele agenda" ' +
-    'style="display:block;border:0;width:300px;max-width:100%;height:auto"></a></td></tr></tbody></table></div>';
-  const tekst = [p ? 'Met vriendelijke groet,\n\n' + p.naam + '\n' + p.functie + (p.telefoon ? '\n' + p.telefoon : '') : '',
+    '<img src="' + asset('handtekening-mobiel.png') + '" width="420" alt="Nu in bloei en in de agenda van het Park — bekijk de actuele agenda" ' +
+    'style="display:block;border:0;width:420px;max-width:100%;height:auto"></a></td></tr></tbody></table></div>';
+  const tekst = [a.groet+'\n\n'+(p ? p.naam + '\n' + p.functie + (p.telefoon ? '\n' + p.telefoon : '') : a.naam),
     'het Park',
-    'www.hetparkinrotterdam.nl\n' + (toonAdres ? 'Baden Powelllaan 2\n3016 GJ Rotterdam\n\n' : '') +
-    'Het Parkpaviljoen is elke dag open van 10 tot 18 uur.\nVolg onze nieuwsbrief, Facebook, Instagram en LinkedIn.',
+    a.website_tekst+'\n' + (toonAdres ? a.adres1+'\n'+a.adres2+'\n\n' : '') +
+    a.opening+'\n'+a.volgen+' nieuwsbrief, Facebook, Instagram en LinkedIn.',
     'Nu in bloei en in de agenda: ' + WEBSITE + '/agenda'].filter(Boolean).join('\n\n');
   return {html, tekst};
 }
