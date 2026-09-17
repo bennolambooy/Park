@@ -2,10 +2,10 @@
   "bijgewerkt": "2026-09-17",
   "logostijl": "groen",
   "toon_adres": false,
-  "vastgezet_id": "",
-  "vastgezet_titel": "",
-  "aanvraag_id": "395e4211-4e41-4cab-9338-d63bd5b4adf9",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/baby-bosbaden",
+  "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
+  "vastgezet_titel": "Anne Vegter presenteert Herfst",
+  "aanvraag_id": "32522db6-e1b1-4911-9547-742242c2f007",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
   "waarschuwing": "",
   "events": [
     {
@@ -99,5 +99,5 @@
       "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
     }
   ],
-  "versie": "2500edfcddd5ea44"
+  "versie": "ab03510ea0c6e996"
 }
