@@ -310,7 +310,8 @@ try {
   const sourceHtml = await copy.evaluate(() => navigator.clipboard.readText());
   assert.ok(!sourceHtml.includes('<table'));
   assert.match(sourceHtml, /handtekening-mail.png/);
-  assert.match(sourceHtml, /width="300" height="40"/);
+  assert.match(sourceHtml, /width="420" height="56"/);
+  assert.match(sourceHtml, /max-width:100%/);
   assert.ok(!sourceHtml.includes('?v='));
   assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'the page does not scroll horizontally');
   assert.ok(await copy.locator('.signature-wrap:visible').evaluateAll(els => els.every(el => el.scrollWidth <= el.clientWidth + 1)), 'none of the previews scroll horizontally');
@@ -369,7 +370,7 @@ try {
     assert.ok(await card.evaluate(el=>Math.abs(el.getBoundingClientRect().width-document.querySelector('main').getBoundingClientRect().width)<1),'home cards fill the same content width as admin cards');
   }
   if (!(await copy.locator('#kaart-0').isVisible())) await copy.locator('[data-preview="0"]').click();
-  assert.equal(await copy.locator('#kaart-0 img').last().evaluate(el=>el.getBoundingClientRect().width),300,'only the dynamic image has a fixed mobile-safe width');
+  assert.equal(await copy.locator('#kaart-0 img').last().evaluate(el=>el.getBoundingClientRect().width),420,'the dynamic image has its intended desktop width');
   await copy.screenshot({path:'test-results/overzicht-kaarten-desktop.png',fullPage:true});
   await copy.setViewportSize({width:390,height:844});
   await copy.screenshot({path:'test-results/overzicht-kaarten-mobiel.png',fullPage:true});

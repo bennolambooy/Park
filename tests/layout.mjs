@@ -38,17 +38,20 @@ for (const engine of [chromium, webkit]) {
         const {html} = handtekening(profile, {basis:'https://signature.test/', versie:`layout-${width}-${long}`, toonAdres:long, logovariant:long ? 'seizoen' : 'groen'});
         // Test actual content separately and use a stable baseline for scaling.
         imageBody = long ? shortImage : normalImage;
+        await page.setViewportSize({width:900,height:900});
         // Deliberately use a different surrounding font and line-height, as mail clients do.
         await page.setContent('<body style="margin:10px;font:18px/2 Georgia"><p>Dit is een voorbeeldmail.</p>' + html + '</body>');
         await page.locator('img').evaluateAll(imgs => Promise.all(imgs.map(img => img.decode())));
-        // Model the width freezing seen in the actual EML, then strip any
-        // max-width safety net. The emitted markup must remain safe on its own.
+        // Model a desktop-sized inline width after copying. max-width is now
+        // 100% on the image itself, not 420px on a containing text block.
+        // This is a browser regression test, not an Apple Mail paste guarantee.
         await page.evaluate(() => {
           for (const el of document.querySelectorAll('[style]')) {
             if (el.style.width) el.style.width = getComputedStyle(el).width;
-            el.style.removeProperty('max-width');
+            if (el.style.maxWidth) el.style.maxWidth = getComputedStyle(el).maxWidth;
           }
         });
+        await page.setViewportSize({width,height:900});
         const check = async () => {
           assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${engine.name()} ${width}: no horizontal overflow`);
           assert.equal(await page.locator('table').count(),0);
@@ -58,8 +61,8 @@ for (const engine of [chromium, webkit]) {
           const dimensions = await page.locator('img').last().evaluate(img => ({w:img.width,h:img.height,nw:img.naturalWidth,nh:img.naturalHeight}));
           assert.equal(dimensions.nw, 900);
           assert.equal(dimensions.nh, 120);
-          assert.equal(dimensions.w, 300, 'Park block fits a phone even after Mail freezes CSS dimensions');
-          assert.equal(dimensions.h, 40, 'explicit stable height prevents collapsed images in Mac Mail');
+          assert.equal(dimensions.w, Math.min(420,width-20), 'only the image scales to the available message width');
+          assert.equal(await page.locator('img').last().getAttribute('height'),'56','explicit fallback height is retained for Mac Mail');
           assert.ok(Math.abs(dimensions.h - dimensions.nh * dimensions.w / dimensions.nw) <= 1, 'height follows current image contents without distortion');
           return dimensions.h;
         };
@@ -76,6 +79,9 @@ for (const engine of [chromium, webkit]) {
           assert.deepEqual(textAfter, textBefore, 'image changes never resize or reposition the text section');
         }
         await page.screenshot({path:`test-results/mail-${engine.name()}-${width}-${long ? 'lang' : 'normaal'}.png`,fullPage:true});
+        await page.setViewportSize({width:900,height:900});
+        assert.equal(await page.locator('img').last().evaluate(img=>img.width),420,'image returns to desktop width after resize');
+        assert.equal(await page.locator('p').nth(1).evaluate(el=>getComputedStyle(el).fontSize),'14px');
       }
     }
     // With images unavailable, identity, phone, website and social links remain real usable text.

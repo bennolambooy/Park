@@ -1,6 +1,6 @@
-import {SITE, WEBSITE} from './config.js?v=20260917-10';
-import {esc} from './shared.js?v=20260917-10';
-import {algemeneTekst} from './general.js?v=20260917-10';
+import {SITE, WEBSITE} from './config.js?v=20260917-11';
+import {esc} from './shared.js?v=20260917-11';
+import {algemeneTekst} from './general.js?v=20260917-11';
 
 export function valideerPersoon(p) {
   if (!p || !/^[a-zA-Z0-9_-]{8,80}$/.test(p.id)) throw new Error('Ongeldig persoonsprofiel.');
@@ -51,12 +51,12 @@ export function handtekening(persoon, {basis = SITE, versie = '', logovariant, t
     '<a href="'+esc(a.facebook_url)+'" style="color:#00752e;text-decoration:underline">Facebook</a>, ' +
     '<a href="'+esc(a.instagram_url)+'" style="color:#00752e;text-decoration:underline">Instagram</a> en ' +
     '<a href="'+esc(a.linkedin_url)+'" style="color:#00752e;text-decoration:underline">LinkedIn</a>.</p>' +
-    // Explicit height prevents collapsed images in Mac Mail. This asset always
-    // has a 300:40 canvas, including after a daily content update. Keep the old
-    // image URL unchanged for already installed signatures.
+    // Keep explicit fallback dimensions for Mac Mail, but constrain only the
+    // image to its container. The stable 900:120 canvas has the same 420:56 ratio.
+    // No percentage-width wrapper: Mail can freeze that wrapper when pasting.
     '<a href="' + WEBSITE + '/agenda" style="text-decoration:none">' +
-    '<img src="' + asset('handtekening-mail.png') + '" width="300" height="40" alt="Nu in bloei en in de agenda van het Park — bekijk de actuele agenda" ' +
-    'style="display:block;border:0;width:300px;height:40px"></a>';
+    '<img src="' + asset('handtekening-mail.png') + '" width="420" height="56" alt="Nu in bloei en in de agenda van het Park — bekijk de actuele agenda" ' +
+    'style="display:block;border:0;width:420px;max-width:100%;height:auto"></a>';
   const tekst = [a.groet+'\n\n'+(p ? p.naam + '\n' + p.functie + (p.telefoon ? '\n' + p.telefoon : '') : a.naam),
     'het Park',
     a.website_tekst+'\n' + (toonAdres ? a.adres1+'\n'+a.adres2+'\n\n' : '') +

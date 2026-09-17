@@ -27,13 +27,15 @@ de website, openingstijden en sociale links, gevolgd door bloei en agenda.
 Gewone tekst staat in alinea's zonder breedte, maximale breedte of tabel. Apple Mail
 maakte de eerdere procentuele breedtes bij plakken/verzenden alsnog 420px breed;
 de aangeleverde testmail liep daardoor buiten een smal scherm. Alleen afbeeldingen
-hebben nu vaste maten: het actuele blok is 300 × 40px, los van de gewone tekst.
+hebben nu eigen maten: het actuele blok is op desktop 420 × 56px en schaalt met
+`max-width:100%;height:auto` proportioneel mee als er minder ruimte is. De gewone
+tekst staat daar los van. De HTML-attributen behouden expliciet breedte en hoogte.
 Browsercontroles vervangen geen echte verzendtest in Apple Mail op iPhone.
 **Adres tonen** is een toolbrede optie die standaard uitstaat; aanzetten voegt straat
 en postcode toe onder de website. Na een wijziging moet de handtekening opnieuw worden gekopieerd.
 Bloei en agenda gebruiken bewust de Park-huisstijl: GT Walsheim 13px met
 omlijnde labels. De dynamische afbeelding `handtekening-mail.png`
-heeft een vast canvas van 900 × 120 pixels voor 300 × 40px weergave. De tekst volgt de
+heeft een vast canvas van 900 × 120 pixels voor maximaal 420 × 56px weergave. De tekst volgt de
 eigen pil met één gemeten spatie, zonder gedeelde tabkolom. De zichtbare letters
 staan geometrisch midden in de pil. Bloei en agenda blijven altijd elk op één regel,
 zonder afbreken of inkorten. Lange teksten schalen het hele blok proportioneel kleiner;

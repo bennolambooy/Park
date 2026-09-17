@@ -2,6 +2,13 @@
 
 Status: Accepted for implementation — 2026-09-16
 
+Aanpassing 20:00, 17 september: uitsluitend de weergavemaat van het actuele beeld
+verandert naar 420×56px met `max-width:100%;height:auto` op de afbeelding zelf.
+HTML width/height blijven expliciet voor Mac Mail. De gewone tekst, alle teksten
+in het beeld, de PNG, generator en gegevens blijven ongewijzigd. De eerdere
+vaste weergave van 300×40px was op desktop te klein. Lokale EML gecontroleerd
+in Mac Mail: zichtbaar en groter. Echte iPhone-verzending blijft apart te testen.
+
 ## Huidige correctie na echte mailtest — 2026-09-17
 
 Deze keuze vervangt de breedte/hoogtekeuzes in de historische notities hieronder.
