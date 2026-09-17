@@ -1,10 +1,10 @@
 {
   "bijgewerkt": "2026-09-17",
-  "logostijl": "random",
+  "logostijl": "groen",
   "toon_adres": false,
   "vastgezet_id": "",
   "vastgezet_titel": "",
-  "aanvraag_id": "76d6f51e-c205-46d8-80ec-798920931819",
+  "aanvraag_id": "395e4211-4e41-4cab-9338-d63bd5b4adf9",
   "gekozen_id": "https://hetparkinrotterdam.nl/agenda/baby-bosbaden",
   "waarschuwing": "",
   "events": [
@@ -99,5 +99,5 @@
       "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
     }
   ],
-  "versie": "e96a4f1ddfdd8bb8"
+  "versie": "2500edfcddd5ea44"
 }
