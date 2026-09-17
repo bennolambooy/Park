@@ -172,7 +172,7 @@ class LayoutTests(unittest.TestCase):
         self.assertEqual(lines[0], '')
         self.assertIn('Lampenpoetsersgras', lines[1])
 
-    def test_mobile_banner_keeps_width_and_grows_in_height(self):
+    def test_mobile_banner_keeps_two_unbroken_rows_and_scales_to_fit(self):
         with tempfile.TemporaryDirectory() as tmp:
             short, long = Path(tmp) / 'short.png', Path(tmp) / 'long.png'
             genereer.maak_mobiel_png('Rozen', 'Parkwoensdag', '#00752e', short)
@@ -182,9 +182,19 @@ class LayoutTests(unittest.TestCase):
             with Image.open(short) as a, Image.open(long) as b:
                 self.assertEqual(a.width, 1260)
                 self.assertEqual(b.width, 1260)
-                self.assertGreater(b.height, a.height)
-                # Content must not touch the final edge of the canvas.
-                self.assertEqual(b.crop((0, b.height-2, 1260, b.height)).getextrema(), ((255, 255),)*3)
+                self.assertLess(b.height, a.height)
+                # Longer content scales the whole block, never adds lines.
+                self.assertEqual(a.height, 153)
+
+    def test_mobile_banner_draws_complete_sentences_once(self):
+        bloom = 'De bloembedden van Jacqueline van der Kloet bij het Parkpaviljoen'
+        event = 'Anne Vegter presenteert Herfst · zo 20 september, 15:30 uur'
+        original = ImageDraw.ImageDraw.text
+        with tempfile.TemporaryDirectory() as tmp, patch.object(
+                ImageDraw.ImageDraw, 'text', autospec=True, side_effect=original) as draw:
+            genereer.maak_mobiel_png(bloom, event, '#ca7b00', Path(tmp) / 'banner.png')
+            self.assertEqual([call.args[2] for call in draw.call_args_list],
+                             ['NU IN BLOEI', bloom, 'IN DE AGENDA', event])
 
     def test_current_park_lines_fit_without_breaking(self):
         d = ImageDraw.Draw(Image.new('RGB', (840, 1)))

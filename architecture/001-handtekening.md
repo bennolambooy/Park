@@ -2,6 +2,11 @@
 
 Status: Accepted for implementation — 2026-09-16
 
+Definitieve aanvulling 2026-09-17: bloei en agenda mogen NOOIT afbreken.
+Elk blijft één complete regel; de gezamenlijke afbeelding schaalt proportioneel
+kleiner bij lange teksten. Dit vervangt alle eerdere keuzes voor regelafbreking
+in het dynamische blok hieronder. Publicatie is door de gebruiker gevraagd.
+
 Local refinement, pending user approval (2026-09-16): the user found the 12px
 normal-spaced version too cramped. Local signature now uses Arial/Helvetica 14px,
 relative line-height 1.4. The separate 420px image uses Park GT Walsheim 13px; 9px bold pill

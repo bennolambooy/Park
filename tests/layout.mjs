@@ -31,8 +31,7 @@ for (const engine of [chromium, webkit]) {
       for (const long of [false, true]) {
         const profile = long ? {...person, naam:'Een heel lange naam met meerdere achternamen', functie:'Coördinator-' + 'vrijwilligers'.repeat(7)} : person;
         const {html} = handtekening(profile, {basis:'https://signature.test/', versie:`layout-${width}-${long}`, toonAdres:long, logovariant:long ? 'seizoen' : 'groen'});
-        // Live content can already be as tall as the long fixture. Test actual
-        // content separately and use a stable short baseline for the growth check.
+        // Test actual content separately and use a stable baseline for scaling.
         imageBody = long ? shortImage : normalImage;
         // Deliberately use a different surrounding font and line-height, as mail clients do.
         await page.setContent('<body style="margin:10px;font:18px/2 Georgia"><p>Dit is een voorbeeldmail.</p>' + html + '</body>');
@@ -51,11 +50,11 @@ for (const engine of [chromium, webkit]) {
         };
         const before = await check();
         if (long) {
-          // A future update at the same URL may be taller; no stale height is baked into the signature.
+          // Longer unbroken lines scale the whole block down, without a fixed HTML height.
           imageBody = longImage;
           await page.locator('img').last().evaluate(img => { img.src += '?new-content'; });
           await page.locator('img').last().evaluate(img => img.decode());
-          assert.ok(await check() > before, 'image can grow without distorting its text');
+          assert.ok(await check() < before, 'long lines scale down without wrapping or distorting text');
         }
         await page.screenshot({path:`test-results/mail-${engine.name()}-${width}-${long ? 'lang' : 'normaal'}.png`,fullPage:true});
       }

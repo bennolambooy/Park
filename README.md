@@ -30,9 +30,10 @@ Bloei en agenda gebruiken bewust de Park-huisstijl: GT Walsheim 13px met
 omlijnde labels. De dynamische afbeelding `handtekening-mobiel.png`
 is 420px breed bij normale weergave, met drievoudige pixelresolutie. De tekst volgt de
 eigen pil met één gemeten spatie, zonder gedeelde tabkolom. De zichtbare letters
-staan geometrisch midden in de pil. Vervolgregels gebruiken de volle breedte;
-lange teksten breken op woorden af en de hoogte groeit mee. De huidige bloei- en
-agendatekst passen elk op één regel. Op smallere schermen schaalt het blok mee.
+staan geometrisch midden in de pil. Bloei en agenda blijven altijd elk op één regel,
+zonder afbreken of inkorten. Lange teksten schalen het hele blok proportioneel kleiner;
+de twee regels en pillen behouden onderling dezelfde grootte. Op smallere schermen
+schaalt het blok verder mee.
 In beheer staan standaard vijf komende evenementen, met ‘Zie meer’ voor de rest.
 Daaronder staat de geïntegreerde bloeikalender: één plantenlijst met de geplande
 dagen erbij en een uitklapbaar jaaroverzicht. Teksten en periodes bewerken, toevoegen, verwijderen en uitgebloeid

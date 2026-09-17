@@ -367,34 +367,32 @@ def tekst_bovenkant(d, f, y, regelhoogte):
 
 
 def maak_mobiel_png(bloei, event, kleur_event, pad):
-    """Park house type with inline pills; ordinary entries fit on one full-width line."""
+    """Exactly two unbroken rows; scale the whole block to fit, never wrap or cut."""
     # Supersample curves and type, then retain 3x resolution for high-DPI mail.
     S, W = 12, 420
     f, chipfont = font('GTWalsheim-Md.ttf', 13, S), font('GTWalsheim-Bd.ttf', 9, S)
     proef = ImageDraw.Draw(Image.new('RGB', (W*S, 1)))
     regelhoogte = round(13 * 1.5 * S)
     spatie = proef.textlength(' ', font=f)
-    rijen = [('NU IN BLOEI', KLEUREN['groen'], bloei),
-             ('IN DE AGENDA', kleur_event, event)]
+    rijen = [('NU IN BLOEI', KLEUREN['groen'], ' '.join(bloei.split())),
+             ('IN DE AGENDA', kleur_event, ' '.join(event.split()))]
     pillen = [pil_geometrie(proef, label, chipfont, S) for label, _, _ in rijen]
-    layouts = [mobiele_regels(proef, tekst, f, (W-2)*S, (W-2)*S-pil[0]-spatie)
-               for (_, _, tekst), pil in zip(rijen, pillen)]
-    hoogte = 4*S + sum(len(regels)*regelhoogte for regels in layouts) + 8*S
-    img = Image.new('RGB', (W*S, hoogte), 'white')
+    breedte = max(W*S, math.ceil(max(
+        2*S + pil[0] + spatie + proef.textlength(tekst, font=f)
+        for (_, _, tekst), pil in zip(rijen, pillen))))
+    hoogte = 4*S + 2*regelhoogte + 8*S
+    img = Image.new('RGB', (breedte, hoogte), 'white')
     d = ImageDraw.Draw(img)
     y = 2*S
     # Align capital-height centres with the all-caps pill label. Including a
     # descender (e.g. Ag) lifts the body baseline and makes adjacent text float.
-    for (label, kleur, _), regels, (pw, ph, tx, ty) in zip(rijen, layouts, pillen):
+    for (label, kleur, tekst), (pw, ph, tx, ty) in zip(rijen, pillen):
         py = y + (regelhoogte-ph)/2
         d.rounded_rectangle((S, py, S+pw, py+ph), radius=ph/2, outline=kleur, width=S)
         d.text((S+tx, py+ty), label, font=chipfont, fill=kleur)
-        for i, regel in enumerate(regels):
-            x = S+pw+spatie if i == 0 else S
-            d.text((x, tekst_bovenkant(d, f, y, regelhoogte)), regel, font=f, fill=KLEUREN['tekst'])
-            y += regelhoogte
-        y += 8*S
-    img = img.resize((W*3, round(hoogte*3/S)), Image.Resampling.LANCZOS)
+        d.text((S+pw+spatie, tekst_bovenkant(d, f, y, regelhoogte)), tekst, font=f, fill=KLEUREN['tekst'])
+        y += regelhoogte + 8*S
+    img = img.resize((W*3, max(1, round(hoogte*W*3/breedte))), Image.Resampling.LANCZOS)
     img.save(pad, optimize=True)
 
 
