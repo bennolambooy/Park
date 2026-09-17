@@ -8,9 +8,10 @@ import {handtekening} from '../docs/js/signature.js';
 
 await mkdir('test-results', {recursive:true});
 const python = existsSync('.venv/bin/python') ? '.venv/bin/python' : 'python';
-const fixture = spawnSync(python, ['-c', "from genereer import maak_mobiel_png; maak_mobiel_png('Rozen en lampenpoetsersgras bij het Parkpaviljoen', 'Een lange wandeling door het Park met een uitgebreide kennismaking met bijzondere bomen · woensdag 30 september, 13:00 uur', '#ca7b00', 'test-results/lang-blok.png')"], {encoding:'utf8'});
+const fixture = spawnSync(python, ['-c', "from genereer import maak_mobiel_png; maak_mobiel_png('Rozen', 'Parkwandeling', '#ca7b00', 'test-results/kort-blok.png'); maak_mobiel_png('Rozen en lampenpoetsersgras bij het Parkpaviljoen', 'Een lange wandeling door het Park met een uitgebreide kennismaking met bijzondere bomen · woensdag 30 september, 13:00 uur', '#ca7b00', 'test-results/lang-blok.png')"], {encoding:'utf8'});
 assert.equal(fixture.status, 0, fixture.stderr);
 const normalImage = await readFile('docs/handtekening-mobiel.png');
+const shortImage = await readFile('test-results/kort-blok.png');
 const longImage = await readFile('test-results/lang-blok.png');
 const person = {id:'voorbeeld-persoon', naam:'Robin van het Park', functie:'Medewerker', telefoon:'010 123 45 67'};
 
@@ -29,8 +30,10 @@ for (const engine of [chromium, webkit]) {
       await page.setViewportSize({width,height:900});
       for (const long of [false, true]) {
         const profile = long ? {...person, naam:'Een heel lange naam met meerdere achternamen', functie:'Coördinator-' + 'vrijwilligers'.repeat(7)} : person;
-        const {html} = handtekening(profile, {basis:'https://signature.test/', toonAdres:long, logovariant:long ? 'seizoen' : 'groen'});
-        imageBody = normalImage;
+        const {html} = handtekening(profile, {basis:'https://signature.test/', versie:`layout-${width}-${long}`, toonAdres:long, logovariant:long ? 'seizoen' : 'groen'});
+        // Live content can already be as tall as the long fixture. Test actual
+        // content separately and use a stable short baseline for the growth check.
+        imageBody = long ? shortImage : normalImage;
         // Deliberately use a different surrounding font and line-height, as mail clients do.
         await page.setContent('<body style="margin:10px;font:18px/2 Georgia"><p>Dit is een voorbeeldmail.</p>' + html + '</body>');
         await page.locator('img').evaluateAll(imgs => Promise.all(imgs.map(img => img.decode())));
