@@ -24,20 +24,23 @@ in `data/instellingen.json.algemeen`; de generator publiceert dit in `agenda.jso
 
 De handtekening gebruikt Arial 14px (Helvetica als terugval), **relatieve regelafstand 1.4**, een logo van 132px,
 de website, openingstijden en sociale links, gevolgd door bloei en agenda.
-Tekst/logo en de dynamische afbeelding staan in twee afzonderlijke HTML-blokken.
-Beide gebruiken de beschikbare breedte tot maximaal 420px; er is geen gezamenlijke
-vaste tabelbreedte. Schalen van het beeldblok verandert de tekstinstellingen niet.
+Gewone tekst staat in alinea's zonder breedte, maximale breedte of tabel. Apple Mail
+maakte de eerdere procentuele breedtes bij plakken/verzenden alsnog 420px breed;
+de aangeleverde testmail liep daardoor buiten een smal scherm. Alleen afbeeldingen
+hebben nu vaste maten: het actuele blok is 300 × 40px, los van de gewone tekst.
 Browsercontroles vervangen geen echte verzendtest in Apple Mail op iPhone.
 **Adres tonen** is een toolbrede optie die standaard uitstaat; aanzetten voegt straat
 en postcode toe onder de website. Na een wijziging moet de handtekening opnieuw worden gekopieerd.
 Bloei en agenda gebruiken bewust de Park-huisstijl: GT Walsheim 13px met
-omlijnde labels. De dynamische afbeelding `handtekening-mobiel.png`
-is 420px breed bij normale weergave, met drievoudige pixelresolutie. De tekst volgt de
+omlijnde labels. De dynamische afbeelding `handtekening-mail.png`
+heeft een vast canvas van 900 × 120 pixels voor 300 × 40px weergave. De tekst volgt de
 eigen pil met één gemeten spatie, zonder gedeelde tabkolom. De zichtbare letters
 staan geometrisch midden in de pil. Bloei en agenda blijven altijd elk op één regel,
 zonder afbreken of inkorten. Lange teksten schalen het hele blok proportioneel kleiner;
-de twee regels en pillen behouden onderling dezelfde grootte. Op smallere schermen
-schaalt het blok verder mee.
+de twee regels en pillen behouden onderling dezelfde grootte. Het canvas blijft
+even groot, zodat ook een volgende update bij vaste HTML-afmetingen niet vervormt.
+Lange teksten worden alleen binnen deze afbeelding kleiner; dit is de afweging
+bij volledige zinnen op één regel op een telefoon.
 In beheer staan standaard vijf komende evenementen, met ‘Zie meer’ voor de rest.
 Daaronder staat de geïntegreerde bloeikalender: één plantenlijst met de geplande
 dagen erbij en een uitklapbaar jaaroverzicht. Teksten en periodes bewerken, toevoegen, verwijderen en uitgebloeid
@@ -64,9 +67,11 @@ voor scherpere omlijningen op schermen met hoge pixeldichtheid.
 Het persoonsformulier bevat geen handtekeningvoorbeeld.
 Publicatie van deze versie is op 17 september 2026 door de gebruiker gevraagd.
 Kliktracking is uitgesteld; er wordt geen meetdienst of analyticskaart toegevoegd.
-De afbeelding heeft bewust geen vaste HTML-hoogte: ook toekomstige langere teksten passen.
-Gewone handtekeningtekst loopt op smalle schermen door; het geheel is maximaal 420px breed.
-De eerdere drie afbeeldingen blijven ongewijzigd in opbouw voor bestaande mails.
+De afbeelding heeft expliciet breedte én hoogte: zonder hoogte verdween het actuele
+blok in de aangeleverde mail op Mac Mail. De lokale EML-proef met vaste hoogte is
+in Apple Mail zelf gecontroleerd; de iPhone-verzendtest blijft apart nodig.
+Gewone handtekeningtekst loopt op smalle schermen door zonder opgegeven breedte.
+Alle eerdere afbeeldings-URL's blijven ongewijzigd in opbouw voor bestaande mails.
 Gebruikers kopiëren de nieuwe handtekening eenmalig opnieuw op ieder apparaat.
 De tool stelt de berichttekst erboven niet in en kan een identieke weergave bij elke
 ontvanger of het verversen van externe afbeeldingscaches niet afdwingen.

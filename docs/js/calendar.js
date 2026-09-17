@@ -1,6 +1,6 @@
-import {leesBestand, schrijfBestand} from './github.js?v=20260917-9';
-import {esc} from './shared.js?v=20260917-9';
-import {keuzeOpDag, bloeiTekst, bloeiEinde} from './bloom.js?v=20260917-9';
+import {leesBestand, schrijfBestand} from './github.js?v=20260917-10';
+import {esc} from './shared.js?v=20260917-10';
+import {keuzeOpDag, bloeiTekst, bloeiEinde} from './bloom.js?v=20260917-10';
 
 const PAD = 'data/bloeikalender.json';
 const MAANDEN = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];

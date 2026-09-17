@@ -8,9 +8,9 @@ import {handtekening} from '../docs/js/signature.js';
 
 await mkdir('test-results', {recursive:true});
 const python = existsSync('.venv/bin/python') ? '.venv/bin/python' : 'python';
-const fixture = spawnSync(python, ['-c', "from genereer import maak_mobiel_png; maak_mobiel_png('Rozen', 'Parkwandeling', '#ca7b00', 'test-results/kort-blok.png'); maak_mobiel_png('Rozen en lampenpoetsersgras bij het Parkpaviljoen', 'Een lange wandeling door het Park met een uitgebreide kennismaking met bijzondere bomen · woensdag 30 september, 13:00 uur', '#ca7b00', 'test-results/lang-blok.png')"], {encoding:'utf8'});
+const fixture = spawnSync(python, ['-c', "from genereer import maak_mobiel_png; maak_mobiel_png('Rozen', 'Parkwandeling', '#ca7b00', 'test-results/kort-blok.png', vaste_mailmaat=True); maak_mobiel_png('Rozen en lampenpoetsersgras bij het Parkpaviljoen', 'Een lange wandeling door het Park met een uitgebreide kennismaking met bijzondere bomen · woensdag 30 september, 13:00 uur', '#ca7b00', 'test-results/lang-blok.png', vaste_mailmaat=True)"], {encoding:'utf8'});
 assert.equal(fixture.status, 0, fixture.stderr);
-const normalImage = await readFile('docs/handtekening-mobiel.png');
+const normalImage = await readFile('docs/handtekening-mail.png');
 const shortImage = await readFile('test-results/kort-blok.png');
 const longImage = await readFile('test-results/lang-blok.png');
 const person = {id:'voorbeeld-persoon', naam:'Robin van het Park', functie:'Medewerker', telefoon:'010 123 45 67'};
@@ -19,10 +19,15 @@ for (const engine of [chromium, webkit]) {
   const browser = await engine.launch({headless:true});
   try {
     const page = await browser.newPage();
+    // Reduced reproduction of the received EML: Mail had frozen both 100%
+    // wrappers and the text table to 420px, overflowing an iPhone viewport.
+    await page.setViewportSize({width:390,height:900});
+    await page.setContent('<body style="margin:8px"><div style="width:420px;max-width:420px"><table style="width:420px"><tr><td>Met vriendelijke groet</td></tr></table></div></body>');
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth),428,'the received-mail regression is reproduced');
     let imageBody = normalImage;
     await page.route('https://signature.test/**', async route => {
       const name = new URL(route.request().url()).pathname.slice(1);
-      if (name === 'handtekening-mobiel.png') return route.fulfill({contentType:'image/png',body:imageBody});
+      if (name === 'handtekening-mail.png') return route.fulfill({contentType:'image/png',body:imageBody});
       assert.match(name, /^woordbeeld-(groen|seizoen)\.png$/);
       return route.fulfill({contentType:'image/png',body:await readFile(resolve('docs', name))});
     });
@@ -36,28 +41,38 @@ for (const engine of [chromium, webkit]) {
         // Deliberately use a different surrounding font and line-height, as mail clients do.
         await page.setContent('<body style="margin:10px;font:18px/2 Georgia"><p>Dit is een voorbeeldmail.</p>' + html + '</body>');
         await page.locator('img').evaluateAll(imgs => Promise.all(imgs.map(img => img.decode())));
+        // Model the width freezing seen in the actual EML, then strip any
+        // max-width safety net. The emitted markup must remain safe on its own.
+        await page.evaluate(() => {
+          for (const el of document.querySelectorAll('[style]')) {
+            if (el.style.width) el.style.width = getComputedStyle(el).width;
+            el.style.removeProperty('max-width');
+          }
+        });
         const check = async () => {
           assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${engine.name()} ${width}: no horizontal overflow`);
-          assert.ok(await page.locator('table').evaluate(el => el.scrollWidth <= el.clientWidth + 1));
-          const style = await page.locator('td').first().evaluate(el => ({size:getComputedStyle(el).fontSize, line:getComputedStyle(el).lineHeight}));
+          assert.equal(await page.locator('table').count(),0);
+          const style = await page.locator('p').nth(1).evaluate(el => ({size:getComputedStyle(el).fontSize, line:getComputedStyle(el).lineHeight}));
           assert.equal(style.size, '14px');
           assert.ok(Math.abs(parseFloat(style.line) - 19.6) < 0.1);
           const dimensions = await page.locator('img').last().evaluate(img => ({w:img.width,h:img.height,nw:img.naturalWidth,nh:img.naturalHeight}));
-          assert.equal(dimensions.nw, 1260);
-          assert.equal(dimensions.w, Math.min(420, width-20), 'Park block follows available mail width');
+          assert.equal(dimensions.nw, 900);
+          assert.equal(dimensions.nh, 120);
+          assert.equal(dimensions.w, 300, 'Park block fits a phone even after Mail freezes CSS dimensions');
+          assert.equal(dimensions.h, 40, 'explicit stable height prevents collapsed images in Mac Mail');
           assert.ok(Math.abs(dimensions.h - dimensions.nh * dimensions.w / dimensions.nw) <= 1, 'height follows current image contents without distortion');
           return dimensions.h;
         };
         const before = await check();
         assert.equal(await page.locator('img').last().evaluate(img=>img.closest('table')), null, 'image is outside the text table');
-        const textBefore = await page.locator('td').first().boundingBox();
+        const textBefore = await page.locator('p').nth(1).boundingBox();
         if (long) {
-          // Longer unbroken lines scale the whole block down, without a fixed HTML height.
+          // Only the contents shrink; the fixed canvas and ordinary text stay unchanged.
           imageBody = longImage;
           await page.locator('img').last().evaluate(img => { img.src += '?new-content'; });
           await page.locator('img').last().evaluate(img => img.decode());
-          assert.ok(await check() < before, 'long lines scale down without wrapping or distorting text');
-          const textAfter = await page.locator('td').first().boundingBox();
+          assert.equal(await check(), before, 'long lines stay inside the same fixed canvas');
+          const textAfter = await page.locator('p').nth(1).boundingBox();
           assert.deepEqual(textAfter, textBefore, 'image changes never resize or reposition the text section');
         }
         await page.screenshot({path:`test-results/mail-${engine.name()}-${width}-${long ? 'lang' : 'normaal'}.png`,fullPage:true});
@@ -70,6 +85,6 @@ for (const engine of [chromium, webkit]) {
     assert.equal(await page.locator('a[href^="tel:"]').count(), 1);
     assert.equal(await page.locator('a[href*="linkedin.com"]').count(), 1);
     assert.match(await page.locator('img').last().getAttribute('alt'), /actuele agenda/);
-    console.log(`PASS ${engine.name()}: 320/375/390/900px, long profiles, normal spacing, changing image height, blocked images.`);
+    console.log(`PASS ${engine.name()}: 320/375/390/900px, long profiles, width-free text, fixed image canvas, blocked images.`);
   } finally { await browser.close(); }
 }

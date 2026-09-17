@@ -1,7 +1,7 @@
-import {handtekening, kiesLogovariant} from './signature.js?v=20260917-9';
-import {leesPubliek, kopieer, kopieerHtmlTekst, esc} from './shared.js?v=20260917-9';
-import {toegang} from './gate.js?v=20260917-9';
-import {algemeneTekst} from './general.js?v=20260917-9';
+import {handtekening, kiesLogovariant} from './signature.js?v=20260917-10';
+import {leesPubliek, kopieer, kopieerHtmlTekst, esc} from './shared.js?v=20260917-10';
+import {toegang} from './gate.js?v=20260917-10';
+import {algemeneTekst} from './general.js?v=20260917-10';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);

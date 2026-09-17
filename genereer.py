@@ -366,7 +366,7 @@ def tekst_bovenkant(d, f, y, regelhoogte):
     return y + (regelhoogte-(bottom-top))/2-top
 
 
-def maak_mobiel_png(bloei, event, kleur_event, pad):
+def maak_mobiel_png(bloei, event, kleur_event, pad, *, vaste_mailmaat=False):
     """Exactly two unbroken rows; scale the whole block to fit, never wrap or cut."""
     # Supersample curves and type, then retain 3x resolution for high-DPI mail.
     S, W = 12, 420
@@ -392,7 +392,15 @@ def maak_mobiel_png(bloei, event, kleur_event, pad):
         d.text((S+tx, py+ty), label, font=chipfont, fill=kleur)
         d.text((S+pw+spatie, tekst_bovenkant(d, f, y, regelhoogte)), tekst, font=f, fill=KLEUREN['tekst'])
         y += regelhoogte + 8*S
-    img = img.resize((W*3, max(1, round(hoogte*W*3/breedte))), Image.Resampling.LANCZOS)
+    if vaste_mailmaat:
+        # A fixed 300 x 40 display canvas lets Mail reserve an explicit height.
+        # Fit the full, unbroken rows proportionally; never stretch to the box.
+        # At 300px it also fits a 320px viewport with normal message margins.
+        inhoud = img.resize((900, max(1, round(hoogte*900/breedte))), Image.Resampling.LANCZOS)
+        img = Image.new('RGB', (900, 120), 'white')
+        img.paste(inhoud, (0, 0))
+    else:
+        img = img.resize((W*3, max(1, round(hoogte*W*3/breedte))), Image.Resampling.LANCZOS)
     img.save(pad, optimize=True)
 
 
@@ -427,6 +435,7 @@ def main():
     maak_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / "handtekening-compact.png", compact=True)
     maak_regels_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / 'handtekening-regels.png')
     maak_mobiel_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / 'handtekening-mobiel.png')
+    maak_mobiel_png(bloei, event, KLEUREN[seizoen(event_datum)], DOCS / 'handtekening-mail.png', vaste_mailmaat=True)
     (DOCS / "handtekening.txt").write_text(
         f"Nu in bloei: {bloei}\nIn de agenda: {event}\n")
     # kopie van de bloeikalender voor de tabel op de kopieerpagina

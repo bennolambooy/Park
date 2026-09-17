@@ -38,32 +38,34 @@ test('no phone means no empty phone line', () => {
 });
 test('copy assets stay absolute and use stable addresses', () => {
   const {html} = handtekening(p);
-  assert.match(html, /https:\/\/bennolambooy.github.io\/Park\/handtekening-mobiel.png/);
+  assert.match(html, /https:\/\/bennolambooy.github.io\/Park\/handtekening-mail.png/);
   assert.ok(!html.includes('?v='));
 });
 test('signature uses readable Arial, relative line spacing and approved order without address', () => {
   const {html, tekst} = handtekening(p, {logovariant:'groen'});
-  const parts = ['Met vriendelijke groet', 'tel:', 'woordbeeld-groen', 'www.hetparkinrotterdam.nl', 'Het Parkpaviljoen is elke dag open van 10 tot 18 uur.', 'Volg onze', 'handtekening-mobiel.png'];
+  const parts = ['Met vriendelijke groet', 'tel:', 'woordbeeld-groen', 'www.hetparkinrotterdam.nl', 'Het Parkpaviljoen is elke dag open van 10 tot 18 uur.', 'Volg onze', 'handtekening-mail.png'];
   for (let i = 1; i < parts.length; i++) assert.ok(html.indexOf(parts[i]) > html.indexOf(parts[i-1]));
-  assert.match(html, /width="420"/);
-  assert.match(html, /padding:0 0 18px;font-family:Arial/);
+  assert.match(html, /width="300" height="40"/);
+  assert.match(html, /margin:0 0 18px;font-family:Arial/);
   assert.ok(!html.includes('height="56"'));
   assert.match(html, /width="132"/);
   assert.match(html, /font-family:Arial,Helvetica,sans-serif;font-size:14px/);
   assert.match(html, /line-height:1.4/);
   assert.match(html, /white-space:normal/);
   assert.ok(!html.includes('nowrap'));
-  assert.match(html, /width:100%;max-width:420px;height:auto/);
+  assert.match(html, /width:300px;height:40px/);
   assert.ok(!html.includes('Baden Powelllaan'));
   assert.ok(!tekst.includes('3016 GJ'));
   assert.ok(!html.includes('width:560px'));
   assert.ok(tekst.includes(p.functie + '\n' + p.telefoon));
 });
-test('text and dynamic image are separate fluid sections, without a shared fixed-width table', () => {
+test('mail text has no declared width to freeze on paste; only images have fixed, mobile-safe dimensions', () => {
   const {html} = handtekening(p);
-  assert.ok(html.indexOf('</table>') < html.indexOf('handtekening-mobiel.png'));
-  assert.equal((html.match(/<div style="width:100%;max-width:420px/g) || []).length, 2);
-  assert.ok(!/(?:^|;)width:420px/.test(html));
+  assert.ok(!html.includes('<table'));
+  assert.equal((html.match(/<p /g) || []).length, 3);
+  assert.ok(!html.replace(/<img[^>]*>/g, '').includes('width'));
+  assert.ok(!html.includes('height:auto'));
+  assert.ok(!html.includes('420'));
 });
 test('address can be enabled for HTML and plain-text signatures', () => {
   const {html, tekst} = handtekening(p, {toonAdres:true});

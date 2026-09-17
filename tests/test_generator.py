@@ -196,6 +196,25 @@ class LayoutTests(unittest.TestCase):
             self.assertEqual([call.args[2] for call in draw.call_args_list],
                              ['NU IN BLOEI', bloom, 'IN DE AGENDA', event])
 
+    def test_fixed_mail_canvas_keeps_full_lines_and_constant_aspect_ratio(self):
+        original = ImageDraw.ImageDraw.text
+        for bloom, event in [('Rozen', 'Parkwandeling'),
+                             ('De bloembedden van Jacqueline van der Kloet bij het Parkpaviljoen',
+                              'Anne Vegter presenteert Herfst · zo 20 september, 15:30 uur'),
+                             ('Bloemen in het Park ' * 8, 'Een lange titel · 13:00 uur ' * 8)]:
+            with tempfile.TemporaryDirectory() as tmp, patch.object(
+                    ImageDraw.ImageDraw, 'text', autospec=True, side_effect=original) as draw:
+                pad = Path(tmp) / 'mail.png'
+                genereer.maak_mobiel_png(bloom, event, '#ca7b00', pad, vaste_mailmaat=True)
+                self.assertEqual([call.args[2] for call in draw.call_args_list],
+                                 ['NU IN BLOEI', bloom.strip(), 'IN DE AGENDA', event.strip()])
+                with Image.open(pad) as img:
+                    self.assertEqual(img.size, (900, 120))
+                    # The longest possible fitted block is 110px high; the
+                    # bottom stays white, proving the fixed canvas did not crop.
+                    self.assertEqual(img.crop((0, 110, 900, 120)).getextrema(),
+                                     ((255, 255), (255, 255), (255, 255)))
+
     def test_current_park_lines_fit_without_breaking(self):
         d = ImageDraw.Draw(Image.new('RGB', (840, 1)))
         f, chip = genereer.font('GTWalsheim-Md.ttf', 13, 2), genereer.font('GTWalsheim-Bd.ttf', 9, 2)

@@ -2,6 +2,25 @@
 
 Status: Accepted for implementation — 2026-09-16
 
+## Huidige correctie na echte mailtest — 2026-09-17
+
+Deze keuze vervangt de breedte/hoogtekeuzes in de historische notities hieronder.
+`Laatste testmail.eml` bevat twee blokken maar Apple Mail heeft hun 100%-breedtes
+vervangen door 420px. Op 390px meet de mail 428px breed. Ook verdwijnt de afbeelding
+in Mac Mail. Dezelfde lokale EML met expliciete afbeeldingshoogte toont hem wel;
+alleen de regelhoogte aanpassen lost dit niet op.
+
+Gewone tekst krijgt daarom breedtevrije alinea's, zonder tabel of 100%-breedte.
+Typografie blijft Arial 14px/1.4. De nieuwe PNG `handtekening-mail.png` heeft een
+vast canvas van 900×120 pixels en expliciete HTML-maten van 300×40px. Complete
+bloei- en agendaregels passen proportioneel binnen dat canvas: geen afbreking,
+afkapping of uitrekking bij toekomstige updates. Lange regels worden daardoor
+klein; dit compromis blijft beperkt tot het beeld. Alle bestaande PNG-URL's blijven
+hun oude generatie behouden. Opnieuw kopiëren is nodig. De nieuwe lokale EML is
+zichtbaar in Mac Mail; ontvangst/verzending op de echte iPhone is nog onbewezen.
+
+## Historische keuzes
+
 Aanvulling tweedelige opbouw 2026-09-17: gewone tekst/logo krijgen een eigen
 flexibel blok (100%, maximaal 420px). Het dynamische beeld staat daaronder buiten
 de teksttabel, eveneens flexibel. Geen gedeelde vaste breedte die mailclients kan

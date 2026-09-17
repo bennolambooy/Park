@@ -216,7 +216,7 @@ try {
   assert.match(copied, /linkedin.com/);
   assert.match(copied, /width="132"/);
   assert.match(copied, /Het Parkpaviljoen is elke dag open van 10 tot 18 uur\./);
-  assert.ok(copied.indexOf('handtekening-mobiel.png') > copied.indexOf('Volg onze'));
+  assert.ok(copied.indexOf('handtekening-mail.png') > copied.indexOf('Volg onze'));
   assert.ok(copied.indexOf('www.hetparkinrotterdam.nl') < copied.indexOf('Het Parkpaviljoen'));
   assert.ok(!copied.includes('?v='), 'email images must keep stable URLs');
   await copy.screenshot({path:'test-results/handtekening-desktop.png',fullPage:true});
@@ -224,10 +224,10 @@ try {
   await copy.screenshot({path:'test-results/handtekening-mobiel.png',fullPage:true});
   assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
   await copy.locator('#handtekening img').last().evaluate(img => img.decode());
-  assert.equal(await copy.locator('#handtekening img').last().evaluate(img => img.naturalWidth), 1260);
+  assert.equal(await copy.locator('#handtekening img').last().evaluate(img => img.naturalWidth), 900);
   assert.ok(await copy.locator('#handtekening img').last().evaluate(img => Math.abs(img.getBoundingClientRect().width / img.getBoundingClientRect().height - img.naturalWidth / img.naturalHeight) < 0.02), 'banner keeps its proportions at any content height');
   assert.ok(await copy.locator('#handtekening').evaluate(el => el.scrollWidth <= el.clientWidth + 1), 'signature itself does not scroll sideways');
-  const pavilion = copy.locator('#handtekening td').nth(2);
+  const pavilion = copy.locator('#handtekening p').nth(2);
   assert.equal(await pavilion.evaluate(el => getComputedStyle(el).fontSize), '14px');
   assert.equal(await pavilion.evaluate(el => getComputedStyle(el).whiteSpace), 'normal');
   assert.ok(Math.abs(parseFloat(await pavilion.evaluate(el => getComputedStyle(el).lineHeight)) - 19.6) < 0.1);
@@ -308,8 +308,9 @@ try {
   await copy.locator('[data-html="0"]').click();
   await copy.waitForFunction(() => document.querySelector('#kaart-status-0').textContent === 'HTML-code gekopieerd.');
   const sourceHtml = await copy.evaluate(() => navigator.clipboard.readText());
-  assert.match(sourceHtml, /<table role="presentation"/);
-  assert.match(sourceHtml, /handtekening-mobiel.png/);
+  assert.ok(!sourceHtml.includes('<table'));
+  assert.match(sourceHtml, /handtekening-mail.png/);
+  assert.match(sourceHtml, /width="300" height="40"/);
   assert.ok(!sourceHtml.includes('?v='));
   assert.ok(await copy.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'the page does not scroll horizontally');
   assert.ok(await copy.locator('.signature-wrap:visible').evaluateAll(els => els.every(el => el.scrollWidth <= el.clientWidth + 1)), 'none of the previews scroll horizontally');
@@ -367,7 +368,8 @@ try {
   for(const card of await copy.locator('#overzicht > .panel').all()){
     assert.ok(await card.evaluate(el=>Math.abs(el.getBoundingClientRect().width-document.querySelector('main').getBoundingClientRect().width)<1),'home cards fill the same content width as admin cards');
   }
-  assert.ok(await copy.locator('#kaart-0 table').first().evaluate(el=>el.getBoundingClientRect().width<=420),'signature stays compact inside wide card');
+  if (!(await copy.locator('#kaart-0').isVisible())) await copy.locator('[data-preview="0"]').click();
+  assert.equal(await copy.locator('#kaart-0 img').last().evaluate(el=>el.getBoundingClientRect().width),300,'only the dynamic image has a fixed mobile-safe width');
   await copy.screenshot({path:'test-results/overzicht-kaarten-desktop.png',fullPage:true});
   await copy.setViewportSize({width:390,height:844});
   await copy.screenshot({path:'test-results/overzicht-kaarten-mobiel.png',fullPage:true});
