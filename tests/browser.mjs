@@ -101,6 +101,11 @@ try {
   await page.locator('#wachtwoord').fill('test-park-password');
   await page.locator('#login-form button').click();
   await page.locator('#beheer').waitFor({state:'visible'});
+  assert.equal(await page.locator('#algemeen-editor').isVisible(),false);
+  await page.locator('#algemeen-bewerken').click();
+  assert.equal(await page.locator('#algemeen-form #toon-adres').count(),1);
+  assert.equal(await page.locator('#algemeen-form input[name="logostijl"]').count(),3);
+  assert.equal(await page.locator('#algemeen-form button:not([type="button"])').count(),1);
   assert.equal(await page.locator('#agenda .agenda-item').count(), 5);
   assert.equal(await page.locator('#agenda-meer').getAttribute('aria-expanded'), 'false');
   await page.locator('#agenda-meer').click();
@@ -153,7 +158,7 @@ try {
   const pin = agenda.events.find(ev => ev.id !== agenda.gekozen_id);
   await page.locator('[data-pin="' + pin.id + '"]').click();
   await page.waitForFunction(() => document.querySelector('#agenda-status').textContent.startsWith('Opgeslagen.'));
-  assert.equal(await page.locator('#logo-opslaan').isEnabled(), true, 'publication cannot freeze other controls');
+  assert.equal(await page.locator('#algemeen-opslaan').isEnabled(), true, 'publication cannot freeze other controls');
   await page.waitForFunction(() => document.querySelector('#agenda-status').textContent.startsWith('Gepubliceerd.'));
   assert.equal(agenda.gekozen_id, pin.id);
   assert.equal(await page.locator('#agenda .badge').filter({hasText:'Vastgezet'}).count(), 1);
@@ -171,6 +176,7 @@ try {
   assert.notEqual(agenda.gekozen_id,pin.id);
   assert.deepEqual(files['data/instellingen.json'].data.agenda_verborgen,[{id:pin.id,start:pin.start,eind:pin.eind}]);
   await page.reload();await page.locator('#agenda-herstel').waitFor();
+  await page.locator('#algemeen-bewerken').click();
   await page.locator('#agenda-herstel > summary').click();
   await page.locator('#agenda-herstel [data-agenda-skip="'+pin.id+'"]').click();
   await page.waitForFunction(()=>document.querySelector('#agenda-status').textContent.startsWith('Gepubliceerd.'));
@@ -179,8 +185,8 @@ try {
 
   await page.locator('input[value="groen"]').check();
   assert.equal(await page.locator('#persoon-preview, #preview-wissel').count(), 0, 'person form has no preview or preview controls');
-  await page.locator('#logo-opslaan').click();
-  await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
+  await page.locator('#algemeen-opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#algemeen-status').textContent.startsWith('Gepubliceerd.'));
   assert.equal(agenda.logostijl, 'groen');
   assert.equal(files['data/instellingen.json'].data.vastgezet_id, '');
   await page.screenshot({path:'test-results/beheer-desktop.png',fullPage:true});
@@ -229,9 +235,9 @@ try {
   // Global address switch persists, survives reload and reaches copied HTML.
   assert.equal(await page.locator('#toon-adres').isChecked(), false);
   await page.locator('#toon-adres').check();
-  assert.equal(await page.locator('#logo-status').innerText(), 'Nog niet opgeslagen.');
-  await page.locator('#logo-opslaan').click();
-  await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
+  assert.equal(await page.locator('#algemeen-status').innerText(), 'Nog niet opgeslagen.');
+  await page.locator('#algemeen-opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#algemeen-status').textContent.startsWith('Gepubliceerd.'));
   assert.equal(files['data/instellingen.json'].data.toon_adres, true);
   await copy.reload(); await copy.locator('#kopieer:not([disabled])').waitFor();
   assert.match(await copy.locator('#handtekening').innerText(), /Baden Powelllaan 2/);
@@ -240,23 +246,24 @@ try {
   assert.match(addressHtml, /Baden Powelllaan 2/);
   await page.reload(); await page.locator('#beheer').waitFor({state:'visible'});
   assert.equal(await page.locator('#toon-adres').isChecked(), true);
+  if(!await page.locator('#algemeen-editor').isVisible())await page.locator('#algemeen-bewerken').click();
   await page.locator('#toon-adres').uncheck();
-  await page.locator('#logo-opslaan').click();
-  await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
+  await page.locator('#algemeen-opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#algemeen-status').textContent.startsWith('Gepubliceerd.'));
   assert.equal(files['data/instellingen.json'].data.toon_adres, false);
   await copy.reload(); await copy.locator('#kopieer:not([disabled])').waitFor();
   assert.ok(!(await copy.locator('#handtekening').innerText()).includes('Baden Powelllaan'));
 
   await page.locator('input[value="seizoen"]').check();
-  assert.equal(await page.locator('#logo-status').innerText(), 'Nog niet opgeslagen.');
-  await page.locator('#logo-opslaan').click();
-  await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
+  assert.equal(await page.locator('#algemeen-status').innerText(), 'Nog niet opgeslagen.');
+  await page.locator('#algemeen-opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#algemeen-status').textContent.startsWith('Gepubliceerd.'));
   await copy.reload(); await copy.locator('#kopieer:not([disabled])').waitFor();
   assert.match(await copy.locator('#handtekening img').first().getAttribute('src'), /woordbeeld-seizoen/);
 
   await page.locator('input[value="random"]').check();
-  await page.locator('#logo-opslaan').click();
-  await page.waitForFunction(() => document.querySelector('#logo-status').textContent.startsWith('Gepubliceerd.'));
+  await page.locator('#algemeen-opslaan').click();
+  await page.waitForFunction(() => document.querySelector('#algemeen-status').textContent.startsWith('Gepubliceerd.'));
   await copy.reload(); await copy.locator('#kopieer:not([disabled])').waitFor();
   assert.equal(await copy.locator('#andere-kleur').isVisible(), true);
   const before = await copy.locator('#handtekening img').first().getAttribute('src');
@@ -342,14 +349,21 @@ try {
   assert.equal(await copy.locator('.medewerkers').count(), 1);
   assert.equal(await copy.locator('.medewerkers .collega').count(), 2);
   assert.equal(await copy.locator('.collega').last().evaluate(el => getComputedStyle(el).borderTopWidth), '1px');
-  assert.equal(await copy.locator('.collega').last().locator(':scope > span').nth(0).innerText(),'Medewerker');
-  assert.equal(await copy.locator('.collega').last().locator(':scope > span').nth(1).innerText(),'—');
+  assert.equal(await copy.locator('.collega').last().locator('.medewerker-rij > span').nth(0).innerText(),'Medewerker');
+  assert.equal(await copy.locator('.collega').last().locator('.medewerker-rij > span').nth(1).innerText(),'—');
   await copy.locator('[data-copy="2"]').click();
   await copy.waitForFunction(() => document.querySelector('#kaart-status-2').textContent.startsWith('Gekopieerd.'));
   assert.match(await copy.evaluate(() => navigator.clipboard.readText()), /Tweede collega/);
   await copy.setViewportSize({width:1100,height:1000});
   await page.setViewportSize({width:1100,height:1000});
-  assert.equal(await copy.locator('.collega').first().evaluate(el=>getComputedStyle(el).gridTemplateColumns),await page.locator('#personenlijst .medewerker-rij').first().evaluate(el=>getComputedStyle(el).gridTemplateColumns),'employee columns match admin exactly');
+  assert.equal(await copy.locator('.collega .medewerker-rij').first().evaluate(el=>getComputedStyle(el).gridTemplateColumns),await page.locator('#personenlijst .medewerker-rij').first().evaluate(el=>getComputedStyle(el).gridTemplateColumns),'employee columns match admin exactly');
+  for(const width of [390,1100]){
+    await copy.setViewportSize({width,height:1000});
+    assert.ok(await copy.locator('.collega').last().evaluate(el=>{
+      const row=el.querySelector('.medewerker-rij').getBoundingClientRect(), status=el.querySelector('.status').getBoundingClientRect();
+      return status.top>=row.bottom+11 && Math.abs(status.left-row.left)<1;
+    }),'copy feedback has its own left-aligned line below the employee row');
+  }
   for(const card of await copy.locator('#overzicht > .panel').all()){
     assert.ok(await card.evaluate(el=>Math.abs(el.getBoundingClientRect().width-document.querySelector('main').getBoundingClientRect().width)<1),'home cards fill the same content width as admin cards');
   }

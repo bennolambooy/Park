@@ -8,7 +8,9 @@ html[data-locked] .shell{display:none!important}
 .overzicht{width:100%;margin-top:24px}
 .overzicht .panel,.overzicht .panel+.panel{margin:0}.overzicht .signature-wrap{padding:10px 0}
 .overzicht .panel.medewerkers{margin-top:24px}
-.collega>.signature-wrap,.collega>.status{grid-column:1/-1}
+.collega{padding:16px 0;border-top:1px solid #dce2d7}
+.collega>.medewerker-rij{padding:0;border:0}
+.collega>.status{margin:12px 0 0;min-height:0;font-size:13px;line-height:1.5}
 .collega>.status:empty{display:none}
 .collega>.kaart-voorbeeld{grid-column:1/-1;width:100%;margin:0}
 .algemeen-rij{display:flex;align-items:center;justify-content:space-between;gap:16px}

@@ -17,7 +17,8 @@ medewerkers. Beide hebben dezelfde kopieerknop. ‘Kopieer HTML’ staat bij het
 en kopieert de broncode als tekst. Persoonlijke links blijven beschikbaar via Beheer.
 Algemeen bevat standaard ‘Met vriendelijke groet,’ en ‘Stichting het Park’.
 De beheerkaart Algemeen laat de gedeelde groet, openingstekst, website, adres en
-sociale links aanpassen. Alleen de organisatienaam geldt uitsluitend voor de
+sociale links aanpassen, samen met logokleur en ‘Adres tonen’ onder één Opslaan-knop.
+Alleen de organisatienaam geldt uitsluitend voor de
 algemene handtekening; persoonlijke namen en functies blijven intact. Opslag gaat
 in `data/instellingen.json.algemeen`; de generator publiceert dit in `agenda.json`.
 

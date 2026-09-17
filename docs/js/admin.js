@@ -1,9 +1,9 @@
-import {toegang} from './gate.js?v=20260917-7';
-import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260917-7';
-import {persoonlijkeLink, valideerPersoon} from './signature.js?v=20260917-7';
-import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260917-7';
-import {bloeikalender} from './calendar.js?v=20260917-7';
-import {ALGEMENE_VELDEN, algemeneTekst} from './general.js?v=20260917-7';
+import {toegang} from './gate.js?v=20260917-8';
+import {inloggen, uitloggen, isIngelogd, leesBestand, schrijfBestand} from './github.js?v=20260917-8';
+import {persoonlijkeLink, valideerPersoon} from './signature.js?v=20260917-8';
+import {esc, leesPubliek, wachtOpPublicatie} from './shared.js?v=20260917-8';
+import {bloeikalender} from './calendar.js?v=20260917-8';
+import {ALGEMENE_VELDEN, algemeneTekst} from './general.js?v=20260917-8';
 
 await toegang();
 
@@ -19,7 +19,12 @@ $('algemeen-velden').innerHTML=ALGEMENE_VELDEN.map(([key,label,,max])=>'<label c
 function vulAlgemeen(){
   const data=algemeneTekst(instellingen.algemeen);
   $('algemeen-naam').textContent=data.naam;
-  if(!algemeenDirty)for(const veld of $('algemeen-velden').querySelectorAll('input'))veld.value=data[veld.dataset.algemeen];
+  if(!algemeenDirty){
+    for(const veld of $('algemeen-velden').querySelectorAll('input'))veld.value=data[veld.dataset.algemeen];
+    $('toon-adres').checked=instellingen.toon_adres===true;
+    const stijl=['random','seizoen','groen'].includes(instellingen.logostijl)?instellingen.logostijl:'random';
+    document.querySelector('input[name="logostijl"][value="'+stijl+'"]').checked=true;
+  }
 }
 $('algemeen-bewerken').addEventListener('click',()=>{
   if(instellingenBezig)return;
@@ -36,7 +41,7 @@ $('algemeen-form').addEventListener('submit',async event=>{
   event.preventDefault();if(instellingenBezig)return;
   try{
     const algemeen=algemeneTekst(Object.fromEntries([...$('algemeen-velden').querySelectorAll('input')].map(el=>[el.dataset.algemeen,el.value])));
-    if(await bewaarInstellingen({algemeen},'algemeen-status')){algemeenDirty=false;vulAlgemeen();}
+    if(await bewaarInstellingen({algemeen,logostijl:gekozenStijl(),toon_adres:$('toon-adres').checked},'algemeen-status')){algemeenDirty=false;vulAlgemeen();}
   }catch(e){$('algemeen-status').textContent=e.message;}
 });
 function parkVandaag() {
@@ -118,9 +123,6 @@ async function laad() {
   personen = p.data.personen.map(valideerPersoon); personenSha = p.sha;
   instellingen = settings.data; instellingenSha = settings.sha; agenda = a;
   vulAlgemeen();
-  $('toon-adres').checked = instellingen.toon_adres === true;
-  const stijl = ['random', 'seizoen', 'groen'].includes(instellingen.logostijl) ? instellingen.logostijl : 'random';
-  document.querySelector('input[name="logostijl"][value="' + stijl + '"]').checked = true;
   renderPersonen(); renderAgenda();
   await kalender.laad();
   if(location.hash === '#bloeikalender') $('bloeikalender').scrollIntoView();
@@ -221,9 +223,9 @@ $('persoon-extra').addEventListener('click',persoonActie);
 async function bewaarInstellingen(wijzigingen, statusId) {
   if (instellingenBezig) return;
   const versie = ++instellingenPublicatie;
-  instellingenBezig = true; $('logo-opslaan').disabled = true; renderAgenda();
+  instellingenBezig = true; renderAgenda();
   $('algemeen-velden').disabled=true;$('algemeen-opslaan').disabled=true;
-  for (const veld of $('logo-form').querySelectorAll('input')) veld.disabled = true;
+  for (const veld of $('algemeen-form').querySelectorAll('input')) veld.disabled = true;
   $(statusId).textContent = 'Bezig met opslaan…';
   const aanvraag = crypto.randomUUID();
   const volgende = {...instellingen, ...wijzigingen, aanvraag_id: aanvraag};
@@ -237,9 +239,9 @@ async function bewaarInstellingen(wijzigingen, statusId) {
     return true;
   } catch (e) { $(statusId).textContent = e.message; return false; }
   finally {
-    instellingenBezig = false; $('logo-opslaan').disabled = false;
+    instellingenBezig = false;
     $('algemeen-velden').disabled=false;$('algemeen-opslaan').disabled=false;
-    for (const veld of $('logo-form').querySelectorAll('input')) veld.disabled = false;
+    for (const veld of $('algemeen-form').querySelectorAll('input')) veld.disabled = false;
     renderAgenda();
   }
 }
@@ -254,7 +256,7 @@ async function volgInstellingenPublicatie(aanvraag, statusId, versie) {
   agenda = gepubliceerd;
   renderAgenda();
   sessionStorage.removeItem('park-publicatie');
-  $(statusId).textContent = ['logo-status','algemeen-status'].includes(statusId)
+  $(statusId).textContent = statusId==='algemeen-status'
     ? 'Gepubliceerd. De instellingen zijn actief voor alle nieuwe handtekeningen.'
     : 'Gepubliceerd. De agenda is bijgewerkt.';
 }
@@ -276,14 +278,6 @@ $('agenda').addEventListener('click', event => {
   const id = button.dataset.pin;
   const activiteit = agenda.events.find(ev => ev.id === id);
   bewaarInstellingen({vastgezet_id: id, vastgezet_titel: activiteit?.titel || ''}, 'agenda-status');
-});
-$('logo-form').addEventListener('submit', event => {
-  event.preventDefault();
-  bewaarInstellingen({logostijl: gekozenStijl(), toon_adres: $('toon-adres').checked}, 'logo-status');
-});
-$('logo-form').addEventListener('change', () => {
-  $('logo-status').textContent = gekozenStijl() === (instellingen.logostijl || 'random') && $('toon-adres').checked === (instellingen.toon_adres === true)
-    ? '' : 'Nog niet opgeslagen.';
 });
 window.addEventListener('beforeunload', event => {
   if (dirty || personenBezig || instellingenBezig || kalender.dirty || kalender.bezig || instellingenGewijzigd()) { event.preventDefault(); event.returnValue = ''; }

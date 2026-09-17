@@ -1,7 +1,7 @@
-import {handtekening, kiesLogovariant} from './signature.js?v=20260917-7';
-import {leesPubliek, kopieer, kopieerHtmlTekst, esc} from './shared.js?v=20260917-7';
-import {toegang} from './gate.js?v=20260917-7';
-import {algemeneTekst} from './general.js?v=20260917-7';
+import {handtekening, kiesLogovariant} from './signature.js?v=20260917-8';
+import {leesPubliek, kopieer, kopieerHtmlTekst, esc} from './shared.js?v=20260917-8';
+import {toegang} from './gate.js?v=20260917-8';
+import {algemeneTekst} from './general.js?v=20260917-8';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -67,8 +67,8 @@ function renderOverzicht() {
     '</section>' +
     (allePersonen.length ? '<section class="panel medewerkers"><h2>Medewerkers</h2><div class="medewerker-kop" aria-hidden="true"><span>Naam</span><span>Functie</span><span>Telefoon</span><span></span></div><ul class="medewerker-lijst" aria-label="Medewerkers">' + allePersonen.map((p, i) => {
       const n = i+1;
-      return '<li class="collega medewerker-rij">'+naamKnop(p.naam,n)+'<span>'+esc(p.functie)+'</span><span>'+esc(p.telefoon || '—')+'</span>' +
-        kopieerKnop(p.naam,n)+preview(p,n)+
+      return '<li class="collega"><div class="medewerker-rij">'+naamKnop(p.naam,n)+'<span>'+esc(p.functie)+'</span><span>'+esc(p.telefoon || '—')+'</span>' +
+        kopieerKnop(p.naam,n)+'</div>'+preview(p,n)+
         '<p class="status" id="kaart-status-' + n + '" role="status"></p></li>';
     }).join('') + '</ul></section>' : '');
 }
