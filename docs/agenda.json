@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-09-17",
+  "bijgewerkt": "2026-09-18",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -23,15 +23,6 @@
   "gekozen_id": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
   "waarschuwing": "",
   "events": [
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/baby-bosbaden",
-      "url": "https://hetparkinrotterdam.nl/agenda/baby-bosbaden",
-      "titel": "Baby Bosbaden",
-      "start": "2026-09-17",
-      "eind": "2026-09-17",
-      "tijd": "10:15",
-      "tekst": "Baby Bosbaden · do 17 september, 10:15 uur"
-    },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/anne-roos",
       "url": "https://hetparkinrotterdam.nl/agenda/anne-roos",
@@ -114,5 +105,5 @@
       "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
     }
   ],
-  "versie": "22ccc59d240674c1"
+  "versie": "ff8b61972f544f60"
 }
