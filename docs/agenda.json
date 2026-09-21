@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-09-20",
+  "bijgewerkt": "2026-09-21",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -20,27 +20,9 @@
   "vastgezet_titel": "Anne Vegter presenteert Herfst",
   "agenda_verborgen": [],
   "aanvraag_id": "32522db6-e1b1-4911-9547-742242c2f007",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-23",
   "waarschuwing": "",
   "events": [
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/anne-roos",
-      "url": "https://hetparkinrotterdam.nl/agenda/anne-roos",
-      "titel": "Anne-Roos",
-      "start": "2026-09-20",
-      "eind": "2026-09-20",
-      "tijd": "11:30",
-      "tekst": "Anne-Roos · zo 20 september, 11:30 uur"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
-      "url": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
-      "titel": "Anne Vegter presenteert Herfst",
-      "start": "2026-09-20",
-      "eind": "2026-09-20",
-      "tijd": "15:30",
-      "tekst": "Anne Vegter presenteert Herfst · zo 20 september, 15:30 uur"
-    },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-23",
       "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-23",
@@ -105,5 +87,5 @@
       "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
     }
   ],
-  "versie": "c6f7233ff30fef73"
+  "versie": "5671887acd60a759"
 }
