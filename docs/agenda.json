@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-09-22",
+  "bijgewerkt": "2026-09-23",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -69,6 +69,15 @@
       "tekst": "Dark Fire · zo 4 oktober, 11:30 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-1",
+      "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-1",
+      "titel": "Parkwoensdag",
+      "start": "2026-10-07",
+      "eind": "2026-10-07",
+      "tijd": "13:00",
+      "tekst": "Parkwoensdag · wo 7 oktober, 13:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/parkbaden-oktober",
       "url": "https://hetparkinrotterdam.nl/agenda/parkbaden-oktober",
       "titel": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter",
@@ -85,7 +94,25 @@
       "eind": "2026-10-11",
       "tijd": "11:30",
       "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/lucienne-lardenoye",
+      "url": "https://hetparkinrotterdam.nl/agenda/lucienne-lardenoye",
+      "titel": "Lucienne Lardenoye",
+      "start": "2026-10-25",
+      "eind": "2026-10-25",
+      "tijd": "11:30",
+      "tekst": "Lucienne Lardenoye · zo 25 oktober, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/atlas-quartet",
+      "url": "https://hetparkinrotterdam.nl/agenda/atlas-quartet",
+      "titel": "Atlas Quartet",
+      "start": "2026-11-01",
+      "eind": "2026-11-01",
+      "tijd": "11:30",
+      "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "759e7192571e9aa0"
+  "versie": "89fd4fc8562b9102"
 }
