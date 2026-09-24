@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-09-23",
+  "bijgewerkt": "2026-09-24",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -20,18 +20,9 @@
   "vastgezet_titel": "Anne Vegter presenteert Herfst",
   "agenda_verborgen": [],
   "aanvraag_id": "32522db6-e1b1-4911-9547-742242c2f007",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-23",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/bosbaden-voor-aanstaande-ouders",
   "waarschuwing": "",
   "events": [
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-23",
-      "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-23",
-      "titel": "Parkwoensdag",
-      "start": "2026-09-23",
-      "eind": "2026-09-23",
-      "tijd": "13:00",
-      "tekst": "Parkwoensdag · wo 23 september, 13:00 uur"
-    },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/bosbaden-voor-aanstaande-ouders",
       "url": "https://hetparkinrotterdam.nl/agenda/bosbaden-voor-aanstaande-ouders",
@@ -114,5 +105,5 @@
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "89fd4fc8562b9102"
+  "versie": "6301a1d83d6a2f93"
 }
