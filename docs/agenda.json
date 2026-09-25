@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-09-24",
+  "bijgewerkt": "2026-09-25",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -20,18 +20,9 @@
   "vastgezet_titel": "Anne Vegter presenteert Herfst",
   "agenda_verborgen": [],
   "aanvraag_id": "32522db6-e1b1-4911-9547-742242c2f007",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/bosbaden-voor-aanstaande-ouders",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/yiorgos-bereris-quartet",
   "waarschuwing": "",
   "events": [
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/bosbaden-voor-aanstaande-ouders",
-      "url": "https://hetparkinrotterdam.nl/agenda/bosbaden-voor-aanstaande-ouders",
-      "titel": "Bosbaden voor aanstaande ouders",
-      "start": "2026-09-24",
-      "eind": "2026-09-24",
-      "tijd": "10:15",
-      "tekst": "Bosbaden voor aanstaande ouders · do 24 september, 10:15 uur"
-    },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/yiorgos-bereris-quartet",
       "url": "https://hetparkinrotterdam.nl/agenda/yiorgos-bereris-quartet",
@@ -87,6 +78,15 @@
       "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/las-hienas",
+      "url": "https://hetparkinrotterdam.nl/agenda/las-hienas",
+      "titel": "Las Hienas",
+      "start": "2026-10-18",
+      "eind": "2026-10-18",
+      "tijd": "11:30",
+      "tekst": "Las Hienas · zo 18 oktober, 11:30 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/lucienne-lardenoye",
       "url": "https://hetparkinrotterdam.nl/agenda/lucienne-lardenoye",
       "titel": "Lucienne Lardenoye",
@@ -105,5 +105,5 @@
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "6301a1d83d6a2f93"
+  "versie": "253ff67d72c1bf8c"
 }
