@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-09-25",
+  "bijgewerkt": "2026-09-26",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -60,6 +60,15 @@
       "tekst": "Parkwoensdag · wo 7 oktober, 13:00 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/de-bieb-komt-naar-het-parkpaviljoen",
+      "url": "https://hetparkinrotterdam.nl/agenda/de-bieb-komt-naar-het-parkpaviljoen",
+      "titel": "Kinderboekenweek in het Parkpaviljoen",
+      "start": "2026-10-07",
+      "eind": "2026-10-07",
+      "tijd": "15:00",
+      "tekst": "Kinderboekenweek in het Parkpaviljoen · wo 7 oktober, 15:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/parkbaden-oktober",
       "url": "https://hetparkinrotterdam.nl/agenda/parkbaden-oktober",
       "titel": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter",
@@ -69,13 +78,22 @@
       "tekst": "Parkbaden in Japanse herfst sfeer - seizoensafsluiter · zo 11 oktober, 10:00 uur"
     },
     {
-      "id": "https://hetparkinrotterdam.nl/agenda/paper-songs",
-      "url": "https://hetparkinrotterdam.nl/agenda/paper-songs",
-      "titel": "Paper Songs",
+      "id": "https://hetparkinrotterdam.nl/agenda/mike-bodde-the-krotenkokers",
+      "url": "https://hetparkinrotterdam.nl/agenda/mike-bodde-the-krotenkokers",
+      "titel": "Mike Boddé & The Krotenkokers",
       "start": "2026-10-11",
       "eind": "2026-10-11",
       "tijd": "11:30",
-      "tekst": "Paper Songs · zo 11 oktober, 11:30 uur"
+      "tekst": "Mike Boddé & The Krotenkokers · zo 11 oktober, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/momijigari-lunch-in-het-parkpaviljoen",
+      "url": "https://hetparkinrotterdam.nl/agenda/momijigari-lunch-in-het-parkpaviljoen",
+      "titel": "Momijigari (紅葉狩り) - lunch in het Parkpaviljoen",
+      "start": "2026-10-11",
+      "eind": "2026-10-11",
+      "tijd": "12:30",
+      "tekst": "Momijigari (紅葉狩り) - lunch in het Parkpaviljoen · zo 11 oktober, 12:30 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/las-hienas",
@@ -105,5 +123,5 @@
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "253ff67d72c1bf8c"
+  "versie": "ef5719d44fbf1f73"
 }
