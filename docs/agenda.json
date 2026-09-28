@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-09-27",
+  "bijgewerkt": "2026-09-28",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -20,18 +20,9 @@
   "vastgezet_titel": "Anne Vegter presenteert Herfst",
   "agenda_verborgen": [],
   "aanvraag_id": "32522db6-e1b1-4911-9547-742242c2f007",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/yiorgos-bereris-quartet",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
   "waarschuwing": "",
   "events": [
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/yiorgos-bereris-quartet",
-      "url": "https://hetparkinrotterdam.nl/agenda/yiorgos-bereris-quartet",
-      "titel": "Yiorgos Bereris Quartet",
-      "start": "2026-09-27",
-      "eind": "2026-09-27",
-      "tijd": "11:30",
-      "tekst": "Yiorgos Bereris Quartet · zo 27 september, 11:30 uur"
-    },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
       "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
@@ -123,5 +114,5 @@
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "1f593d3b1efb2086"
+  "versie": "8e56efde2d657b81"
 }
