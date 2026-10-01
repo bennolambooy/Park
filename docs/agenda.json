@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-09-30",
+  "bijgewerkt": "2026-10-01",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -20,18 +20,9 @@
   "vastgezet_titel": "Anne Vegter presenteert Herfst",
   "agenda_verborgen": [],
   "aanvraag_id": "32522db6-e1b1-4911-9547-742242c2f007",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/dark-fire",
   "waarschuwing": "",
   "events": [
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
-      "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-september-30",
-      "titel": "Parkwoensdag",
-      "start": "2026-09-30",
-      "eind": "2026-09-30",
-      "tijd": "13:00",
-      "tekst": "Parkwoensdag · wo 30 september, 13:00 uur"
-    },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/dark-fire",
       "url": "https://hetparkinrotterdam.nl/agenda/dark-fire",
@@ -87,6 +78,15 @@
       "tekst": "Momijigari (紅葉狩り) - lunch in het Parkpaviljoen · zo 11 oktober, 12:30 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-14",
+      "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-14",
+      "titel": "Parkwoensdag - Seizoensaflsuiter",
+      "start": "2026-10-14",
+      "eind": "2026-10-14",
+      "tijd": "13:00",
+      "tekst": "Parkwoensdag - Seizoensaflsuiter · wo 14 oktober, 13:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/las-hienas",
       "url": "https://hetparkinrotterdam.nl/agenda/las-hienas",
       "titel": "Las Hienas",
@@ -114,5 +114,5 @@
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "8a06f57f87f6a4f6"
+  "versie": "e56e6e7766206797"
 }
