@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-10-01",
+  "bijgewerkt": "2026-10-02",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -20,9 +20,18 @@
   "vastgezet_titel": "Anne Vegter presenteert Herfst",
   "agenda_verborgen": [],
   "aanvraag_id": "32522db6-e1b1-4911-9547-742242c2f007",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/dark-fire",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/herfstatelier",
   "waarschuwing": "",
   "events": [
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/herfstatelier",
+      "url": "https://hetparkinrotterdam.nl/agenda/herfstatelier",
+      "titel": "Herfstatelier",
+      "start": "2026-10-01",
+      "eind": "2026-12-18",
+      "tijd": null,
+      "tekst": "Herfstatelier · 1 oktober t/m 18 december"
+    },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/dark-fire",
       "url": "https://hetparkinrotterdam.nl/agenda/dark-fire",
@@ -114,5 +123,5 @@
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "e56e6e7766206797"
+  "versie": "73b1193432c95f72"
 }
