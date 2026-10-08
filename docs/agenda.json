@@ -16,11 +16,11 @@
     "instagram_url": "https://www.instagram.com/hetparkinrotterdam/",
     "linkedin_url": "https://www.linkedin.com/company/het-park-in-rotterdam/"
   },
-  "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/mike-bodde-the-krotenkokers",
-  "vastgezet_titel": "Mike Boddé & The Krotenkokers",
+  "vastgezet_id": "",
+  "vastgezet_titel": "",
   "agenda_verborgen": [],
-  "aanvraag_id": "c99fc74b-ff78-4879-ba82-7e174b64c54f",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/mike-bodde-the-krotenkokers",
+  "aanvraag_id": "ffafb5ed-3f7c-43be-b557-d275af992ced",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/herfstatelier",
   "waarschuwing": "",
   "events": [
     {
@@ -96,5 +96,5 @@
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "f6b2dd60a7ac5874"
+  "versie": "ac3ba54fc6b94ee6"
 }
