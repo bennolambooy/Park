@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-10-07",
+  "bijgewerkt": "2026-10-08",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -31,24 +31,6 @@
       "eind": "2026-12-18",
       "tijd": null,
       "tekst": "Herfstatelier · 1 oktober t/m 18 december"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-1",
-      "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-1",
-      "titel": "Parkwoensdag",
-      "start": "2026-10-07",
-      "eind": "2026-10-07",
-      "tijd": "13:00",
-      "tekst": "Parkwoensdag · wo 7 oktober, 13:00 uur"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/de-bieb-komt-naar-het-parkpaviljoen",
-      "url": "https://hetparkinrotterdam.nl/agenda/de-bieb-komt-naar-het-parkpaviljoen",
-      "titel": "Kinderboekenweek in het Parkpaviljoen",
-      "start": "2026-10-07",
-      "eind": "2026-10-07",
-      "tijd": "15:00",
-      "tekst": "Kinderboekenweek in het Parkpaviljoen · wo 7 oktober, 15:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/parkbaden-oktober",
@@ -114,5 +96,5 @@
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "87a9b4cb2447d9dd"
+  "versie": "38ed7c3657c340d7"
 }
