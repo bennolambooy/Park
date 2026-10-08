@@ -16,11 +16,11 @@
     "instagram_url": "https://www.instagram.com/hetparkinrotterdam/",
     "linkedin_url": "https://www.linkedin.com/company/het-park-in-rotterdam/"
   },
-  "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/anne-vegter-presenteert-eigenzinnige-herfstbundel",
-  "vastgezet_titel": "Anne Vegter presenteert Herfst",
+  "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/mike-bodde-the-krotenkokers",
+  "vastgezet_titel": "Mike Boddé & The Krotenkokers",
   "agenda_verborgen": [],
-  "aanvraag_id": "32522db6-e1b1-4911-9547-742242c2f007",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/herfstatelier",
+  "aanvraag_id": "c99fc74b-ff78-4879-ba82-7e174b64c54f",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/mike-bodde-the-krotenkokers",
   "waarschuwing": "",
   "events": [
     {
@@ -96,5 +96,5 @@
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "38ed7c3657c340d7"
+  "versie": "f6b2dd60a7ac5874"
 }
