@@ -1,4 +1,4 @@
-import {handtekening, kiesLogovariant} from './signature.js?v=20260917-11';
+import {handtekening, kiesLogovariant} from './signature.js?v=20261009-1';
 import {leesPubliek, kopieer, kopieerHtmlTekst, esc} from './shared.js?v=20260917-11';
 import {toegang} from './gate.js?v=20260917-11';
 import {algemeneTekst} from './general.js?v=20260917-11';

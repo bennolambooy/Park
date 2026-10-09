@@ -46,7 +46,7 @@ export function handtekening(persoon, {basis = SITE, versie = '', logovariant, t
     '<p style="margin:0 0 18px;' + tekststijl + '">' +
     '<a href="' + esc(a.website_url) + '" style="color:#00752e;text-decoration:underline">'+esc(a.website_tekst)+'</a><br>' +
     (toonAdres ? esc(a.adres1)+'<br>'+esc(a.adres2)+'<br><br>' : '') +
-    esc(a.opening)+'<br>'+esc(a.volgen)+' ' +
+    esc(a.opening)+'<br><br>'+esc(a.volgen)+' ' +
     '<a href="'+esc(a.nieuwsbrief_url)+'" style="color:#00752e;text-decoration:underline">nieuwsbrief</a>, ' +
     '<a href="'+esc(a.facebook_url)+'" style="color:#00752e;text-decoration:underline">Facebook</a>, ' +
     '<a href="'+esc(a.instagram_url)+'" style="color:#00752e;text-decoration:underline">Instagram</a> en ' +
@@ -60,7 +60,7 @@ export function handtekening(persoon, {basis = SITE, versie = '', logovariant, t
   const tekst = [a.groet+'\n\n'+(p ? p.naam + '\n' + p.functie + (p.telefoon ? '\n' + p.telefoon : '') : a.naam),
     'het Park',
     a.website_tekst+'\n' + (toonAdres ? a.adres1+'\n'+a.adres2+'\n\n' : '') +
-    a.opening+'\n'+a.volgen+' nieuwsbrief, Facebook, Instagram en LinkedIn.',
+    a.opening+'\n\n'+a.volgen+' nieuwsbrief, Facebook, Instagram en LinkedIn.',
     'Nu in bloei en in de agenda: ' + WEBSITE + '/agenda'].filter(Boolean).join('\n\n');
   return {html, tekst};
 }
