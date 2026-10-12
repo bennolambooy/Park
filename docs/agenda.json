@@ -18,8 +18,14 @@
   },
   "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-14",
   "vastgezet_titel": "Parkwoensdag - Seizoensaflsuiter",
-  "agenda_verborgen": [],
-  "aanvraag_id": "4d32977e-0b31-442e-9ae4-95cc373af661",
+  "agenda_verborgen": [
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/herfstatelier",
+      "start": "2026-10-01",
+      "eind": "2026-12-18"
+    }
+  ],
+  "aanvraag_id": "9b6244cc-e506-49c5-aaba-e88fbf1483de",
   "gekozen_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-14",
   "waarschuwing": "",
   "events": [
@@ -69,5 +75,5 @@
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "bf8b75258bc9340a"
+  "versie": "42aa73998f586e36"
 }
