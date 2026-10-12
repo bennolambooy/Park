@@ -16,11 +16,11 @@
     "instagram_url": "https://www.instagram.com/hetparkinrotterdam/",
     "linkedin_url": "https://www.linkedin.com/company/het-park-in-rotterdam/"
   },
-  "vastgezet_id": "",
-  "vastgezet_titel": "",
+  "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-14",
+  "vastgezet_titel": "Parkwoensdag - Seizoensaflsuiter",
   "agenda_verborgen": [],
-  "aanvraag_id": "ffafb5ed-3f7c-43be-b557-d275af992ced",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/herfstatelier",
+  "aanvraag_id": "4d32977e-0b31-442e-9ae4-95cc373af661",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-14",
   "waarschuwing": "",
   "events": [
     {
@@ -69,5 +69,5 @@
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     }
   ],
-  "versie": "9ab73e02740b1f00"
+  "versie": "bf8b75258bc9340a"
 }
