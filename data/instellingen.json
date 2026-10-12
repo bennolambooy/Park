@@ -1,7 +1,7 @@
 {
   "vastgezet_titel": "Parkwoensdag - Seizoensaflsuiter",
   "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-14",
-  "aanvraag_id": "4d32977e-0b31-442e-9ae4-95cc373af661",
+  "aanvraag_id": "9b6244cc-e506-49c5-aaba-e88fbf1483de",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -17,5 +17,12 @@
     "facebook_url": "https://www.facebook.com/hetparkinrotterdam",
     "instagram_url": "https://www.instagram.com/hetparkinrotterdam/",
     "linkedin_url": "https://www.linkedin.com/company/het-park-in-rotterdam/"
-  }
+  },
+  "agenda_verborgen": [
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/herfstatelier",
+      "start": "2026-10-01",
+      "eind": "2026-12-18"
+    }
+  ]
 }
