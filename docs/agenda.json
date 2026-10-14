@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-10-13",
+  "bijgewerkt": "2026-10-14",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -73,7 +73,16 @@
       "eind": "2026-11-01",
       "tijd": "11:30",
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/paper-songs",
+      "url": "https://hetparkinrotterdam.nl/agenda/paper-songs",
+      "titel": "Paper Songs",
+      "start": "2026-11-08",
+      "eind": "2026-11-08",
+      "tijd": "11:30",
+      "tekst": "Paper Songs · zo 8 november, 11:30 uur"
     }
   ],
-  "versie": "cb977276957695b2"
+  "versie": "ad09a96daeacb958"
 }
