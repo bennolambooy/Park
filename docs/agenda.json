@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-10-14",
+  "bijgewerkt": "2026-10-15",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -26,7 +26,7 @@
     }
   ],
   "aanvraag_id": "9b6244cc-e506-49c5-aaba-e88fbf1483de",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-14",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/las-hienas",
   "waarschuwing": "",
   "events": [
     {
@@ -39,15 +39,6 @@
       "tekst": "Herfstatelier · 1 oktober t/m 18 december"
     },
     {
-      "id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-14",
-      "url": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-14",
-      "titel": "Parkwoensdag - Seizoensaflsuiter",
-      "start": "2026-10-14",
-      "eind": "2026-10-14",
-      "tijd": "13:00",
-      "tekst": "Parkwoensdag - Seizoensaflsuiter · wo 14 oktober, 13:00 uur"
-    },
-    {
       "id": "https://hetparkinrotterdam.nl/agenda/las-hienas",
       "url": "https://hetparkinrotterdam.nl/agenda/las-hienas",
       "titel": "Las Hienas",
@@ -55,6 +46,15 @@
       "eind": "2026-10-18",
       "tijd": "11:30",
       "tekst": "Las Hienas · zo 18 oktober, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik",
+      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik",
+      "titel": "Vaste prik op woensdag",
+      "start": "2026-10-21",
+      "eind": "2026-10-21",
+      "tijd": "13:00",
+      "tekst": "Vaste prik op woensdag · wo 21 oktober, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/lucienne-lardenoye",
@@ -82,7 +82,16 @@
       "eind": "2026-11-08",
       "tijd": "11:30",
       "tekst": "Paper Songs · zo 8 november, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/rotterdam-philharmonic-orchestra-academy-2026",
+      "url": "https://hetparkinrotterdam.nl/agenda/rotterdam-philharmonic-orchestra-academy-2026",
+      "titel": "Rotterdam Philharmonic Orchestra Academy",
+      "start": "2026-11-29",
+      "eind": "2026-11-29",
+      "tijd": "11:30",
+      "tekst": "Rotterdam Philharmonic Orchestra Academy · zo 29 november, 11:30 uur"
     }
   ],
-  "versie": "ad09a96daeacb958"
+  "versie": "d0588f63644d743a"
 }
