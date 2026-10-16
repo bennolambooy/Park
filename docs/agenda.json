@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-10-15",
+  "bijgewerkt": "2026-10-16",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -66,6 +66,15 @@
       "tekst": "Lucienne Lardenoye · zo 25 oktober, 11:30 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-28-okt",
+      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-28-okt",
+      "titel": "Vaste prik op woensdag",
+      "start": "2026-10-28",
+      "eind": "2026-10-28",
+      "tijd": "13:00",
+      "tekst": "Vaste prik op woensdag · wo 28 oktober, 13:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/atlas-quartet",
       "url": "https://hetparkinrotterdam.nl/agenda/atlas-quartet",
       "titel": "Atlas Quartet",
@@ -73,6 +82,15 @@
       "eind": "2026-11-01",
       "tijd": "11:30",
       "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-4-nov",
+      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-4-nov",
+      "titel": "Vaste prik op woensdag",
+      "start": "2026-11-04",
+      "eind": "2026-11-04",
+      "tijd": "13:00",
+      "tekst": "Vaste prik op woensdag · wo 4 november, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/paper-songs",
@@ -84,6 +102,33 @@
       "tekst": "Paper Songs · zo 8 november, 11:30 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-11",
+      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-11",
+      "titel": "Vaste prik op woensdag",
+      "start": "2026-11-11",
+      "eind": "2026-11-11",
+      "tijd": "13:00",
+      "tekst": "Vaste prik op woensdag · wo 11 november, 13:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/luna-zegers",
+      "url": "https://hetparkinrotterdam.nl/agenda/luna-zegers",
+      "titel": "Luna Zegers",
+      "start": "2026-11-15",
+      "eind": "2026-11-15",
+      "tijd": "11:30",
+      "tekst": "Luna Zegers · zo 15 november, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-18",
+      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-18",
+      "titel": "Vaste prik op woensdag",
+      "start": "2026-11-18",
+      "eind": "2026-11-18",
+      "tijd": "13:00",
+      "tekst": "Vaste prik op woensdag · wo 18 november, 13:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/rotterdam-philharmonic-orchestra-academy-2026",
       "url": "https://hetparkinrotterdam.nl/agenda/rotterdam-philharmonic-orchestra-academy-2026",
       "titel": "Rotterdam Philharmonic Orchestra Academy",
@@ -93,5 +138,5 @@
       "tekst": "Rotterdam Philharmonic Orchestra Academy · zo 29 november, 11:30 uur"
     }
   ],
-  "versie": "d0588f63644d743a"
+  "versie": "404c7d4ddf682754"
 }
