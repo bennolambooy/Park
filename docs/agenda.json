@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-10-21",
+  "bijgewerkt": "2026-10-22",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -26,7 +26,7 @@
     }
   ],
   "aanvraag_id": "9b6244cc-e506-49c5-aaba-e88fbf1483de",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/vaste-prik",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/lucienne-lardenoye",
   "waarschuwing": "",
   "events": [
     {
@@ -37,15 +37,6 @@
       "eind": "2026-12-18",
       "tijd": null,
       "tekst": "Herfstatelier · 1 oktober t/m 18 december"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik",
-      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik",
-      "titel": "Vaste prik op woensdag",
-      "start": "2026-10-21",
-      "eind": "2026-10-21",
-      "tijd": "13:00",
-      "tekst": "Vaste prik op woensdag · wo 21 oktober, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/lucienne-lardenoye",
@@ -129,5 +120,5 @@
       "tekst": "Rotterdam Philharmonic Orchestra Academy · zo 29 november, 11:30 uur"
     }
   ],
-  "versie": "9dcc13e724d1759c"
+  "versie": "a235bbb780ecfc29"
 }
