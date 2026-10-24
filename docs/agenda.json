@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-10-23",
+  "bijgewerkt": "2026-10-24",
   "logostijl": "groen",
   "toon_adres": false,
   "algemeen": {
@@ -118,7 +118,16 @@
       "eind": "2026-11-29",
       "tijd": "11:30",
       "tekst": "Rotterdam Philharmonic Orchestra Academy · zo 29 november, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/winterwandeling-met-ferrie-weeda",
+      "url": "https://hetparkinrotterdam.nl/agenda/winterwandeling-met-ferrie-weeda",
+      "titel": "Winterwandeling met Ferrie Weeda",
+      "start": "2027-01-17",
+      "eind": "2027-01-17",
+      "tijd": "13:30",
+      "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "380f44e4c28f2969"
+  "versie": "7693ce13dd081932"
 }
