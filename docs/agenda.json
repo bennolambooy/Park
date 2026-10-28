@@ -9,15 +9,15 @@
     "website_url": "https://hetparkinrotterdam.nl/",
     "adres1": "Baden Powelllaan 2",
     "adres2": "3016 GJ Rotterdam",
-    "opening": "Het Parkpaviljoen is elke dag open van 10 tot 17 uur",
+    "opening": "Het Parkpaviljoen is elke dag geopend van 10 tot 17 uur",
     "volgen": "Volg ons via",
     "nieuwsbrief_url": "https://hetparkinrotterdam.us2.list-manage.com/subscribe?u=fe120296f8b3715025a0f4f7f&id=bdc33ac363",
     "facebook_url": "https://www.facebook.com/hetparkinrotterdam",
     "instagram_url": "https://www.instagram.com/hetparkinrotterdam/",
     "linkedin_url": "https://www.linkedin.com/company/het-park-in-rotterdam/"
   },
-  "vastgezet_id": "https://hetparkinrotterdam.nl/agenda/parkwoensdag-oktober-14",
-  "vastgezet_titel": "Parkwoensdag - Seizoensaflsuiter",
+  "vastgezet_id": "",
+  "vastgezet_titel": "",
   "agenda_verborgen": [
     {
       "id": "https://hetparkinrotterdam.nl/agenda/herfstatelier",
@@ -25,7 +25,7 @@
       "eind": "2026-12-18"
     }
   ],
-  "aanvraag_id": "9faf800c-8cb9-4bdf-b862-de531376b872",
+  "aanvraag_id": "85e30344-5a67-402d-8125-9a9bf2ad5da4",
   "gekozen_id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-28-okt",
   "waarschuwing": "",
   "events": [
@@ -120,5 +120,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "40213cc6afe37286"
+  "versie": "de18bd69b7757335"
 }
