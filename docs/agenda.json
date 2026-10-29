@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-10-28",
+  "bijgewerkt": "2026-10-29",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -26,7 +26,7 @@
     }
   ],
   "aanvraag_id": "85e30344-5a67-402d-8125-9a9bf2ad5da4",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-28-okt",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/atlas-quartet",
   "waarschuwing": "",
   "events": [
     {
@@ -37,15 +37,6 @@
       "eind": "2026-12-18",
       "tijd": null,
       "tekst": "Herfstatelier · 1 oktober t/m 18 december"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-28-okt",
-      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-28-okt",
-      "titel": "Vaste prik op woensdag",
-      "start": "2026-10-28",
-      "eind": "2026-10-28",
-      "tijd": "13:00",
-      "tekst": "Vaste prik op woensdag · wo 28 oktober, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/atlas-quartet",
@@ -84,6 +75,24 @@
       "tekst": "Vaste prik op woensdag · wo 11 november, 13:00 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk",
+      "url": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk",
+      "titel": "Noorse Kerstmarkt",
+      "start": "2026-11-12",
+      "eind": "2026-11-15",
+      "tijd": null,
+      "tekst": "Noorse Kerstmarkt · 12 t/m 15 november"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen",
+      "url": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen",
+      "titel": "Winter Workshop Parkgroen",
+      "start": "2026-11-13",
+      "eind": "2027-10-14",
+      "tijd": "13:00",
+      "tekst": "Winter Workshop Parkgroen · 13 november 2026 t/m 14 oktober 2027"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/luna-zegers",
       "url": "https://hetparkinrotterdam.nl/agenda/luna-zegers",
       "titel": "Luna Zegers",
@@ -100,6 +109,24 @@
       "eind": "2026-11-18",
       "tijd": "13:00",
       "tekst": "Vaste prik op woensdag · wo 18 november, 13:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk-weekend",
+      "url": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk-weekend",
+      "titel": "Noorse Kerstmarkt-weekend",
+      "start": "2026-11-20",
+      "eind": "2026-11-22",
+      "tijd": null,
+      "tekst": "Noorse Kerstmarkt-weekend · 20 t/m 22 november"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen-2",
+      "url": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen-2",
+      "titel": "Winter Workshop Parkgroen",
+      "start": "2026-11-21",
+      "eind": "2026-11-21",
+      "tijd": "13:00",
+      "tekst": "Winter Workshop Parkgroen · za 21 november, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/rotterdam-philharmonic-orchestra-academy-2026",
@@ -120,5 +147,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "de18bd69b7757335"
+  "versie": "992492f0fb187783"
 }
