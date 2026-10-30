@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-10-29",
+  "bijgewerkt": "2026-10-30",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -86,11 +86,11 @@
     {
       "id": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen",
       "url": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen",
-      "titel": "Winter Workshop Parkgroen",
+      "titel": "Winterworkshop Parkgroen",
       "start": "2026-11-13",
       "eind": "2027-10-14",
       "tijd": "13:00",
-      "tekst": "Winter Workshop Parkgroen · 13 november 2026 t/m 14 oktober 2027"
+      "tekst": "Winterworkshop Parkgroen · 13 november 2026 t/m 14 oktober 2027"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/luna-zegers",
@@ -100,6 +100,15 @@
       "eind": "2026-11-15",
       "tijd": "11:30",
       "tekst": "Luna Zegers · zo 15 november, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op",
+      "url": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op",
+      "titel": "Pak de draad op met Strikk & Stakk",
+      "start": "2026-11-15",
+      "eind": "2026-11-15",
+      "tijd": "13:00",
+      "tekst": "Pak de draad op met Strikk & Stakk · zo 15 november, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-18",
@@ -113,20 +122,29 @@
     {
       "id": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk-weekend",
       "url": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk-weekend",
-      "titel": "Noorse Kerstmarkt-weekend",
+      "titel": "Noorse Kerstmarkt",
       "start": "2026-11-20",
       "eind": "2026-11-22",
       "tijd": null,
-      "tekst": "Noorse Kerstmarkt-weekend · 20 t/m 22 november"
+      "tekst": "Noorse Kerstmarkt · 20 t/m 22 november"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen-2",
       "url": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen-2",
-      "titel": "Winter Workshop Parkgroen",
+      "titel": "Winterworkshop Parkgroen",
       "start": "2026-11-21",
       "eind": "2026-11-21",
       "tijd": "13:00",
-      "tekst": "Winter Workshop Parkgroen · za 21 november, 13:00 uur"
+      "tekst": "Winterworkshop Parkgroen · za 21 november, 13:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-kopieren",
+      "url": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-kopieren",
+      "titel": "Pak de draad op met Strikk & Stakk",
+      "start": "2026-11-22",
+      "eind": "2026-11-22",
+      "tijd": "13:00",
+      "tekst": "Pak de draad op met Strikk & Stakk · zo 22 november, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/rotterdam-philharmonic-orchestra-academy-2026",
@@ -138,6 +156,24 @@
       "tekst": "Rotterdam Philharmonic Orchestra Academy · zo 29 november, 11:30 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-weer-op",
+      "url": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-weer-op",
+      "titel": "Pak de draad weer op",
+      "start": "2026-11-29",
+      "eind": "2026-11-29",
+      "tijd": "13:00",
+      "tekst": "Pak de draad weer op · zo 29 november, 13:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/voluspa-draumkvedet-traditionele-noorse-kveding",
+      "url": "https://hetparkinrotterdam.nl/agenda/voluspa-draumkvedet-traditionele-noorse-kveding",
+      "titel": "Voluspå – Draumkvedet: traditionele Noorse kveding",
+      "start": "2026-12-13",
+      "eind": "2026-12-13",
+      "tijd": "15:00",
+      "tekst": "Voluspå – Draumkvedet: traditionele Noorse kveding · zo 13 december, 15:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/winterwandeling-met-ferrie-weeda",
       "url": "https://hetparkinrotterdam.nl/agenda/winterwandeling-met-ferrie-weeda",
       "titel": "Winterwandeling met Ferrie Weeda",
@@ -147,5 +183,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "992492f0fb187783"
+  "versie": "47108968391ec625"
 }
