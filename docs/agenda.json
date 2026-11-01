@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-10-31",
+  "bijgewerkt": "2026-11-01",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -88,9 +88,9 @@
       "url": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen",
       "titel": "Winterworkshop Parkgroen",
       "start": "2026-11-13",
-      "eind": "2027-10-14",
+      "eind": "2026-11-14",
       "tijd": "13:00",
-      "tekst": "Winterworkshop Parkgroen · 13 november 2026 t/m 14 oktober 2027"
+      "tekst": "Winterworkshop Parkgroen · 13 t/m 14 november"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/luna-zegers",
@@ -138,6 +138,15 @@
       "tekst": "Winterworkshop Parkgroen · za 21 november, 13:00 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/merel-sophie",
+      "url": "https://hetparkinrotterdam.nl/agenda/merel-sophie",
+      "titel": "Merel Sophie",
+      "start": "2026-11-22",
+      "eind": "2026-11-22",
+      "tijd": "11:30",
+      "tekst": "Merel Sophie · zo 22 november, 11:30 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-kopieren",
       "url": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-kopieren",
       "titel": "Pak de draad op met Strikk & Stakk",
@@ -183,5 +192,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "3cb9e5f12b7206de"
+  "versie": "16826a3ffaaf5f71"
 }
