@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-01",
+  "bijgewerkt": "2026-11-02",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -26,7 +26,7 @@
     }
   ],
   "aanvraag_id": "85e30344-5a67-402d-8125-9a9bf2ad5da4",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/atlas-quartet",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-4-nov",
   "waarschuwing": "",
   "events": [
     {
@@ -37,15 +37,6 @@
       "eind": "2026-12-18",
       "tijd": null,
       "tekst": "Herfstatelier · 1 oktober t/m 18 december"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/atlas-quartet",
-      "url": "https://hetparkinrotterdam.nl/agenda/atlas-quartet",
-      "titel": "Atlas Quartet",
-      "start": "2026-11-01",
-      "eind": "2026-11-01",
-      "tijd": "11:30",
-      "tekst": "Atlas Quartet · zo 1 november, 11:30 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-4-nov",
@@ -192,5 +183,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "16826a3ffaaf5f71"
+  "versie": "11c93e458d0259a2"
 }
