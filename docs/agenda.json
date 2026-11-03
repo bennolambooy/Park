@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-02",
+  "bijgewerkt": "2026-11-03",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -147,6 +147,15 @@
       "tekst": "Pak de draad op met Strikk & Stakk · zo 22 november, 13:00 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-25",
+      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-25",
+      "titel": "Vaste prik op woensdag",
+      "start": "2026-11-25",
+      "eind": "2026-11-25",
+      "tijd": "13:00",
+      "tekst": "Vaste prik op woensdag · wo 25 november, 13:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/rotterdam-philharmonic-orchestra-academy-2026",
       "url": "https://hetparkinrotterdam.nl/agenda/rotterdam-philharmonic-orchestra-academy-2026",
       "titel": "Rotterdam Philharmonic Orchestra Academy",
@@ -165,6 +174,24 @@
       "tekst": "Pak de draad weer op · zo 29 november, 13:00 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-2",
+      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-2",
+      "titel": "Vaste prik op woensdag",
+      "start": "2026-12-02",
+      "eind": "2026-12-02",
+      "tijd": "13:00",
+      "tekst": "Vaste prik op woensdag · wo 2 december, 13:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-9",
+      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-9",
+      "titel": "Vaste prik op woensdag",
+      "start": "2026-12-09",
+      "eind": "2026-12-09",
+      "tijd": "13:00",
+      "tekst": "Vaste prik op woensdag · wo 9 december, 13:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/voluspa-draumkvedet-traditionele-noorse-kveding",
       "url": "https://hetparkinrotterdam.nl/agenda/voluspa-draumkvedet-traditionele-noorse-kveding",
       "titel": "Voluspå – Draumkvedet: traditionele Noorse kveding",
@@ -172,6 +199,33 @@
       "eind": "2026-12-13",
       "tijd": "15:00",
       "tekst": "Voluspå – Draumkvedet: traditionele Noorse kveding · zo 13 december, 15:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-16",
+      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-16",
+      "titel": "Vaste prik op woensdag",
+      "start": "2026-12-16",
+      "eind": "2026-12-16",
+      "tijd": "13:00",
+      "tekst": "Vaste prik op woensdag · wo 16 december, 13:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-23",
+      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-23",
+      "titel": "Vaste prik op woensdag",
+      "start": "2026-12-23",
+      "eind": "2026-12-23",
+      "tijd": "13:00",
+      "tekst": "Vaste prik op woensdag · wo 23 december, 13:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-30",
+      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-30",
+      "titel": "Vaste prik op woensdag",
+      "start": "2026-12-30",
+      "eind": "2026-12-30",
+      "tijd": "13:00",
+      "tekst": "Vaste prik op woensdag · wo 30 december, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/winterwandeling-met-ferrie-weeda",
@@ -183,5 +237,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "11c93e458d0259a2"
+  "versie": "0c8ce67bbc379ec6"
 }
