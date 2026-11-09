@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-08",
+  "bijgewerkt": "2026-11-09",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -26,7 +26,7 @@
     }
   ],
   "aanvraag_id": "85e30344-5a67-402d-8125-9a9bf2ad5da4",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/paper-songs",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-11",
   "waarschuwing": "",
   "events": [
     {
@@ -37,15 +37,6 @@
       "eind": "2026-12-18",
       "tijd": null,
       "tekst": "Herfstatelier · 1 oktober t/m 18 december"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/paper-songs",
-      "url": "https://hetparkinrotterdam.nl/agenda/paper-songs",
-      "titel": "Paper Songs",
-      "start": "2026-11-08",
-      "eind": "2026-11-08",
-      "tijd": "11:30",
-      "tekst": "Paper Songs · zo 8 november, 11:30 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-11",
@@ -219,5 +210,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "576665e58f9d5861"
+  "versie": "2dcf100e1c62780f"
 }
