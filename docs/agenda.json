@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-10",
+  "bijgewerkt": "2026-11-11",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -165,6 +165,15 @@
       "tekst": "Vaste prik op woensdag · wo 2 december, 13:00 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/imme-en-julia-adriana",
+      "url": "https://hetparkinrotterdam.nl/agenda/imme-en-julia-adriana",
+      "titel": "Imme & Julia Adriana",
+      "start": "2026-12-06",
+      "eind": "2026-12-06",
+      "tijd": "11:30",
+      "tekst": "Imme & Julia Adriana · zo 6 december, 11:30 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-9",
       "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-9",
       "titel": "Vaste prik op woensdag",
@@ -210,5 +219,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "077b5563dcc7be92"
+  "versie": "0e557e063a44d1bb"
 }
