@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-14",
+  "bijgewerkt": "2026-11-15",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -46,15 +46,6 @@
       "eind": "2026-11-15",
       "tijd": null,
       "tekst": "Noorse Kerstmarkt · 12 t/m 15 november"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen",
-      "url": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen",
-      "titel": "Winterworkshop Parkgroen",
-      "start": "2026-11-13",
-      "eind": "2026-11-14",
-      "tijd": "13:00",
-      "tekst": "Winterworkshop Parkgroen · 13 t/m 14 november"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/luna-zegers",
@@ -210,5 +201,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "72e4f79fe2280bf5"
+  "versie": "951709543f23b59a"
 }
