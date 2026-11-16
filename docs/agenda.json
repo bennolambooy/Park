@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-15",
+  "bijgewerkt": "2026-11-16",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -26,7 +26,7 @@
     }
   ],
   "aanvraag_id": "85e30344-5a67-402d-8125-9a9bf2ad5da4",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-18",
   "waarschuwing": "",
   "events": [
     {
@@ -37,33 +37,6 @@
       "eind": "2026-12-18",
       "tijd": null,
       "tekst": "Herfstatelier · 1 oktober t/m 18 december"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk",
-      "url": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk",
-      "titel": "Noorse Kerstmarkt",
-      "start": "2026-11-12",
-      "eind": "2026-11-15",
-      "tijd": null,
-      "tekst": "Noorse Kerstmarkt · 12 t/m 15 november"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/luna-zegers",
-      "url": "https://hetparkinrotterdam.nl/agenda/luna-zegers",
-      "titel": "Luna Zegers",
-      "start": "2026-11-15",
-      "eind": "2026-11-15",
-      "tijd": "11:30",
-      "tekst": "Luna Zegers · zo 15 november, 11:30 uur"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op",
-      "url": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op",
-      "titel": "Pak de draad op met Strikk & Stakk",
-      "start": "2026-11-15",
-      "eind": "2026-11-15",
-      "tijd": "13:00",
-      "tekst": "Pak de draad op met Strikk & Stakk · zo 15 november, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-18",
@@ -165,6 +138,15 @@
       "tekst": "Vaste prik op woensdag · wo 9 december, 13:00 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/voluspa-draumkvedet-traditionele-noorse-kveding",
+      "url": "https://hetparkinrotterdam.nl/agenda/voluspa-draumkvedet-traditionele-noorse-kveding",
+      "titel": "Voluspå – Draumkvedet: traditionele Noorse kveding",
+      "start": "2026-12-13",
+      "eind": "2026-12-13",
+      "tijd": "15:00",
+      "tekst": "Voluspå – Draumkvedet: traditionele Noorse kveding · zo 13 december, 15:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-16",
       "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-16",
       "titel": "Vaste prik op woensdag",
@@ -201,5 +183,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "951709543f23b59a"
+  "versie": "505cbeb396393628"
 }
