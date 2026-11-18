@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-17",
+  "bijgewerkt": "2026-11-18",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -156,15 +156,6 @@
       "tekst": "Voluspå – Draumkvedet: traditionele Noorse kveding · zo 13 december, 15:00 uur"
     },
     {
-      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-16",
-      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-16",
-      "titel": "Vaste prik op woensdag",
-      "start": "2026-12-16",
-      "eind": "2026-12-16",
-      "tijd": "13:00",
-      "tekst": "Vaste prik op woensdag · wo 16 december, 13:00 uur"
-    },
-    {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-23",
       "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-23",
       "titel": "Vaste prik op woensdag",
@@ -192,5 +183,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "eb95f4d4106368e5"
+  "versie": "168713a9d8b37d0a"
 }
