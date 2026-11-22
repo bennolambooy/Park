@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-21",
+  "bijgewerkt": "2026-11-22",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -46,15 +46,6 @@
       "eind": "2026-11-22",
       "tijd": null,
       "tekst": "Noorse Kerstmarkt · 20 t/m 22 november"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen-2",
-      "url": "https://hetparkinrotterdam.nl/agenda/winter-workshop-parkgroen-2",
-      "titel": "Winterworkshop Parkgroen",
-      "start": "2026-11-21",
-      "eind": "2026-11-21",
-      "tijd": "13:00",
-      "tekst": "Winterworkshop Parkgroen · za 21 november, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/merel-sophie",
@@ -174,5 +165,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "a9c8488f5fe8c2e2"
+  "versie": "692381e8906cd5ed"
 }
