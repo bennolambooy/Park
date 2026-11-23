@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-22",
+  "bijgewerkt": "2026-11-23",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -26,7 +26,7 @@
     }
   ],
   "aanvraag_id": "85e30344-5a67-402d-8125-9a9bf2ad5da4",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk-weekend",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-25",
   "waarschuwing": "",
   "events": [
     {
@@ -37,33 +37,6 @@
       "eind": "2026-12-18",
       "tijd": null,
       "tekst": "Herfstatelier · 1 oktober t/m 18 december"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk-weekend",
-      "url": "https://hetparkinrotterdam.nl/agenda/kerstmarkt-noorse-kerk-weekend",
-      "titel": "Noorse Kerstmarkt",
-      "start": "2026-11-20",
-      "eind": "2026-11-22",
-      "tijd": null,
-      "tekst": "Noorse Kerstmarkt · 20 t/m 22 november"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/merel-sophie",
-      "url": "https://hetparkinrotterdam.nl/agenda/merel-sophie",
-      "titel": "Merel Sophie",
-      "start": "2026-11-22",
-      "eind": "2026-11-22",
-      "tijd": "11:30",
-      "tekst": "Merel Sophie · zo 22 november, 11:30 uur"
-    },
-    {
-      "id": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-kopieren",
-      "url": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-kopieren",
-      "titel": "Pak de draad op met Strikk & Stakk",
-      "start": "2026-11-22",
-      "eind": "2026-11-22",
-      "tijd": "13:00",
-      "tekst": "Pak de draad op met Strikk & Stakk · zo 22 november, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-25",
@@ -165,5 +138,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "692381e8906cd5ed"
+  "versie": "12536757efbbb8b9"
 }
