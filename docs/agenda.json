@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-23",
+  "bijgewerkt": "2026-11-24",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -59,11 +59,11 @@
     {
       "id": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-weer-op",
       "url": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-weer-op",
-      "titel": "Pak de draad weer op",
+      "titel": "Pak de draad op",
       "start": "2026-11-29",
       "eind": "2026-11-29",
       "tijd": "13:00",
-      "tekst": "Pak de draad weer op · zo 29 november, 13:00 uur"
+      "tekst": "Pak de draad op · zo 29 november, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-2",
@@ -82,6 +82,15 @@
       "eind": "2026-12-06",
       "tijd": "11:30",
       "tekst": "Imme & Julia Adriana · zo 6 december, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-6",
+      "url": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-6",
+      "titel": "Pak de draad op",
+      "start": "2026-12-06",
+      "eind": "2026-12-06",
+      "tijd": "13:00",
+      "tekst": "Pak de draad op · zo 6 december, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-9",
@@ -138,5 +147,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "12536757efbbb8b9"
+  "versie": "027b38650eca6545"
 }
