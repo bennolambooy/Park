@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-24",
+  "bijgewerkt": "2026-11-25",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -111,6 +111,15 @@
       "tekst": "Skemerito · zo 13 december, 11:30 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-13",
+      "url": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-13",
+      "titel": "Pak de draad op",
+      "start": "2026-12-13",
+      "eind": "2026-12-13",
+      "tijd": "13:00",
+      "tekst": "Pak de draad op · zo 13 december, 13:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/voluspa-draumkvedet-traditionele-noorse-kveding",
       "url": "https://hetparkinrotterdam.nl/agenda/voluspa-draumkvedet-traditionele-noorse-kveding",
       "titel": "Voluspå – Draumkvedet: traditionele Noorse kveding",
@@ -120,6 +129,24 @@
       "tekst": "Voluspå – Draumkvedet: traditionele Noorse kveding · zo 13 december, 15:00 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/trio-linnenman-26",
+      "url": "https://hetparkinrotterdam.nl/agenda/trio-linnenman-26",
+      "titel": "Trio Linnenman",
+      "start": "2026-12-20",
+      "eind": "2026-12-20",
+      "tijd": "11:30",
+      "tekst": "Trio Linnenman · zo 20 december, 11:30 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-20",
+      "url": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-20",
+      "titel": "Pak de draad op",
+      "start": "2026-12-20",
+      "eind": "2026-12-20",
+      "tijd": "13:00",
+      "tekst": "Pak de draad op · zo 20 december, 13:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-23",
       "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-23",
       "titel": "Vaste prik op woensdag",
@@ -127,6 +154,24 @@
       "eind": "2026-12-23",
       "tijd": "13:00",
       "tekst": "Vaste prik op woensdag · wo 23 december, 13:00 uur"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/soep-gezelschap",
+      "url": "https://hetparkinrotterdam.nl/agenda/soep-gezelschap",
+      "titel": "Soep & Gezelschap",
+      "start": "2026-12-25",
+      "eind": "2026-12-26",
+      "tijd": "11:30",
+      "tekst": "Soep & Gezelschap · 25 t/m 26 december"
+    },
+    {
+      "id": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-27",
+      "url": "https://hetparkinrotterdam.nl/agenda/pak-de-draad-op-27",
+      "titel": "Pak de draad op",
+      "start": "2026-12-27",
+      "eind": "2026-12-27",
+      "tijd": "13:00",
+      "tekst": "Pak de draad op · zo 27 december, 13:00 uur"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-dec-30",
@@ -147,5 +192,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "027b38650eca6545"
+  "versie": "d8b84a81db851668"
 }
