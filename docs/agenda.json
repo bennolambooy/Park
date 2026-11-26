@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-25",
+  "bijgewerkt": "2026-11-26",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -26,7 +26,7 @@
     }
   ],
   "aanvraag_id": "85e30344-5a67-402d-8125-9a9bf2ad5da4",
-  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-25",
+  "gekozen_id": "https://hetparkinrotterdam.nl/agenda/herfstatelier-kopieren",
   "waarschuwing": "",
   "events": [
     {
@@ -39,13 +39,13 @@
       "tekst": "Herfstatelier · 1 oktober t/m 18 december"
     },
     {
-      "id": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-25",
-      "url": "https://hetparkinrotterdam.nl/agenda/vaste-prik-nov-25",
-      "titel": "Vaste prik op woensdag",
-      "start": "2026-11-25",
-      "eind": "2026-11-25",
-      "tijd": "13:00",
-      "tekst": "Vaste prik op woensdag · wo 25 november, 13:00 uur"
+      "id": "https://hetparkinrotterdam.nl/agenda/herfstatelier-kopieren",
+      "url": "https://hetparkinrotterdam.nl/agenda/herfstatelier-kopieren",
+      "titel": "Winteratelier",
+      "start": "2026-11-27",
+      "eind": "2027-03-20",
+      "tijd": null,
+      "tekst": "Winteratelier · 27 november 2026 t/m 20 maart 2027"
     },
     {
       "id": "https://hetparkinrotterdam.nl/agenda/rotterdam-philharmonic-orchestra-academy-2026",
@@ -192,5 +192,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "d8b84a81db851668"
+  "versie": "0180a7e9f86b3a88"
 }
