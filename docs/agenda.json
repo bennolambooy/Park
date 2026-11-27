@@ -1,5 +1,5 @@
 {
-  "bijgewerkt": "2026-11-26",
+  "bijgewerkt": "2026-11-27",
   "logostijl": "groen",
   "toon_adres": true,
   "algemeen": {
@@ -129,6 +129,15 @@
       "tekst": "Voluspå – Draumkvedet: traditionele Noorse kveding · zo 13 december, 15:00 uur"
     },
     {
+      "id": "https://hetparkinrotterdam.nl/agenda/presentatie-seizoensbundel-winter",
+      "url": "https://hetparkinrotterdam.nl/agenda/presentatie-seizoensbundel-winter",
+      "titel": "Presentatie seizoensbundel Winter",
+      "start": "2026-12-19",
+      "eind": "2026-12-19",
+      "tijd": "16:00",
+      "tekst": "Presentatie seizoensbundel Winter · za 19 december, 16:00 uur"
+    },
+    {
       "id": "https://hetparkinrotterdam.nl/agenda/trio-linnenman-26",
       "url": "https://hetparkinrotterdam.nl/agenda/trio-linnenman-26",
       "titel": "Trio Linnenman",
@@ -192,5 +201,5 @@
       "tekst": "Winterwandeling met Ferrie Weeda · zo 17 januari, 13:30 uur"
     }
   ],
-  "versie": "0180a7e9f86b3a88"
+  "versie": "825cc7e6c87f43dd"
 }
